@@ -57,6 +57,11 @@ NAF.Settings = (function () {
         { name: 'White', color: '#ffffff', ink: '#1a1008' },
         { name: 'Black', color: '#000000', ink: '#ffffff' }
     ];
+    // Names from the page's language file, in the same order. The saved value
+    // is the index, so only what is shown and spoken changes.
+    if (NAF.L && NAF.L.colors) {
+        HIGHLIGHT_COLORS.forEach(function (c, i) { if (NAF.L.colors[i]) c.name = NAF.L.colors[i]; });
+    }
 
     // Every duration here is for the implementer. None of these numbers are ever
     // spoken or printed - see ACCESSIBILITY.md section 4.
@@ -533,6 +538,17 @@ NAF.Say = (function () {
     // button. That button is now How to Play and opens the real directions, so
     // the controls are stated in exactly one place: HELP_LINES in ui.js, which
     // is both printed and read aloud.
+
+    // A language file (js/lang-*.js) brings its own phrasing, built on the
+    // same helpers and the same Words/Style levels.
+    if (NAF.L && NAF.L.say) {
+        return NAF.L.say({
+            name: name, playful: playful, words: words, W: W,
+            recorded: function (animal) {
+                return !!(NAF.Audio && NAF.Audio.animalSoundPlays && NAF.Audio.animalSoundPlays(animal));
+            }
+        });
+    }
 
     return {
         reveal: reveal,

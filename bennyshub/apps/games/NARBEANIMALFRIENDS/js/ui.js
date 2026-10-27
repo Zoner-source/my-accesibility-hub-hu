@@ -46,7 +46,7 @@ NAF.UI = (function () {
      * One sentence per line, because each line is queued as its own utterance
      * and a full stop is where a voice should draw breath.
      */
-    const HELP_LINES = [
+    const HELP_LINES = (NAF.L && NAF.L.helpLines) || [
         'Choose a place to visit: the barn, the aquarium or the safari.',
         'Then choose to open it. An animal comes out to say hello.',
         '*Tap Space* to move the highlight. *Hold Space* to go back.',
@@ -58,6 +58,17 @@ NAF.UI = (function () {
     ];
 
     // --- helpers ----------------------------------------------------------------
+
+    /**
+     * Text from the page's language file (js/lang-*.js), keyed by the English
+     * it replaces; the English itself when there is no entry. {x} in the text
+     * is filled from `vars`.
+     */
+    function T(text, vars) {
+        let out = (NAF.L && NAF.L.ui && NAF.L.ui[text]) || text;
+        if (vars) out = out.replace(/\{(\w+)\}/g, function (m, k) { return vars[k] !== undefined ? vars[k] : m; });
+        return out;
+    }
 
     function node(tag, cls, parent, text) {
         const n = document.createElement(tag);
@@ -82,7 +93,7 @@ NAF.UI = (function () {
         return b;
     }
 
-    function onOff(v) { return v ? 'On' : 'Off'; }
+    function onOff(v) { return v ? T('On') : T('Off'); }
 
     /**
      * Chunky line icons for the menus. Inline SVG in the DOM layer, where the
@@ -166,7 +177,7 @@ NAF.UI = (function () {
     function voiceName() {
         try {
             return window.NarbeVoiceManager.getVoiceDisplayName(window.NarbeVoiceManager.getCurrentVoice());
-        } catch (e) { return 'Default'; }
+        } catch (e) { return T('Default'); }
     }
     function autoScanOn() {
         try { return !!window.NarbeScanManager.getSettings().autoScan; } catch (e) { return false; }
@@ -473,12 +484,12 @@ NAF.UI = (function () {
         // Its icon and wording are the zone's, refreshed by show().
         el.openBarn = button('naf-open-barn', el.root);
         el.openChip = node('span', 'naf-icon-chip', el.openBarn);
-        el.openLabel = node('span', 'naf-menu-label', el.openBarn, 'Open the Barn');
+        el.openLabel = node('span', 'naf-menu-label', el.openBarn, NAF.Zones.current().words.openLabel);
 
         el.hud = node('div', 'naf-hud', el.root);
         el.stamps = node('div', 'naf-stamps', el.hud);
         el.pauseBtn = button('naf-pause-btn', el.hud);
-        el.pauseBtn.setAttribute('aria-label', 'Pause');
+        el.pauseBtn.setAttribute('aria-label', T('Pause'));
         el.pauseBtn.innerHTML = '<span aria-hidden="true">II</span>';
 
         el.choices = node('div', 'naf-choices', el.root);
@@ -488,7 +499,7 @@ NAF.UI = (function () {
         // --- overlays ---
         el.menu = node('div', 'naf-overlay naf-menu', el.root);
         bubbleLayer(el.menu);
-        const menuCard = barnCard(el.menu, 'NARBE Animal Friends', 'h1');
+        const menuCard = barnCard(el.menu, T('NARBE Animal Friends'), 'h1');
         el.menuFrame = el.menu.querySelector('.naf-barnframe');
         // The question lives IN the roof, not on the wall - a painted board
         // hanging under the loft window, porthole or sign, the way the sign
@@ -503,27 +514,27 @@ NAF.UI = (function () {
         el.menuDoors = node('div', 'naf-doors naf-menu-doors', menuCard);
         el.menuList = node('div', 'naf-list', el.menuDoors);
         el.menuUtil = node('div', 'naf-list naf-util-row', el.menuDoors);
-        node('p', 'naf-hint', menuCard, 'Tap Space = next · hold Space = back · Enter = choose');
+        node('p', 'naf-hint', menuCard, T('Tap Space = next · hold Space = back · Enter = choose'));
 
         el.modes = node('div', 'naf-overlay naf-modes', el.root);
         bubbleLayer(el.modes);
         // Titled with the zone, filled in by renderModes - the sign over the
         // door is how the player knows which place they walked into.
-        const modesCard = barnCard(el.modes, 'Barn', 'h2');
+        const modesCard = barnCard(el.modes, NAF.Zones.current().name, 'h2');
         el.modesFrame = el.modes.querySelector('.naf-barnframe');
         el.modesTitle = el.modes.querySelector('.naf-title-above');
-        el.modesSub = roofCta(el.modesFrame, 'Which way would you like to play?');
+        el.modesSub = roofCta(el.modesFrame, T('Which way would you like to play?'));
         el.modesList = node('div', 'naf-list naf-doors', modesCard);
-        node('p', 'naf-hint', modesCard, 'Tap Space = next · hold Space = back · Enter = choose');
+        node('p', 'naf-hint', modesCard, T('Tap Space = next · hold Space = back · Enter = choose'));
 
         el.settings = node('div', 'naf-overlay naf-settings', el.root);
         const setCard = node('div', 'naf-card', el.settings);
-        el.settingsTitle = node('h2', 'naf-title', setCard, 'Settings');
+        el.settingsTitle = node('h2', 'naf-title', setCard, T('Settings'));
         el.settingsList = node('div', 'naf-list', setCard);
 
         el.pause = node('div', 'naf-overlay naf-pause', el.root);
         const pauseCard = node('div', 'naf-card', el.pause);
-        node('h2', 'naf-title', pauseCard, 'Paused');
+        node('h2', 'naf-title', pauseCard, T('Paused'));
         el.pauseList = node('div', 'naf-list', pauseCard);
 
         el.help = node('div', 'naf-overlay naf-help', el.root);
@@ -533,7 +544,7 @@ NAF.UI = (function () {
         // so choosing what you have just landed on is what starts the reading.
         // A separate "read this to me" button below the text was one more thing
         // to scan past for everyone who did not need it.
-        el.helpTitle = node('button', 'naf-title naf-title-btn', helpCard, 'How to Play');
+        el.helpTitle = node('button', 'naf-title naf-title-btn', helpCard, T('How to Play'));
         el.helpTitle.type = 'button';
         el.helpBody = node('div', 'naf-help-body', helpCard);
         // Printed from the same lines that get read aloud - see HELP_LINES.
@@ -983,15 +994,15 @@ NAF.UI = (function () {
         const arriving = {
             menu: function () { return NAF.Say.greeting(); },
             modes: function () {
-                return NAF.Zones.current().name + '. Which way would you like to play?';
+                return NAF.Zones.current().name + '. ' + T('Which way would you like to play?');
             },
-            settings: function () { return nameEditing ? null : 'Settings.'; },
-            pause: function () { return 'Paused.'; },
+            settings: function () { return nameEditing ? null : T('Settings.'); },
+            pause: function () { return T('Paused.'); },
             // Says that the directions CAN be read out, rather than reading
             // the whole page at somebody who only wanted to glance at it.
             // Choosing the title is what starts them.
             help: function () {
-                return 'How to play. Choose the title to hear the directions.';
+                return T('How to play. Choose the title to hear the directions.');
             }
         }[name];
         if (arriving) {
@@ -1016,19 +1027,19 @@ NAF.UI = (function () {
                 id: 'zone:' + z.id,
                 zone: z.id,
                 label: z.words.visit,
-                labelHtml: '<span class="naf-visit">Visit the </span>' + z.name,
+                labelHtml: '<span class="naf-visit">' + (z.words.visitPrefix || T('Visit the ')) + '</span>' + (z.words.visitName || z.name),
                 icon: z.icon,
                 tone: z.tone,
-                speak: z.words.visit + '. ' + z.animals.length + ' animals to meet.'
+                speak: z.words.visit + '. ' + T('{n} animals to meet.', { n: z.animals.length })
             };
         });
         return items.concat([
-            { id: 'help', label: 'How to Play', icon: 'help', tone: 'teal',
-              util: true, speak: 'How to play.' },
-            { id: 'settings', label: 'Settings', icon: 'settings', tone: 'plum',
-              util: true, speak: 'Settings.' },
-            { id: 'exit', label: 'Exit Game', icon: 'exit', tone: 'slate',
-              util: true, speak: 'Exit game. Goes back to the hub.' }
+            { id: 'help', label: T('How to Play'), icon: 'help', tone: 'teal',
+              util: true, speak: T('How to play.') },
+            { id: 'settings', label: T('Settings'), icon: 'settings', tone: 'plum',
+              util: true, speak: T('Settings.') },
+            { id: 'exit', label: T('Exit Game'), icon: 'exit', tone: 'slate',
+              util: true, speak: T('Exit game. Goes back to the hub.') }
         ]);
     }
 
@@ -1041,13 +1052,13 @@ NAF.UI = (function () {
         const w = NAF.Zones.current().words;
         return [
             { id: 'barn', label: w.openLabel, icon: NAF.Zones.current().icon, tone: 'red',
-              speak: w.openSpoken + '. Press to see who comes out.' },
-            { id: 'pick', label: 'Pick an Animal', icon: 'animal', tone: 'green',
-              speak: 'Pick an animal. Choose who comes out.' },
-            { id: 'find', label: 'Listen and Find', icon: 'listen', tone: 'blue',
-              speak: 'Listen and find. Hear an animal, then find it. Nothing to lose.' },
-            { id: 'back', label: 'Back', icon: 'exit', tone: 'slate',
-              speak: 'Back to the main menu.' }
+              speak: w.openSpoken + '. ' + T('Press to see who comes out.') },
+            { id: 'pick', label: T('Pick an Animal'), icon: 'animal', tone: 'green',
+              speak: T('Pick an animal. Choose who comes out.') },
+            { id: 'find', label: T('Listen and Find'), icon: 'listen', tone: 'blue',
+              speak: T('Listen and find. Hear an animal, then find it. Nothing to lose.') },
+            { id: 'back', label: T('Back'), icon: 'exit', tone: 'slate',
+              speak: T('Back to the main menu.') }
         ];
     }
 
@@ -1174,7 +1185,7 @@ NAF.UI = (function () {
         const zone = NAF.Zones.current();
         skinFrame(el.modesFrame, zone);
         el.modesTitle.textContent = zone.name;
-        el.modesSub.textContent = 'Which way would you like to play?';
+        el.modesSub.textContent = T('Which way would you like to play?');
         el.modesList.innerHTML = '';
         modeItems().forEach(function (m) {
             const b = menuButton(el.modesList, m.label, m.icon, m.tone);
@@ -1204,12 +1215,12 @@ NAF.UI = (function () {
     }
 
     const PAUSE_ITEMS = [
-        { label: 'Continue', icon: 'play', tone: 'green' },
-        { label: 'Play a Different Game', icon: 'animal', tone: 'blue' },
-        { label: 'Settings', icon: 'settings', tone: 'plum' },
-        { label: 'How to Play', icon: 'help', tone: 'teal' },
-        { label: 'Main Menu', icon: 'home', tone: 'red' },
-        { label: 'Exit Game', icon: 'exit', tone: 'slate' }
+        { label: T('Continue'), icon: 'play', tone: 'green' },
+        { label: T('Play a Different Game'), icon: 'animal', tone: 'blue' },
+        { label: T('Settings'), icon: 'settings', tone: 'plum' },
+        { label: T('How to Play'), icon: 'help', tone: 'teal' },
+        { label: T('Main Menu'), icon: 'home', tone: 'red' },
+        { label: T('Exit Game'), icon: 'exit', tone: 'slate' }
     ];
 
     function renderPause() {
@@ -1223,18 +1234,18 @@ NAF.UI = (function () {
     function pauseScannables() {
         function at(i) { return el.pauseList.querySelector('[data-pause="' + i + '"]'); }
         return [
-            { id: 'pause:0', el: at(0), speak: 'Continue playing.', action: function () { show('play'); } },
+            { id: 'pause:0', el: at(0), speak: T('Continue playing.'), action: function () { show('play'); } },
             { id: 'pause:1', el: at(1),
-              speak: 'Play a different game. Choose another way to play.',
+              speak: T('Play a different game. Choose another way to play.'),
               action: function () { NAF.Game.toModes(); } },
-            { id: 'pause:2', el: at(2), speak: 'Settings.', action: function () { settingsFrom = 'pause'; show('settings'); } },
+            { id: 'pause:2', el: at(2), speak: T('Settings.'), action: function () { settingsFrom = 'pause'; show('settings'); } },
             // The same How to Play screen the main menu opens, with the printed
             // directions and the read-aloud title. Its Back comes here rather
             // than to the main menu while a game is running - see
             // helpScannables - so the player lands back where they left off.
-            { id: 'pause:3', el: at(3), speak: 'How to play.', action: function () { show('help'); } },
-            { id: 'pause:4', el: at(4), speak: 'Main menu.', action: function () { NAF.Game.toMenu(); } },
-            { id: 'pause:5', el: at(5), speak: 'Exit game. Goes back to the hub.', action: function () { NAF.Game.exit(); } }
+            { id: 'pause:3', el: at(3), speak: T('How to play.'), action: function () { show('help'); } },
+            { id: 'pause:4', el: at(4), speak: T('Main menu.'), action: function () { NAF.Game.toMenu(); } },
+            { id: 'pause:5', el: at(5), speak: T('Exit game. Goes back to the hub.'), action: function () { NAF.Game.exit(); } }
         ];
     }
 
@@ -1284,7 +1295,7 @@ NAF.UI = (function () {
 
     function renderHelp() {
         el.helpList.innerHTML = '';
-        const b = menuButton(el.helpList, 'Back', 'exit', 'slate');
+        const b = menuButton(el.helpList, T('Back'), 'exit', 'slate');
         b.dataset.help = 'back';
     }
 
@@ -1294,13 +1305,13 @@ NAF.UI = (function () {
                 // The title, at the top of the screen - see build().
                 id: 'help:read',
                 el: el.helpTitle,
-                speak: 'How to play. Choose this to hear the directions.',
+                speak: T('How to play. Choose this to hear the directions.'),
                 action: function () { readAloud(HELP_LINES); }
             },
             {
                 id: 'help:back',
                 el: el.helpList.querySelector('[data-help="back"]'),
-                speak: 'Back.',
+                speak: T('Back.'),
                 action: function () {
                     // Leaving mid-reading stops it, rather than talking over
                     // whatever the next screen announces.
@@ -1330,9 +1341,9 @@ NAF.UI = (function () {
 
         return [
             {
-                label: 'Speaking', value: onOff(ttsOn()),
+                label: T('Speaking'), value: onOff(ttsOn()),
                 speak: function () {
-                    return ttsOn() ? 'Speaking on. Everything is read aloud.' : 'Speaking off.';
+                    return ttsOn() ? T('Speaking on. Everything is read aloud.') : T('Speaking off.');
                 },
                 action: function () {
                     try { window.NarbeVoiceManager.toggleTTS(); } catch (e) { /* no voice manager */ }
@@ -1343,37 +1354,37 @@ NAF.UI = (function () {
                 // settings.js. Turning this off leaves the voice reading
                 // everything out as before, with nothing printed over the
                 // animal.
-                label: 'Show Text', value: onOff(s.get('showCaptions')),
+                label: T('Show Text'), value: onOff(s.get('showCaptions')),
                 speak: function () {
                     return s.get('showCaptions')
-                        ? 'Show text on. What is spoken is also written on the screen.'
-                        : 'Show text off. Everything is still read aloud.';
+                        ? T('Show text on. What is spoken is also written on the screen.')
+                        : T('Show text off. Everything is still read aloud.');
                 },
                 action: function () { s.toggle('showCaptions'); }
             },
             {
-                label: 'Voice', value: voiceName(),
-                speak: function () { return 'Voice. ' + voiceName() + '. This is the voice you will hear.'; },
+                label: T('Voice'), value: voiceName(),
+                speak: function () { return T('Voice. {v}. This is the voice you will hear.', { v: voiceName() }); },
                 action: function () {
                     try { window.NarbeVoiceManager.cycleVoice(); } catch (e) { /* no voice manager */ }
                 }
             },
             {
-                label: 'Player Name', value: s.get('playerName') || 'Not set',
+                label: T('Player Name'), value: s.get('playerName') || T('Not set'),
                 speak: function () {
                     const n = s.get('playerName');
                     return n
-                        ? ('Player name. ' + n + '. The game says your name while you play.')
-                        : 'Player name. Someone else can type a name here, and the game will use it while you play.';
+                        ? T('Player name. {n}. The game says your name while you play.', { n: n })
+                        : T('Player name. Someone else can type a name here, and the game will use it while you play.');
                 },
                 action: openNameEditor
             },
             {
-                label: 'Auto Scan', value: autoScanOn() ? 'On — One Switch' : 'Off — Two Switches',
+                label: T('Auto Scan'), value: autoScanOn() ? T('On — One Switch') : T('Off — Two Switches'),
                 speak: function () {
                     return autoScanOn()
-                        ? 'Auto scan on. One switch. The highlight moves by itself and Enter chooses.'
-                        : 'Auto scan off. Two switches. Space moves the highlight, Enter chooses.';
+                        ? T('Auto scan on. One switch. The highlight moves by itself and Enter chooses.')
+                        : T('Auto scan off. Two switches. Space moves the highlight, Enter chooses.');
                 },
                 action: function () {
                     try { window.NarbeScanManager.toggleAutoScan(); } catch (e) { /* no scan manager */ }
@@ -1381,8 +1392,8 @@ NAF.UI = (function () {
                 }
             },
             {
-                label: 'Scan Speed', value: scanSpeedLabel(),
-                speak: function () { return 'Scan speed ' + scanSpeedLabel() + '. How long you have to press.'; },
+                label: T('Scan Speed'), value: scanSpeedLabel(),
+                speak: function () { return T('Scan speed {s}. How long you have to press.', { s: scanSpeedLabel() }); },
                 action: function () {
                     try { window.NarbeScanManager.cycleScanSpeed(); } catch (e) { /* no scan manager */ }
                     NAF.Input.restartAutoScan();
@@ -1392,22 +1403,22 @@ NAF.UI = (function () {
                 // The two highlight settings sit next to each other and next to
                 // Scan Speed: everything about "how do I see and move the
                 // highlight" is in one run of the list rather than scattered.
-                label: 'Highlight Style',
-                value: s.get('highlightStyle') === 'full' ? 'Block' : 'Bold Band',
+                label: T('Highlight Style'),
+                value: s.get('highlightStyle') === 'full' ? T('Block') : T('Bold Band'),
                 speak: function () {
                     return s.get('highlightStyle') === 'full'
-                        ? 'Highlight style, block. The whole button fills with colour.'
-                        : 'Highlight style, bold band. A thick band is drawn around the button.';
+                        ? T('Highlight style, block. The whole button fills with colour.')
+                        : T('Highlight style, bold band. A thick band is drawn around the button.');
                 },
                 action: function () {
                     s.set('highlightStyle', s.get('highlightStyle') === 'full' ? 'outline' : 'full');
                 }
             },
             {
-                label: 'Highlight Color', value: s.highlightColorName(),
+                label: T('Highlight Color'), value: s.highlightColorName(),
                 speak: function () {
-                    return 'Highlight color, ' + s.highlightColorName() +
-                        '. This is the colour that shows you where you are.';
+                    return T('Highlight color, {c}. This is the colour that shows you where you are.',
+                        { c: s.highlightColorName() });
                 },
                 action: function () {
                     s.cycle('highlightColorIndex', s.HIGHLIGHT_COLORS.length);
@@ -1419,20 +1430,20 @@ NAF.UI = (function () {
                 // doors, footsteps or blips - see animalSounds in settings.js.
                 // Nothing else needs refreshing: the next reveal simply asks
                 // again before it plays.
-                label: 'Animal Sounds', value: onOff(s.get('animalSounds')),
+                label: T('Animal Sounds'), value: onOff(s.get('animalSounds')),
                 speak: function () {
                     return s.get('animalSounds')
-                        ? 'Animal sounds on. You hear each animal when it comes out.'
-                        : 'Animal sounds off. The animal\'s sound is spoken instead.';
+                        ? T('Animal sounds on. You hear each animal when it comes out.')
+                        : T('Animal sounds off. The animal\'s sound is spoken instead.');
                 },
                 action: function () { s.toggle('animalSounds'); }
             },
             {
-                label: 'Music', value: onOff(s.get('musicEnabled')),
+                label: T('Music'), value: onOff(s.get('musicEnabled')),
                 speak: function () {
                     return s.get('musicEnabled')
-                        ? 'Music on. It plays quietly behind the menus and while you play.'
-                        : 'Music off.';
+                        ? T('Music on. It plays quietly behind the menus and while you play.')
+                        : T('Music off.');
                 },
                 action: function () {
                     s.toggle('musicEnabled');
@@ -1441,21 +1452,27 @@ NAF.UI = (function () {
                 }
             },
             ...(s.get('preset') === 'simple' ? [] : [{
-                id: 'graphics-quality', label: 'Graphics quality', value: hubGraphics.label().replace('Graphics quality: ', ''),
-                speak: () => hubGraphics.label(), action: () => hubGraphics.cycle()
+                id: 'graphics-quality', label: T('Graphics quality'), value: graphicsValue(),
+                speak: () => T('Graphics quality') + ': ' + graphicsValue(), action: () => hubGraphics.cycle()
             }]),
             {
-                label: '← Back', value: '', nav: true,
-                speak: 'Back.',
+                label: '← ' + T('Back'), value: '', nav: true,
+                speak: T('Back.'),
                 action: function () { show(settingsFrom === 'pause' ? 'pause' : 'menu'); }
             }
         ];
     }
 
+    /** The shared Graphics quality value ("Use Hub setting (Auto: High)"), word by word in the page's language. */
+    function graphicsValue() {
+        return hubGraphics.label().replace('Graphics quality: ', '')
+            .replace(/Use Hub setting|full change next launch|Auto|High|Standard|Low/g, function (w) { return T(w); });
+    }
+
     hubGraphics.subscribe(() => { if (screen === 'settings' && !nameEditing && el.settings) { renderSettings(); NAF.Input.refresh(false); } });
     function renderSettings() {
         settingsCache = settingsItems();
-        el.settingsTitle.textContent = nameEditing ? 'Player Name' : 'Settings';
+        el.settingsTitle.textContent = nameEditing ? T('Player Name') : T('Settings');
         el.settingsList.innerHTML = '';
         if (nameEditing) {
             renderNameEditor();
@@ -1515,7 +1532,7 @@ NAF.UI = (function () {
     // (see the listener in renderNameEditor for why).
 
     /** ABC order, not QWERTY - matching the hub's own keyboard tools. */
-    const NAME_KEY_ROWS = [
+    const NAME_KEY_ROWS = (NAF.L && NAF.L.keyRows) || [
         ['A', 'B', 'C', 'D', 'E', 'F'],
         ['G', 'H', 'I', 'J', 'K', 'L'],
         ['M', 'N', 'O', 'P', 'Q', 'R'],
@@ -1530,16 +1547,13 @@ NAF.UI = (function () {
         nameKbRow = 0;
         renderSettings();
         NAF.Input.refresh(true);
-        NAF.Voice.speak('Player name. Scan to a row and choose it, then scan to a letter ' +
-            'in that row and choose it to spell your name. Choose Done at any time to keep it.');
+        NAF.Voice.speak(T('Player name. Scan to a row and choose it, then scan to a letter in that row and choose it to spell your name. Choose Done at any time to keep it.'));
     }
 
     function renderNameEditor() {
         const wrap = node('div', 'naf-name-editor', el.settingsList);
         node('p', 'naf-name-note', wrap,
-            'Scan to a row and choose it, then scan to a letter and choose it to spell ' +
-            'your name. Someone else can also choose letters with a touchscreen or a ' +
-            'mouse. Choose Done to keep it.');
+            T('Scan to a row and choose it, then scan to a letter and choose it to spell your name. Someone else can also choose letters with a touchscreen or a mouse. Choose Done to keep it.'));
 
         // Read-only: this shows the name being spelled, it does not take one.
         // A real keyboard typing straight into it would skip the on-screen
@@ -1549,10 +1563,10 @@ NAF.UI = (function () {
         input.type = 'text';
         input.maxLength = 20;
         input.value = S().get('playerName') || '';
-        input.placeholder = 'Spell a name below';
+        input.placeholder = T('Spell a name below');
         input.readOnly = true;
         input.tabIndex = -1;
-        input.setAttribute('aria-label', 'Player name');
+        input.setAttribute('aria-label', T('Player name'));
         el.nameInput = input;
 
         // The on-screen keyboard: one .naf-key-row per row, each independently
@@ -1596,16 +1610,16 @@ NAF.UI = (function () {
         });
         const ctrlRow = node('div', 'naf-key-row naf-key-row-ctrl', kb);
         ctrlRow.dataset.row = 'ctrl';
-        const space = node('button', 'naf-key naf-key-wide', ctrlRow, 'Space');
+        const space = node('button', 'naf-key naf-key-wide', ctrlRow, T('Space'));
         space.type = 'button';
         space.dataset.key = 'Space';
-        const back = node('button', 'naf-key naf-key-wide', ctrlRow, '⌫ Backspace');
+        const back = node('button', 'naf-key naf-key-wide', ctrlRow, '⌫ ' + T('Backspace'));
         back.type = 'button';
         back.dataset.key = 'Backspace';
 
-        const done = menuButton(wrap, 'Done', 'check', 'green');
+        const done = menuButton(wrap, T('Done'), 'check', 'green');
         done.dataset.name = 'done';
-        const clear = menuButton(wrap, 'Clear the Name', 'cross', 'slate');
+        const clear = menuButton(wrap, T('Clear the Name'), 'cross', 'slate');
         clear.dataset.name = 'clear';
     }
 
@@ -1615,7 +1629,7 @@ NAF.UI = (function () {
         el.nameInput = null;
         renderSettings();
         NAF.Input.refresh(true);
-        NAF.Voice.speak('Settings.');
+        NAF.Voice.speak(T('Settings.'));
     }
 
     /** The rows of the name keyboard, in on-screen order - the alphabet/digit
@@ -1642,7 +1656,7 @@ NAF.UI = (function () {
         const keys = Array.prototype.slice.call(rowEl.querySelectorAll('.naf-key'))
             .map(function (b) { return b.dataset.key; });
         if (keys.length > 2) return keys.join(', ');
-        return keys.join(' and ');
+        return keys.join(' ' + T('and') + ' ');
     }
 
     /**
@@ -1696,7 +1710,7 @@ NAF.UI = (function () {
                     list.push({
                         id: 'name:key:' + k,
                         el: btn,
-                        speak: k === 'Space' ? 'Space' : (k === 'Backspace' ? 'Backspace' : k),
+                        speak: k === 'Space' ? T('Space') : (k === 'Backspace' ? T('Backspace') : k),
                         action: function () {
                             typeNameKey(k);
                             backToNameKbRows();
@@ -1723,7 +1737,7 @@ NAF.UI = (function () {
             list.push({
                 id: 'name:row:' + ri,
                 el: rowEl,
-                speak: 'Row: ' + nameKbRowLabel(rowEl) + '.',
+                speak: T('Row: {r}.', { r: nameKbRowLabel(rowEl) }),
                 action: function () {
                     nameKbMode = 'keys';
                     nameKbRow = ri;
@@ -1735,22 +1749,22 @@ NAF.UI = (function () {
         list.push({
             id: 'name:done',
             el: el.settingsList.querySelector('[data-name="done"]'),
-            speak: 'Done. Keeps the name and goes back.',
+            speak: T('Done. Keeps the name and goes back.'),
             action: function () {
                 if (el.nameInput) S().set('playerName', el.nameInput.value.trim().slice(0, 20));
                 const n = S().get('playerName');
                 closeNameEditor();
-                if (n) NAF.Voice.speak('Hello ' + n + '!');
+                if (n) NAF.Voice.speak(T('Hello {n}!', { n: n }));
             }
         });
         list.push({
             id: 'name:clear',
             el: el.settingsList.querySelector('[data-name="clear"]'),
-            speak: 'Clear the name.',
+            speak: T('Clear the name.'),
             action: function () {
                 S().set('playerName', '');
                 if (el.nameInput) el.nameInput.value = '';
-                NAF.Voice.speak('Name cleared.');
+                NAF.Voice.speak(T('Name cleared.'));
             }
         });
         return list;
@@ -1825,7 +1839,7 @@ NAF.UI = (function () {
         list.push({
             id: 'play:pause',
             el: el.pauseBtn,
-            speak: 'Pause.',
+            speak: T('Pause.'),
             action: openPause
         });
         return list;

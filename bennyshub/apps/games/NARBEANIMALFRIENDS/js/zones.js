@@ -39,8 +39,12 @@ NAF.Zones = (function () {
      * one - see ANIMAL-SOUNDS.md for the full list.
      */
     function a(id, name, says, emoji, scale) {
+        // The page's language file (js/lang-*.js) supplies the name and sound
+        // word; `lang` keeps its whole entry for phrasing that needs more forms.
+        const tr = (NAF.L && NAF.L.animals && NAF.L.animals[id]) || null;
+        if (tr) { name = tr[0]; says = tr[1]; }
         return {
-            id: id, name: name, says: says, emoji: emoji, scale: scale,
+            id: id, name: name, says: says, emoji: emoji, scale: scale, lang: tr,
             art: { idle: null, call: null, happy: null },
             sounds: { call: 'sounds/animals/' + id + '.wav' }
         };
@@ -384,6 +388,13 @@ NAF.Zones = (function () {
     };
 
     const ZONES = [BARN, AQUARIUM, SAFARI];
+    // The language file's zone name and words replace the English ones.
+    ZONES.forEach(function (z) {
+        const tr = NAF.L && NAF.L.zones && NAF.L.zones[z.id];
+        if (!tr) return;
+        z.name = tr.name;
+        Object.assign(z.words, tr.words);
+    });
     const byId = {};
     ZONES.forEach(function (z) { byId[z.id] = z; });
 

@@ -334,7 +334,7 @@ NAF.Game = (function () {
      */
     function exit() {
         NAF.Reveal.cancel();
-        NAF.Voice.speak('Goodbye.');
+        NAF.Voice.speak((NAF.L && NAF.L.ui['Goodbye.']) || 'Goodbye.');
         if (window.parent && window.parent !== window) {
             window.parent.postMessage({ action: 'focusBackButton' }, '*');
         } else {

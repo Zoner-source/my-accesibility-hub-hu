@@ -640,6 +640,13 @@ NAF.Facts = (function () {
         ]
     };
 
+    // A language file (js/lang-*.js) replaces the English facts. Its facts mark
+    // the animal's name as {shown|riddle}: see shown() and riddle() below.
+    const LOCAL = (NAF.L && NAF.L.facts) || null;
+    const SOURCE = LOCAL || FACTS;
+    const MARK = /\{([^|}]*)\|([^}]*)\}/g;
+    function shown(text) { return text.replace(MARK, '$1'); }
+
     /** So the same animal never repeats its last fact on the very next reveal. */
     const lastIndex = {};
 
@@ -650,8 +657,14 @@ NAF.Facts = (function () {
      * animal added to a roster is never silent, just less detailed at first.
      */
     function random(animal) {
-        const list = (animal && FACTS[animal.id]) || null;
+        return shown(pick(animal));
+    }
+
+    /** One raw fact, markup and all, never the same index twice running. */
+    function pick(animal) {
+        const list = (animal && SOURCE[animal.id]) || null;
         if (!list || !list.length) {
+            if (LOCAL && animal && NAF.L.fallbackFact) return NAF.L.fallbackFact(animal);
             const name = animal ? animal.name.toLowerCase() : 'animal';
             const says = animal ? animal.says.toLowerCase() : '';
             return 'The ' + name + (says ? (' says ' + says + '.') : ' is one of a kind.');
@@ -698,6 +711,10 @@ NAF.Facts = (function () {
      * authored set of clues in sync with them by hand.
      */
     function riddle(animal) {
+        if (LOCAL) {
+            const text = pick(animal).replace(MARK, '$2');
+            return text.charAt(0).toUpperCase() + text.slice(1);
+        }
         const fact = random(animal);
         if (!animal || !animal.name) return fact;
 

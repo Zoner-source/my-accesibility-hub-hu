@@ -34,5 +34,13 @@
     "bennysdice": {
         "title": "Benny kockái",
         "description": "3D kockadobó játék valósághű fizikával!"
+    },
+    "narbeanimalfriends": {
+        "title": "Barátságos Állatok",
+        "description": "Színes állatos kukucsjáték: nyomj meg egy kapcsolót, kinyílik az ajtó, és kijön egy állat köszönni. Nincs pontszám, nincs időzítő, nem lehet veszíteni.",
+        "genres": [
+            "Interaktív",
+            "Ismeretterjesztő"
+        ]
     }
 }

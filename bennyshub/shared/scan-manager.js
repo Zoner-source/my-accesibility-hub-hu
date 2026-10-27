@@ -138,7 +138,14 @@ window.NarbeScanManager = (function() {
       scanSpeedIndex: settings.scanSpeedIndex,
       scanInterval: SCAN_SPEEDS[settings.scanSpeedIndex],
       inputSensitivityIndex: settings.inputSensitivityIndex,
-      inputSensitivity: INPUT_SENSITIVITIES[settings.inputSensitivityIndex]
+      inputSensitivity: INPUT_SENSITIVITIES[settings.inputSensitivityIndex],
+      // Read by choice-scan.js. This Hub has no Parking/Brake/Wait settings
+      // yet, so they stay at the shared defaults: parking off, Space brake on,
+      // no waiting for speech.
+      parking: 'off',
+      loopsBeforeParking: 2,
+      spaceBrake: true,
+      waitForSpeech: false
     };
   }
 
@@ -560,6 +567,16 @@ window.NarbeScanManager = (function() {
      */
     resetInputState: function() {
       resetInputState();
+    },
+
+    // Used by choice-scan.js and choice-scan-adapter.js. Parking is always off
+    // in this Hub (see getPublicState).
+    isParkingEnabled: function() { return false; },
+    shouldParkAfterLoop: function() { return false; },
+
+    /** Explicit creation only. No app is converted just by loading this file. */
+    createChoiceScan: function(options) {
+      return window.NarbeChoiceScan.create(window.NarbeScanManager, options);
     }
   };
 })();

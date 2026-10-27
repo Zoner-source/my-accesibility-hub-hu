@@ -794,3 +794,20 @@ Owner request: cross-check this Hungarian copy (published from Zoner-source/my-a
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: real Chrome against a local server under a sub-path. Root URL redirects to the Hub; the four menu pictures load with Hungarian aria-labels; games list Benny amőbája, kosárlabdája, memóriajátéka, mondja; keyboard loads 350 words, "V" suggests VAGY…, after typing VLAD, speaking and clearing, "V" → VLAD first after reload; ANYA → GYERE, SZERETLEK, SEGÍTS, HOL, VIZET, ÉHES; Matchy Match loads all packs and categories. No page errors; nav_signal.json 404 polling is pre-existing (same in the Romanian copy).
+
+## 2026-10-27 — NARBE Animal Friends added to the Hub, translated (Hungarian)
+
+Owner request: add NARBE Animal Friends to both the Romanian and the Hungarian Hub, translated. The game folder is identical in both copies except index.html, which sets the page language and loads one language file. Gameplay, timing, art, sounds, defaults and controls are unchanged.
+
+- bennyshub/apps/games/NARBEANIMALFRIENDS/js/lang-hu.js, lang-ro.js — new. All interface text keyed by its English, How to Play lines, highlight colour names, the name keyboard with each language's letters, zone names and words, the 60 animal names and sound words (Romanian also carries "a/an" and "the" forms), 480 facts per language and a per-language NAF.Say. Facts mark the animal's name as {shown|riddle}, so Listen and Find never names the answer and stays grammatical; facts that only work in English (collective nouns such as "a parliament of owls") were replaced by other true, kid-simple facts.
+- bennyshub/apps/games/NARBEANIMALFRIENDS/index.html — lang and title for this Hub; loads js/lang-hu.js before the game modules.
+- js/zones.js — animal names/sound words and zone names/words come from NAF.L when present.
+- js/facts.js — uses NAF.L.facts when present; random() shows the left side of the markup, riddle() the right side. The English path is unchanged.
+- js/settings.js — highlight colour names from NAF.L; NAF.Say is replaced by NAF.L.say (same functions, same Words/Style levels) when present.
+- js/ui.js — T() lookup for every printed and spoken string (English fallback), localized visit labels, translated Graphics quality value, NAME_KEY_ROWS and HELP_LINES from NAF.L.
+- js/main.js — "Goodbye." from NAF.L.
+- bennyshub/shared/scan-manager.js — additive shim: createChoiceScan() (delegates to NarbeChoiceScan.create), isParkingEnabled()/shouldParkAfterLoop() returning false, and parking 'off', loopsBeforeParking 2, spaceBrake true, waitForSpeech false in getSettings(). The uploaded scan-manager predates the choice-scan adapter, so every choice-scan game (this one included) stopped at boot with "manager.createChoiceScan is not a function". This Hub has no Parking/Brake/Wait settings, so they stay at the shared defaults. Existing apps are unaffected.
+- bennyshub/apps/games/ — games.json (entry added; it was missing here), game-overrides.json (Hungarian title, description, genres) and hidden-games.json (showOnly).
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: real Chrome against local servers for both copies. The Hub lists "Barátságos Állatok" and opens it in its iframe; main menu, ways to play, settings, How to Play, reveal, facts, riddles, right/wrong picks, cheers and row-complete lines all read in the page language; every animal has 8 facts with markup and no riddle contains the animal's own name (scripted check). Keyboard, Matchy Match and the other listed games still load. Missing optional sound-effect files (doors, songs) return 404 and fall back to the synthesised tones, as designed.
