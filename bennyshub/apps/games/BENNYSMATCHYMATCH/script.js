@@ -38,10 +38,10 @@ const state = {
         previewCards: [],
         previewDims: null,
         difficulties: [
-            { id: '10000', label: 'Ușor (10s)', tts: 'Ușor, afișare 10 secunde' },
-            { id: '5000', label: 'Mediu (5s)', tts: 'Mediu, afișare 5 secunde' },
-            { id: '3000', label: 'Greu (3s)', tts: 'Greu, afișare 3 secunde' },
-            { id: '1000', label: 'Foarte greu (1s)', tts: 'Foarte greu, afișare 1 secundă' }
+            { id: '10000', label: 'Könnyű (10 mp)', tts: 'Könnyű, 10 másodpercig látszanak a kártyák' },
+            { id: '5000', label: 'Közepes (5 mp)', tts: 'Közepes, 5 másodpercig látszanak a kártyák' },
+            { id: '3000', label: 'Nehéz (3 mp)', tts: 'Nehéz, 3 másodpercig látszanak a kártyák' },
+            { id: '1000', label: 'Nagyon nehéz (1 mp)', tts: 'Nagyon nehéz, 1 másodpercig látszanak a kártyák' }
         ]
     },
     challengePlus: {
@@ -73,14 +73,14 @@ const basicColors = [
 const highlightColors = [
     'Theme Default', 'Yellow', 'White', 'Cyan', 'Lime', 'Magenta', 'Red', 'Orange', 'Pink', 'Gold', 'DeepSkyBlue', 'SpringGreen', 'Violet'
 ];
-// Romanian display names for the CSS color keywords above. The array itself
+// Hungarian display names for the CSS color keywords above. The array itself
 // must stay in English — its values are used directly as real CSS colors
 // (see applyTheme/cycleHighlightColor) — so translation only happens here,
 // at the point of lookup, never to the array that's actually rendered.
-const highlightColorNamesRO = {
-    'Theme Default': 'Implicit (temă)', 'Yellow': 'Galben', 'White': 'Alb', 'Cyan': 'Azuriu',
-    'Lime': 'Verde lime', 'Magenta': 'Magenta', 'Red': 'Roșu', 'Orange': 'Portocaliu',
-    'Pink': 'Roz', 'Gold': 'Auriu', 'DeepSkyBlue': 'Albastru cer', 'SpringGreen': 'Verde primăvară', 'Violet': 'Violet'
+const highlightColorNamesHU = {
+    'Theme Default': 'Téma alapértelmezett', 'Yellow': 'Sárga', 'White': 'Fehér', 'Cyan': 'Ciánkék',
+    'Lime': 'Élénkzöld', 'Magenta': 'Magenta', 'Red': 'Piros', 'Orange': 'Narancssárga',
+    'Pink': 'Rózsaszín', 'Gold': 'Arany', 'DeepSkyBlue': 'Égkék', 'SpringGreen': 'Tavaszzöld', 'Violet': 'Ibolya'
 };
 
 const themes = [
@@ -96,35 +96,46 @@ const themes = [
 // Theme .name values are pure display labels (never compared/used as CSS or
 // keys anywhere else — applyTheme indexes by settings.themeIndex, a number),
 // so these ARE safely translatable in place, unlike highlightColors above.
-const themeNamesRO = {
-    'Default': 'Implicit', 'Ocean': 'Ocean', 'Midnight': 'Miezul nopții', 'Forest': 'Pădure',
-    'Sunset': 'Apus', 'Lavender': 'Lavandă', 'Mint': 'Mentă', 'Dark Blue': 'Albastru închis'
+const themeNamesHU = {
+    'Default': 'Alapértelmezett', 'Ocean': 'Óceán', 'Midnight': 'Éjfél', 'Forest': 'Erdő',
+    'Sunset': 'Naplemente', 'Lavender': 'Levendula', 'Mint': 'Menta', 'Dark Blue': 'Sötétkék'
 };
 
-// Romanian display names for basicColors (P1/P2 color picker). Same rule as
+// Hungarian display names for basicColors (P1/P2 color picker). Same rule as
 // highlightColors above: basicColors itself feeds btn.style.backgroundColor
 // directly, so it must stay English; only the displayed label is translated.
-const basicColorNamesRO = {
-    'Red': 'Roșu', 'Orange': 'Portocaliu', 'Yellow': 'Galben', 'Lime': 'Verde lime', 'Green': 'Verde',
-    'Teal': 'Turcoaz', 'Cyan': 'Azuriu', 'Blue': 'Albastru', 'Purple': 'Mov', 'Magenta': 'Magenta',
-    'Pink': 'Roz', 'White': 'Alb', 'Gray': 'Gri', 'Black': 'Negru'
+const basicColorNamesHU = {
+    'Red': 'Piros', 'Orange': 'Narancssárga', 'Yellow': 'Sárga', 'Lime': 'Élénkzöld', 'Green': 'Zöld',
+    'Teal': 'Pávakék', 'Cyan': 'Ciánkék', 'Blue': 'Kék', 'Purple': 'Lila', 'Magenta': 'Magenta',
+    'Pink': 'Rózsaszín', 'White': 'Fehér', 'Gray': 'Szürke', 'Black': 'Fekete'
 };
 
-// Romanian display names for pack categories. IMPORTANT: category names are
+// Hungarian display names for pack categories. IMPORTANT: category names are
 // also used by categoryToFolderName() to build the real asset folder path
 // on disk (e.g. "Small Animals" -> "smallanimals"), so the actual category
 // keys in pack JSON files must stay exactly as authored. This dictionary
 // only changes what's displayed/spoken — add an entry here per new pack
 // category as needed; anything not listed just falls back to its raw name.
-const categoryNamesRO = {
-    'All': 'Toate',
-    'Small Animals': 'Animale mici',
-    'Large Animals': 'Animale mari',
-    'Vehicles': 'Vehicule',
-    'Flowers': 'Flori'
+const categoryNamesHU = {
+    'All': 'Összes',
+    'Small Animals': 'Kis állatok',
+    'Large Animals': 'Nagy állatok',
+    'Vehicles': 'Járművek',
+    'Flowers': 'Virágok'
 };
+// Spoken/displayed names for values that are internal English keys.
+// (state.gameSource and state.difficulty are compared with === elsewhere,
+// so they stay English; only the text shown/spoken is translated.)
+const gameSourceNamesHU = { 'ALL': 'Mind', 'Local': 'Helyi', 'Online': 'Online' };
+const difficultyNamesHU = {
+    'easy': 'könnyű', 'medium': 'közepes', 'hard': 'nehéz',
+    '4x4': 'négyszer négy', '4x5': 'négyszer öt', '5x6': 'ötször hat', '6x6': 'hatszor hat'
+};
+function sourceName(k) { return gameSourceNamesHU[k] || k; }
+function difficultyName(k) { return difficultyNamesHU[k] || k; }
+
 function categoryDisplayName(catName) {
-    return categoryNamesRO[catName] || catName;
+    return categoryNamesHU[catName] || catName;
 }
 
 const config = {
@@ -425,10 +436,10 @@ async function fetchPackData(filename) {
 }
 
 function getPackTitle() {
-    if (state.packs.length === 0 || !state.packs[state.currentPackIndex]) return "Implicit";
+    if (state.packs.length === 0 || !state.packs[state.currentPackIndex]) return "Alapértelmezett";
     const filename = state.packs[state.currentPackIndex];
-    if (filename === '__ALL__') return "Toate categoriile";
-    if (filename === "Default Game") return "Joc implicit";
+    if (filename === '__ALL__') return "Minden kategória";
+    if (filename === "Default Game") return "Alapjáték";
     
     // "packs/adult_cartoons/adult_cartoons.json" -> "Adult Cartoons"
     // "packs/adult_cartoons.json" -> "Adult Cartoons" (legacy)
@@ -473,7 +484,7 @@ async function cyclePack(dir) {
     // Refresh board sizes and UI
     updateBoardSizes();
     renderMenu();
-    speak("Pachet: " + getPackTitle());
+    speak("Csomag: " + getPackTitle());
 }
 
 // --- Input Handling ---
@@ -685,6 +696,7 @@ function speak(text) {
     } else if (settings.tts && 'speechSynthesis' in window) {
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'hu-HU';
         speechSynthesis.speak(u);
     }
 }
@@ -696,13 +708,13 @@ function getColorSwatch(color) {
 
 const menus = {
     main: [
-        { text: "Un jucător", action: () => showSinglePlayerMenu() },
-        { text: "Doi jucători", action: () => showTwoPlayerMenu() },
-        { text: () => `Sursă joc: ${state.gameSource}`, action: () => cycleGameSource(), onPrev: () => cycleGameSource(-1) },
-        { text: "Încarcă joc personalizat", action: () => showLoadWarning() },
-        { text: "Setări", action: () => showSettingsMenu() },
-        { text: "Ieșire", action: () => {
-            speak("Se revine la Hub");
+        { text: "Egy játékos", action: () => showSinglePlayerMenu() },
+        { text: "Két játékos", action: () => showTwoPlayerMenu() },
+        { text: () => `Játék forrása: ${sourceName(state.gameSource)}`, action: () => cycleGameSource(), onPrev: () => cycleGameSource(-1) },
+        { text: "Saját játék betöltése", action: () => showLoadWarning() },
+        { text: "Beállítások", action: () => showSettingsMenu() },
+        { text: "Kilépés", action: () => {
+            speak("Visszatérés a központba");
             setTimeout(() => {
                 if (window.parent && window.parent !== window) {
                     window.parent.postMessage({ action: 'focusBackButton' }, '*');
@@ -713,31 +725,31 @@ const menus = {
         } }
     ],
     singlePlayer: [
-        { text: "Casual", action: () => setGameMode('single', 'casual') },
-        { text: "Provocare", action: () => setGameMode('single', 'challenge') },
-        { text: "Provocare+", action: () => startChallengePlusSetup() },
-        { text: "Înapoi", action: () => showMainMenu() }
+        { text: "Szabad játék", action: () => setGameMode('single', 'casual') },
+        { text: "Kihívás", action: () => setGameMode('single', 'challenge') },
+        { text: "Kihívás plusz", action: () => startChallengePlusSetup() },
+        { text: "Vissza", action: () => showMainMenu() }
     ],
     twoPlayer: [
-        { text: "Casual", action: () => setGameMode('two', 'casual') },
-        { text: "Competitiv", action: () => startCompetitiveMatch() },
-        { text: "Înapoi", action: () => showMainMenu() }
+        { text: "Szabad játék", action: () => setGameMode('two', 'casual') },
+        { text: "Versengő", action: () => startCompetitiveMatch() },
+        { text: "Vissza", action: () => showMainMenu() }
     ],
     settings: [
-        { text: () => `Schimbă tema: ${themeNamesRO[themes[settings.themeIndex].name]}`, action: () => cycleTheme(1), onPrev: () => cycleTheme(-1) },
-        { text: () => `Redare vocală: ${(window.NarbeVoiceManager ? (window.NarbeVoiceManager.getSettings().ttsEnabled) : settings.tts) ? 'Pornit' : 'Oprit'}`, action: () => toggleTTS(), onPrev: () => toggleTTS() },
-        { text: () => `Voce poziție: ${settings.ttsLocation ? 'Pornit' : 'Oprit'}`, action: () => toggleTTSLocation(), onPrev: () => toggleTTSLocation() },
-        { text: () => `Sunet: ${settings.sound ? 'Pornit' : 'Oprit'}`, action: () => toggleSound(), onPrev: () => toggleSound() },
-        { text: () => `Stil evidențiere: ${settings.highlightStyle === 'outline' ? 'Contur' : 'Celulă completă'}`, action: () => toggleHighlightStyle(), onPrev: () => toggleHighlightStyle() },
-        { text: () => `Culoare evidențiere: ${highlightColorNamesRO[highlightColors[settings.highlightColorIndex]]}`, action: () => cycleHighlightColor(1), onPrev: () => cycleHighlightColor(-1) },
-        { text: () => `Culoare J2: ${basicColorNamesRO[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1), onPrev: () => cycleP2Color(-1) },
-        { text: "Deschide editorul", action: () => showEditorWarning() },
-        { text: "Șterge cache-ul local", action: () => clearLocalCache() },
-        { text: () => `Voce: ${getVoiceName()}`, action: () => cycleVoice(1), onPrev: () => cycleVoice(-1) },
+        { text: () => `Téma váltása: ${themeNamesHU[themes[settings.themeIndex].name]}`, action: () => cycleTheme(1), onPrev: () => cycleTheme(-1) },
+        { text: () => `Hangfelolvasás: ${(window.NarbeVoiceManager ? (window.NarbeVoiceManager.getSettings().ttsEnabled) : settings.tts) ? 'Be' : 'Ki'}`, action: () => toggleTTS(), onPrev: () => toggleTTS() },
+        { text: () => `Pozíció felolvasása: ${settings.ttsLocation ? 'Be' : 'Ki'}`, action: () => toggleTTSLocation(), onPrev: () => toggleTTSLocation() },
+        { text: () => `Hangeffektek: ${settings.sound ? 'Be' : 'Ki'}`, action: () => toggleSound(), onPrev: () => toggleSound() },
+        { text: () => `Kiemelés stílusa: ${settings.highlightStyle === 'outline' ? 'Körvonal' : 'Teljes kártya'}`, action: () => toggleHighlightStyle(), onPrev: () => toggleHighlightStyle() },
+        { text: () => `Kiemelés színe: ${highlightColorNamesHU[highlightColors[settings.highlightColorIndex]]}`, action: () => cycleHighlightColor(1), onPrev: () => cycleHighlightColor(-1) },
+        { text: () => `2. játékos színe: ${basicColorNamesHU[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1), onPrev: () => cycleP2Color(-1) },
+        { text: "Szerkesztő megnyitása", action: () => showEditorWarning() },
+        { text: "Helyi gyorsítótár törlése", action: () => clearLocalCache() },
+        { text: () => `Felolvasó hang: ${getVoiceName()}`, action: () => cycleVoice(1), onPrev: () => cycleVoice(-1) },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Scanare automată: ${window.NarbeScanManager.getSettings().autoScan ? 'Pornit' : 'Oprit'}`;
-                 return "Scanare automată: Oprit";
+                 if(window.NarbeScanManager) return `Automatikus pásztázás: ${window.NarbeScanManager.getSettings().autoScan ? 'Be' : 'Ki'}`;
+                 return "Automatikus pásztázás: Ki";
             }, 
             action: () => {
                  if(window.NarbeScanManager) window.NarbeScanManager.updateSettings({autoScan: !window.NarbeScanManager.getSettings().autoScan});
@@ -754,8 +766,8 @@ const menus = {
         },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Viteză scanare: ${window.NarbeScanManager.getScanInterval()/1000}s`;
-                 return "Viteză scanare: 2s";
+                 if(window.NarbeScanManager) return `Pásztázás sebessége: ${window.NarbeScanManager.getScanInterval()/1000} másodperc`;
+                 return "Pásztázás sebessége: 2 másodperc";
             }, 
             action: () => {
                  if(window.NarbeScanManager) window.NarbeScanManager.cycleScanSpeed();
@@ -768,29 +780,29 @@ const menus = {
                  renderMenu();
             }
         },
-        { text: "Înapoi", action: () => showMainMenu() }
+        { text: "Vissza", action: () => showMainMenu() }
     ],
     editorWarning: [
-        { text: "Continuă (necesită mouse)", action: () => openEditor() },
-        { text: "Anulează", action: () => showSettingsMenu() }
+        { text: "Folytatás (egér szükséges)", action: () => openEditor() },
+        { text: "Mégse", action: () => showSettingsMenu() }
     ],
     loadWarning: [
-        { text: "Selectează folderul", action: () => promptLoadGame() },
-        { text: "Anulează", action: () => showMainMenu() }
+        { text: "Mappa kiválasztása", action: () => promptLoadGame() },
+        { text: "Mégse", action: () => showMainMenu() }
     ],
     difficulty: [
-        { text: "Ușor", action: () => startGame('easy') },
-        { text: "Mediu", action: () => startGame('medium') },
-        { text: "Greu", action: () => startGame('hard') },
-        { text: "Înapoi", action: () => showCategoryMenu() }
+        { text: "Könnyű", action: () => startGame('easy') },
+        { text: "Közepes", action: () => startGame('medium') },
+        { text: "Nehéz", action: () => startGame('hard') },
+        { text: "Vissza", action: () => showCategoryMenu() }
     ],
     pause: [
-        { text: "Continuă jocul", action: () => resumeGame() },
-        { text: "Setări", action: () => showPauseSettings() },
-        { text: "Înapoi la meniu", action: () => showMainMenu() },
-        { text: "Ajutor", action: () => speak("Am nevoie de ajutor") },
-        { text: "Ieșire", action: () => {
-             speak("Se revine la Hub");
+        { text: "Játék folytatása", action: () => resumeGame() },
+        { text: "Beállítások", action: () => showPauseSettings() },
+        { text: "Vissza a menübe", action: () => showMainMenu() },
+        { text: "Segítség", action: () => speak("Segítségre van szükségem") },
+        { text: "Kilépés", action: () => {
+             speak("Visszatérés a központba");
              setTimeout(() => {
                  if (window.parent && window.parent !== window) {
                      window.parent.postMessage({ action: 'focusBackButton' }, '*');
@@ -801,19 +813,19 @@ const menus = {
         } }
     ],
     pauseSettings: [
-        { text: () => `Schimbă tema: ${themeNamesRO[themes[settings.themeIndex].name]}`, action: () => cycleTheme(1, true), onPrev: () => cycleTheme(-1, true) },
-        { text: () => `Redare vocală: ${(window.NarbeVoiceManager ? (window.NarbeVoiceManager.getSettings().ttsEnabled) : settings.tts) ? 'Pornit' : 'Oprit'}`, action: () => toggleTTS(true), onPrev: () => toggleTTS(true) },
-        { text: () => `Voce poziție: ${settings.ttsLocation ? 'Pornit' : 'Oprit'}`, action: () => toggleTTSLocation(true), onPrev: () => toggleTTSLocation(true) },
-        { text: () => `Sunet: ${settings.sound ? 'Pornit' : 'Oprit'}`, action: () => toggleSound(true), onPrev: () => toggleSound(true) },
-        { text: () => `Stil evidențiere: ${settings.highlightStyle === 'outline' ? 'Contur' : 'Celulă completă'}`, action: () => toggleHighlightStyle(true), onPrev: () => toggleHighlightStyle(true) },
-        { text: () => `Culoare evidențiere: ${highlightColorNamesRO[highlightColors[settings.highlightColorIndex]]}`, action: () => cycleHighlightColor(1, true), onPrev: () => cycleHighlightColor(-1, true) },
-        { text: () => `Culoare J1: ${basicColorNamesRO[settings.p1Color]}${getColorSwatch(settings.p1Color)}`, action: () => cycleP1Color(1, true), onPrev: () => cycleP1Color(-1, true) },
-        { text: () => `Culoare J2: ${basicColorNamesRO[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1, true), onPrev: () => cycleP2Color(-1, true) },
-        { text: () => `Voce: ${getVoiceName()}`, action: () => cycleVoice(1, true), onPrev: () => cycleVoice(-1, true) },
+        { text: () => `Téma váltása: ${themeNamesHU[themes[settings.themeIndex].name]}`, action: () => cycleTheme(1, true), onPrev: () => cycleTheme(-1, true) },
+        { text: () => `Hangfelolvasás: ${(window.NarbeVoiceManager ? (window.NarbeVoiceManager.getSettings().ttsEnabled) : settings.tts) ? 'Be' : 'Ki'}`, action: () => toggleTTS(true), onPrev: () => toggleTTS(true) },
+        { text: () => `Pozíció felolvasása: ${settings.ttsLocation ? 'Be' : 'Ki'}`, action: () => toggleTTSLocation(true), onPrev: () => toggleTTSLocation(true) },
+        { text: () => `Hangeffektek: ${settings.sound ? 'Be' : 'Ki'}`, action: () => toggleSound(true), onPrev: () => toggleSound(true) },
+        { text: () => `Kiemelés stílusa: ${settings.highlightStyle === 'outline' ? 'Körvonal' : 'Teljes kártya'}`, action: () => toggleHighlightStyle(true), onPrev: () => toggleHighlightStyle(true) },
+        { text: () => `Kiemelés színe: ${highlightColorNamesHU[highlightColors[settings.highlightColorIndex]]}`, action: () => cycleHighlightColor(1, true), onPrev: () => cycleHighlightColor(-1, true) },
+        { text: () => `1. játékos színe: ${basicColorNamesHU[settings.p1Color]}${getColorSwatch(settings.p1Color)}`, action: () => cycleP1Color(1, true), onPrev: () => cycleP1Color(-1, true) },
+        { text: () => `2. játékos színe: ${basicColorNamesHU[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1, true), onPrev: () => cycleP2Color(-1, true) },
+        { text: () => `Felolvasó hang: ${getVoiceName()}`, action: () => cycleVoice(1, true), onPrev: () => cycleVoice(-1, true) },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Scanare automată: ${window.NarbeScanManager.getSettings().autoScan ? 'Pornit' : 'Oprit'}`;
-                 return "Scanare automată: Oprit";
+                 if(window.NarbeScanManager) return `Automatikus pásztázás: ${window.NarbeScanManager.getSettings().autoScan ? 'Be' : 'Ki'}`;
+                 return "Automatikus pásztázás: Ki";
             }, 
             action: () => {
                  if(window.NarbeScanManager) window.NarbeScanManager.updateSettings({autoScan: !window.NarbeScanManager.getSettings().autoScan});
@@ -830,8 +842,8 @@ const menus = {
         },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Viteză scanare: ${window.NarbeScanManager.getScanInterval()/1000}s`;
-                 return "Viteză scanare: 2s";
+                 if(window.NarbeScanManager) return `Pásztázás sebessége: ${window.NarbeScanManager.getScanInterval()/1000} másodperc`;
+                 return "Pásztázás sebessége: 2 másodperc";
             }, 
             action: () => {
                  if(window.NarbeScanManager) window.NarbeScanManager.cycleScanSpeed();
@@ -844,13 +856,13 @@ const menus = {
                  renderMenu();
             }
         },
-        { text: "Înapoi", action: () => showPauseMenu() }
+        { text: "Vissza", action: () => showPauseMenu() }
     ],
     setup: []
 };
 
 function clearLocalCache() {
-    if (confirm("Ești sigur că vrei să ștergi toate jocurile și fișierele salvate local? Această acțiune nu poate fi anulată.")) {
+    if (confirm("Biztosan törölni szeretnéd az összes helyben mentett játékot és fájlt? Ez a művelet nem vonható vissza.")) {
          const keysToRemove = [];
          for (let i = 0; i < localStorage.length; i++) {
              const key = localStorage.key(i);
@@ -862,7 +874,7 @@ function clearLocalCache() {
          
          state.localPacks = [];
          refreshPacks();
-         speak("Cache local șters");
+         speak("Helyi gyorsítótár törölve");
          
          // Force switch to Online or ALL if currently Local
          if (state.gameSource === 'Local') {
@@ -886,7 +898,7 @@ function cycleGameSource(dir = 1) {
     
     refreshPacks();
     renderMenu();
-    speak("Sursă joc: " + state.gameSource);
+    speak("Játék forrása: " + sourceName(state.gameSource));
 }
 
 function refreshPacks() {
@@ -956,7 +968,7 @@ function showEditorWarning() {
     state.menuState = 'editorWarning';
     state.menuIndex = -1;
     renderMenu();
-    speak("Atenție. Editorul se deschide într-un tab nou și are nevoie de mouse. Nu vei putea scana și selecta cu switch-ul. Continuă sau Anulează?");
+    speak("Figyelem. A szerkesztő új lapon nyílik meg, és egérre van szüksége. Kapcsolóval nem tudsz pásztázni és választani. Folytatod, vagy mégse?");
 }
 
 function openEditor() {
@@ -980,7 +992,7 @@ function promptLoadGame() {
         const files = Array.from(e.target.files);
         if (files.length === 0) return;
         
-        speak("Se încarcă resursele jocului personalizat...");
+        speak("A saját játék erőforrásainak betöltése…");
         
         const assets = [];
         const jsonFiles = [];
@@ -1045,7 +1057,7 @@ function promptLoadGame() {
             });
             console.log(`Registered ${assetCount} assets in memory.`);
             // alert(`Loaded ${assetCount} assets into memory.`); // Debug
-            speak(`${assetCount} resurse încărcate cu succes.`);
+            speak(`${assetCount} erőforrás sikeresen betöltve.`);
 
             // 3. Load JSON definition(s)
             // We only really support one pack definition structure right now, 
@@ -1083,16 +1095,16 @@ function promptLoadGame() {
                 state.setup.categories = [];
                 state.setup.categoryIndex = 0;
                 
-                speak("Joc personalizat încărcat");
+                speak("Saját játék betöltve");
                 showMainMenu();
             } else {
-                speak("Niciun fișier de joc valid găsit în folder.");
-                alert("Niciun fișier .json valid de joc găsit în folderul selectat.");
+                speak("Nem található érvényes játékfájl a mappában.");
+                alert("Nem található érvényes .json játékfájl a kiválasztott mappában.");
             }
         } catch (err) {
             console.error(err);
-            speak("Eroare la încărcarea fișierelor");
-            alert("Eroare la încărcarea fișierelor");
+            speak("Hiba a fájlok betöltésekor");
+            alert("Hiba a fájlok betöltésekor");
         }
     };
     input.click();
@@ -1105,7 +1117,7 @@ function startCompetitiveMatch() {
     state.scores = { 1: 0, 2: 0 };
     state.round = 0;
     state.turn = 1;
-    speak("Mod competitiv. Primul la 10 puncte câștigă. Începe jucătorul unu.");
+    speak("Versengő mód. Aki először ér el 10 pontot, nyer. Az első játékos kezd.");
     startGame('4x4');
 }
 
@@ -1156,13 +1168,13 @@ function updateBoardSizes() {
 
     state.setup.boardSizes = [];
     
-    if (availableCount >= 8) state.setup.boardSizes.push({ label: "4x4", id: "4x4", tts: "4 by 4" });
-    if (availableCount >= 10) state.setup.boardSizes.push({ label: "4x5", id: "4x5", tts: "4 by 5" });
-    if (availableCount >= 15) state.setup.boardSizes.push({ label: "5x6", id: "5x6", tts: "5 by 6" });
-    if (availableCount >= 18) state.setup.boardSizes.push({ label: "6x6", id: "6x6", tts: "6 by 6" });
+    if (availableCount >= 8) state.setup.boardSizes.push({ label: "4x4", id: "4x4", tts: "négyszer négy" });
+    if (availableCount >= 10) state.setup.boardSizes.push({ label: "4x5", id: "4x5", tts: "négyszer öt" });
+    if (availableCount >= 15) state.setup.boardSizes.push({ label: "5x6", id: "5x6", tts: "ötször hat" });
+    if (availableCount >= 18) state.setup.boardSizes.push({ label: "6x6", id: "6x6", tts: "hatszor hat" });
     
     if (state.setup.boardSizes.length === 0) {
-        state.setup.boardSizes.push({ label: "Nu sunt suficiente cărți", id: null, tts: "Nu sunt suficiente cărți" });
+        state.setup.boardSizes.push({ label: "Nincs elég kártya", id: null, tts: "Nincs elég kártya" });
     }
 
     // Reset loop if out of bounds (though usually we want to keep index if possible)
@@ -1233,7 +1245,7 @@ function renderSetupPreview(hostEl) {
 
     const label = document.createElement('div');
     label.className = 'preview-label';
-    label.innerText = 'Preview';
+    label.innerText = 'Előnézet';
     hostEl.appendChild(label);
 
     const dims = state.setup.previewDims;
@@ -1242,7 +1254,7 @@ function renderSetupPreview(hostEl) {
     if (!dims || cards.length === 0) {
         const msg = document.createElement('div');
         msg.className = 'preview-empty';
-        msg.innerText = 'Nu sunt suficiente cărți pentru previzualizare';
+        msg.innerText = 'Nincs elég kártya az előnézethez';
         hostEl.appendChild(msg);
         return;
     }
@@ -1269,24 +1281,24 @@ function renderSetupPreview(hostEl) {
 function updateSetupMenu() {
     menus.setup = [
         { 
-            text: () => `Pachet: ${getPackTitle()}`, 
+            text: () => `Csomag: ${getPackTitle()}`, 
             action: () => cyclePack(1),
             onPrev: () => cyclePack(-1)
         },
         { 
-            text: () => `Categorie: ${categoryDisplayName(state.category)}`, 
-            tts: () => `Categorie: ${categoryDisplayName(state.category)}`,
+            text: () => `Kategória: ${categoryDisplayName(state.category)}`, 
+            tts: () => `Kategória: ${categoryDisplayName(state.category)}`,
             action: () => cycleCategory(1),
             onPrev: () => cycleCategory(-1)
         },
         { 
             text: () => {
                 const b = state.setup.boardSizes[state.setup.boardSizeIndex];
-                return `Mărime tablă: ${b ? b.label : 'N/A'}`;
+                return `Táblaméret: ${b ? b.label : 'N/A'}`;
             }, 
             tts: () => {
                 const b = state.setup.boardSizes[state.setup.boardSizeIndex];
-                return `Mărime tablă: ${b ? (b.tts || b.label) : 'N/A'}`;
+                return `Táblaméret: ${b ? (b.tts || b.label) : 'N/A'}`;
             },
             action: () => cycleBoardSize(1),
             onPrev: () => cycleBoardSize(-1)
@@ -1295,15 +1307,15 @@ function updateSetupMenu() {
 
     if (state.gameMode === 'challenge') {
         menus.setup.push({ 
-            text: () => `Dificultate: ${state.setup.difficulties[state.setup.difficultyIndex].label}`, 
-            tts: () => `Dificultate: ${state.setup.difficulties[state.setup.difficultyIndex].tts}`, 
+            text: () => `Nehézség: ${state.setup.difficulties[state.setup.difficultyIndex].label}`, 
+            tts: () => `Nehézség: ${state.setup.difficulties[state.setup.difficultyIndex].tts}`, 
             action: () => cycleChallengeDifficulty(1),
             onPrev: () => cycleChallengeDifficulty(-1)
         });
     }
 
     menus.setup.push({ 
-        text: "Joacă", 
+        text: "Játék", 
         action: () => {
             const size = state.setup.boardSizes[state.setup.boardSizeIndex];
             if (size && size.id) {
@@ -1315,13 +1327,13 @@ function updateSetupMenu() {
                     startGame(size.id);
                 }
             } else {
-                speak("Nu sunt suficiente cărți pentru această categorie");
+                speak("Nincs elég kártya ehhez a kategóriához");
             }
         }
     });
 
     menus.setup.push({ 
-        text: "Înapoi", 
+        text: "Vissza", 
         action: () => {
             if (state.players === 2) showTwoPlayerMenu();
             else showSinglePlayerMenu();
@@ -1398,7 +1410,7 @@ function startChallengePlusSetup() {
     state.challengePlus.level = 0;
     
     // Announce
-    speak("Modul Provocare Plus. Se folosesc toate categoriile. Succes!");
+    speak("Kihívás plusz mód. Minden kategória használatban van. Sok sikert!");
     startChallengePlusLevel();
 }
 
@@ -1406,9 +1418,9 @@ function startChallengePlusLevel() {
     if (state.challengePlus.level >= state.challengePlus.levels.length) {
         // Victory
         state.busy = true;
-        speak("Ești Campionul Universului! Toate nivelurile completate!");
+        speak("Te vagy az Univerzum Bajnoka! Minden szint teljesítve!");
         const container = document.getElementById('main-content');
-        container.innerHTML = `<div class="win-message" style="color:gold; font-size:48px;">🏆<br>CHAMPION<br>OF THE UNIVERSE</div>`;
+        container.innerHTML = `<div class="win-message" style="color:gold; font-size:48px;">🏆<br>AZ UNIVERZUM<br>BAJNOKA</div>`;
         playSystemSound('success');
         setTimeout(showMainMenu, 8000);
         return;
@@ -1433,12 +1445,12 @@ function showLevelAnnouncement(num, size, time) {
     const container = document.getElementById('main-content');
     container.innerHTML = `
         <div style="text-align:center; animation: fadeIn 0.5s;">
-            <h1 style="font-size: 60px; margin-bottom: 20px;">Nivelul ${num}</h1>
-            <div style="font-size: 32px; color: #eee;">Tablă: ${size}</div>
-            <div style="font-size: 32px; color: #ffeb3b;">Timp: ${time/1000}s</div>
+            <h1 style="font-size: 60px; margin-bottom: 20px;">${num}. szint</h1>
+            <div style="font-size: 32px; color: #eee;">Tábla: ${difficultyName(size)}</div>
+            <div style="font-size: 32px; color: #ffeb3b;">Idő: ${time/1000} mp</div>
         </div>
     `;
-    speak(`Nivelul ${num}, tablă ${size}, afișare ${time/1000} secunde`);
+    speak(`${num}. szint, tábla: ${difficultyName(size)}, ${time/1000} másodpercig látszanak a kártyák`);
 }
 
 function showPauseMenu() {
@@ -1446,7 +1458,7 @@ function showPauseMenu() {
     state.mode = 'pause';
     state.pauseMenuState = 'main';
     state.pauseIndex = -1;
-    speak("Pauză");
+    speak("Szünet");
     renderPauseMenu();
 }
 
@@ -1564,14 +1576,14 @@ function cycleVoice(dir = 1, isPause = false) {
                 voiceIndex: idx,
                 voiceName: voices[idx].name
             });
-            speak("Vocea a fost schimbată");
+            speak("A hang megváltozott");
         }
     } else {
-        const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+        const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('hu'));
         if (voices.length > 0) {
             settings.voiceIndex = (settings.voiceIndex + dir + voices.length) % voices.length;
             saveSettings();
-            speak("Vocea a fost schimbată");
+            speak("A hang megváltozott");
         }
     }
     if (isPause) renderPauseMenu(); else renderMenu();
@@ -1587,11 +1599,11 @@ function getVoiceName() {
         }
     }
 
-    const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+    const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('hu'));
     if (voices.length > 0) {
         return voices[settings.voiceIndex % voices.length].name.slice(0, 15) + "...";
     }
-    return "Implicit";
+    return "Alapértelmezett";
 }
 
 // --- Rendering ---
@@ -1650,17 +1662,17 @@ function renderMenu() {
     
     const titles = {
         main: "BENNY'S MATCHY MATCH",
-        singlePlayer: "UN JUCĂTOR",
-        twoPlayer: "DOI JUCĂTORI",
-        settings: "SETĂRI",
-        editorWarning: "ATENȚIE",
-        category: "SELECTEAZĂ CATEGORIA",
-        boardSize: "SELECTEAZĂ MĂRIMEA TABLEI",
-        challengeDifficulty: "SELECTEAZĂ DIFICULTATEA",
-        setup: "TIP DE JOC",
-        loadWarning: "ÎNCARCĂ JOC PERSONALIZAT"
+        singlePlayer: "EGY JÁTÉKOS",
+        twoPlayer: "KÉT JÁTÉKOS",
+        settings: "BEÁLLÍTÁSOK",
+        editorWarning: "FIGYELEM",
+        category: "VÁLASSZ KATEGÓRIÁT",
+        boardSize: "VÁLASSZ TÁBLAMÉRETET",
+        challengeDifficulty: "VÁLASSZ NEHÉZSÉGET",
+        setup: "JÁTÉKTÍPUS",
+        loadWarning: "SAJÁT JÁTÉK BETÖLTÉSE"
     };
-    title.innerText = titles[state.menuState] || "MENIU";
+    title.innerText = titles[state.menuState] || "MENÜ";
     
     // Theme text color adjustment
     const t = themes[settings.themeIndex];
@@ -1676,7 +1688,7 @@ function renderMenu() {
         info.style.textAlign = 'center';
         info.style.padding = '0 20px';
         info.style.maxWidth = '600px';
-        info.innerText = "Upload your assets and/or packs folder to this browser and play your own custom game";
+        info.innerText = "Töltsd fel az erőforrás- és/vagy csomagmappádat ebbe a böngészőbe, és játssz a saját játékoddal";
         container.appendChild(info);
     }
 
@@ -1811,7 +1823,7 @@ function renderPauseMenu() {
     
     const title = document.createElement('div');
     title.className = 'pause-title';
-    title.innerText = state.pauseMenuState === 'settings' ? "Setări pauză" : "Meniu pauză";
+    title.innerText = state.pauseMenuState === 'settings' ? "Szünet – beállítások" : "Szünet menü";
     overlay.appendChild(title);
     
     const items = state.pauseMenuState === 'settings' ? menus.pauseSettings : menus.pause;
@@ -1948,9 +1960,9 @@ function startGame(difficulty) {
     
     if (state.gameMode === 'competitive') {
         announceRoundStart();
-        setTimeout(() => speak(`Rândul jucătorului ${state.turn}`), 2000);
+        setTimeout(() => speak(`${state.turn}. játékos köre`), 2000);
     } else if (state.players === 2) {
-        speak(`Rândul jucătorului ${state.turn}`);
+        speak(`${state.turn}. játékos köre`);
     } else if (state.gameMode === 'challenge' || state.gameMode === 'challenge-plus') {
         state.busy = true;
         startChallengeSequence();
@@ -1975,8 +1987,8 @@ function startChallengeSequence() {
     }, 2000);
 
     state.timers.challenge3 = setTimeout(() => {
-        updateChallengeStatus("MEMOREAZĂ!");
-        speak("Memorează!");
+        updateChallengeStatus("JEGYEZD MEG!");
+        speak("Jegyezd meg!");
         
         // Reveal all
         state.grid.forEach(cell => cell.revealed = true);
@@ -1989,7 +2001,7 @@ function startChallengeSequence() {
             state.grid.forEach(cell => cell.revealed = false);
             
             state.challengePhase = 'playing';
-            speak("Start!");
+            speak("Indulás!");
             state.busy = false; // Enable input
             renderGame(); // This will bring back the HP bar
         }, revealDuration);
@@ -2187,7 +2199,7 @@ function updateHPBar() {
         const hp = state.mismatchLimit - state.mismatches;
         const hpPercent = (hp / state.mismatchLimit) * 100;
         fill.style.width = `${Math.max(0, hpPercent)}%`;
-        text.innerText = `Vieți: ${hp} / ${state.mismatchLimit}`;
+        text.innerText = `Életek: ${hp} / ${state.mismatchLimit}`;
     }
 }
 
@@ -2206,9 +2218,9 @@ function renderGame() {
     
     if (state.players === 2) {
         scoreDisplay.style.display = state.competitive ? 'block' : 'none';
-        scoreDisplay.innerText = `Scor - J1: ${state.scores[1]}  J2: ${state.scores[2]}`;
+        scoreDisplay.innerText = `Pont – 1. játékos: ${state.scores[1]}  2. játékos: ${state.scores[2]}`;
         turnDisplay.style.display = 'block';
-        turnDisplay.innerText = `Rândul: Jucătorul ${state.turn}`;
+        turnDisplay.innerText = `Kör: ${state.turn}. játékos`;
     } else {
         scoreDisplay.style.display = 'none';
         turnDisplay.style.display = 'none';
@@ -2232,16 +2244,16 @@ function renderGame() {
             hpText.className = 'hp-text';
             hpText.id = 'hp-bar-text';
             if (state.gameMode === 'challenge-plus') {
-                 hpText.innerText = `Nivel ${state.challengePlus.level + 1} | Vieți: ${hp} / ${state.mismatchLimit}`;
+                 hpText.innerText = `${state.challengePlus.level + 1}. szint | Életek: ${hp} / ${state.mismatchLimit}`;
             } else {
-                 hpText.innerText = `Vieți: ${hp} / ${state.mismatchLimit}`;
+                 hpText.innerText = `Életek: ${hp} / ${state.mismatchLimit}`;
             }
             
             hpContainer.appendChild(hpFill);
             hpContainer.appendChild(hpText);
         } else {
              // Setup/Countdown phase
-             hpContainer.innerText = state.challengeMessage || "Gata?";
+             hpContainer.innerText = state.challengeMessage || "Készen állsz?";
              // Inline styles to override some bar defaults if needed, 
              // but CSS class mostly handles dimensions.
              hpContainer.style.display = 'flex';
@@ -2260,7 +2272,7 @@ function renderGame() {
     pauseBtn.id = 'pause-button';
     pauseBtn.innerHTML = '&#10074;&#10074;';
     pauseBtn.onclick = showPauseMenu;
-    pauseBtn.title = "Pauză joc";
+    pauseBtn.title = "Játék szüneteltetése";
     container.appendChild(pauseBtn);
     
     const gridContainer = document.createElement('div');
@@ -2400,7 +2412,7 @@ function moveGameScan(dir) {
                 break;
             }
         }
-        if (settings.ttsLocation && state.scan.row !== -1) speak(`Rândul ${state.scan.row + 1}`);
+        if (settings.ttsLocation && state.scan.row !== -1) speak(`${state.scan.row + 1}. sor`);
     } else {
         let nextCol = state.scan.col;
         let found = false;
@@ -2412,7 +2424,7 @@ function moveGameScan(dir) {
                     state.scan.mode = 'row';
                     found = true;
                     // Switching back to row scanning
-                    if (settings.ttsLocation) speak(`Rândul ${state.scan.row + 1}`);
+                    if (settings.ttsLocation) speak(`${state.scan.row + 1}. sor`);
                     break;
                 }
                 
@@ -2420,13 +2432,13 @@ function moveGameScan(dir) {
                     state.scan.mode = 'row';
                     found = true;
                     // Switching back to row scanning
-                    if (settings.ttsLocation) speak(`Rândul ${state.scan.row + 1}`);
+                    if (settings.ttsLocation) speak(`${state.scan.row + 1}. sor`);
                     break;
                 }
 
                 state.scan.col = check;
                 found = true;
-                if (settings.ttsLocation) speak(`Cartea ${state.scan.col + 1}`);
+                if (settings.ttsLocation) speak(`${state.scan.col + 1}. kártya`);
                 break;
             }
             nextCol = check;
@@ -2434,7 +2446,7 @@ function moveGameScan(dir) {
         
         if (!found) {
             state.scan.mode = 'row';
-            if (settings.ttsLocation) speak(`Rândul ${state.scan.row + 1}`);
+            if (settings.ttsLocation) speak(`${state.scan.row + 1}. sor`);
         }
     }
     updateScanHighlight();
@@ -2453,10 +2465,10 @@ function selectGameOption() {
         const firstCol = state.grid.find(cell => cell.r === state.scan.row && !cell.matched && !cell.inactive && !cell.revealed);
         if (firstCol) {
             state.scan.col = firstCol.c;
-            if (settings.ttsLocation) speak(`Cartea ${state.scan.col + 1}`);
+            if (settings.ttsLocation) speak(`${state.scan.col + 1}. kártya`);
         } else {
             state.scan.mode = 'row';
-            if (settings.ttsLocation) speak(`Rândul ${state.scan.row + 1}`);
+            if (settings.ttsLocation) speak(`${state.scan.row + 1}. sor`);
         }
         updateScanHighlight();
         setTimeout(() => state.ignoreHover = false, 1000);
@@ -2467,7 +2479,7 @@ function selectGameOption() {
             moveGameScan(1);
         } else {
             updateScanHighlight();
-            if (settings.ttsLocation && !revealed) speak(`Rândul ${state.scan.row + 1}`);
+            if (settings.ttsLocation && !revealed) speak(`${state.scan.row + 1}. sor`);
         }
     }
 }
@@ -2540,7 +2552,7 @@ function revealCard(r, c) {
                     state.mismatches--;
                     updateHPBar();
                     playSystemSound('hp-up');
-                    speak("Punct recuperat.");
+                    speak("Pont visszaszerezve.");
                 }
             }
 
@@ -2585,10 +2597,10 @@ function revealCard(r, c) {
                 
                 if (state.players === 2) {
                     state.turn = state.turn === 1 ? 2 : 1;
-                    speak(`Rândul jucătorului ${state.turn}`);
+                    speak(`${state.turn}. játékos köre`);
                     // Update turn display
                     const turnDisplay = document.getElementById('turn-display');
-                    if(turnDisplay) turnDisplay.innerText = `Rândul: Jucătorul ${state.turn}`;
+                    if(turnDisplay) turnDisplay.innerText = `Kör: ${state.turn}. játékos`;
                 }
             }, 3000);
         }
@@ -2597,9 +2609,9 @@ function revealCard(r, c) {
 }
 
 function gameOverChallenge() {
-    speak("Joc terminat. Prea multe greșeli.");
+    speak("Vége a játéknak. Túl sok hiba.");
     const container = document.getElementById('main-content');
-    container.innerHTML = `<div class="win-message" style="color:#ff3333">JOC TERMINAT<br>Prea multe greșeli!</div>`;
+    container.innerHTML = `<div class="win-message" style="color:#ff3333">JÁTÉK VÉGE<br>Túl sok hiba!</div>`;
     setTimeout(showMainMenu, 5000);
 }
 
@@ -2622,12 +2634,12 @@ function checkWinCondition() {
             handleRoundEnd(winner);
         } else if (state.gameMode === 'challenge-plus') {
              // Win Level
-             speak("Nivel complet!");
+             speak("Szint teljesítve!");
              playSystemSound('success');
              state.challengePlus.level++;
              setTimeout(startChallengePlusLevel, 2000);
         } else {
-            const msg = "Felicitări! Ai câștigat!";
+            const msg = "Gratulálunk! Nyertél!";
             speak(msg);
             showWinMessage(msg);
         }
@@ -2636,7 +2648,7 @@ function checkWinCondition() {
 
 function handleRoundEnd(winner) {
     if (winner === 0) {
-        speak("Egalitate. Niciun punct.");
+        speak("Döntetlen. Nincs pont.");
     } else {
         const ptsMap = { 
             'easy': 1, 'medium': 2, 'hard': 3,
@@ -2644,7 +2656,7 @@ function handleRoundEnd(winner) {
         };
         const pts = ptsMap[state.difficulty] || 1;
         state.scores[winner] += pts;
-        speak(`Jucătorul ${winner} câștigă ${pts} puncte.`);
+        speak(`${winner}. játékos ${pts} pontot szerez.`);
     }
     
     if (winner !== 0 && state.scores[winner] >= 10) { // Bumped win score slightly or keep 5? Keep logic simple, user didn't ask to change win condition.
@@ -2679,7 +2691,7 @@ function handleRoundEnd(winner) {
         nextDiff = candidate;
 
         state.turn = winner !== 0 ? winner : 1;
-        speak(`Runda următoare. Modul ${nextDiff}.`);
+        speak(`Következő forduló. Mód: ${difficultyName(nextDiff)}.`);
         setTimeout(() => startGame(nextDiff), 3000);
     }
 }
@@ -2694,10 +2706,10 @@ function showMatchWinner(winner) {
     const container = document.getElementById('main-content');
     container.innerHTML = `
         <div class="win-message">
-            Jucătorul ${winner} câștigă meciul!<br>
-            Scor final J1:${state.scores[1]} J2:${state.scores[2]}
+            ${winner}. játékos nyeri a meccset!<br>
+            Végeredmény – 1. játékos: ${state.scores[1]}, 2. játékos: ${state.scores[2]}
         </div>`;
-    speak(`Jucătorul ${winner} câștigă meciul!`);
+    speak(`${winner}. játékos nyeri a meccset!`);
     setTimeout(showMainMenu, 6000);
 }
 
@@ -2774,9 +2786,9 @@ function playSound(name) {
 }
 
 function announceRoundStart() {
-    const ordinals = ["prima rundă", "a doua rundă", "a treia rundă", "a patra rundă", "a cincea rundă"];
-    const roundName = ordinals[state.round - 1] || `runda ${state.round}`;
-    speak(`${roundName}, modul ${state.difficulty}, scorul este ${state.scores[1]} la ${state.scores[2]}.`);
+    const ordinals = ["első forduló", "második forduló", "harmadik forduló", "negyedik forduló", "ötödik forduló"];
+    const roundName = ordinals[state.round - 1] || `${state.round}. forduló`;
+    speak(`${roundName}, mód: ${difficultyName(state.difficulty)}. Az állás: ${state.scores[1]} és ${state.scores[2]}.`);
 }
 
 // Asset resolution helper

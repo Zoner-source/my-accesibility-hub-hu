@@ -196,7 +196,7 @@ main {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(7, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   gap: 0.8vh 1vw;
   padding: 0 1vw;
   min-height: 0;

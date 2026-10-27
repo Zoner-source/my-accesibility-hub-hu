@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N0MEEN7YP4"></script>
@@ -687,19 +687,19 @@
   <!-- Iframe Container -->
   <div class="iframe-container" id="iframe-container">
     <div class="iframe-header">
-      <button class="iframe-back" id="iframe-back">← Înapoi</button>
-      <div class="iframe-title" id="iframe-title">Tool</div>
+      <button class="iframe-back" id="iframe-back">← Vissza</button>
+      <div class="iframe-title" id="iframe-title">Eszköz</div>
     </div>
     <div class="iframe-wrapper">
-      <iframe id="app-iframe" title="Instrument integrat" allow="fullscreen"></iframe>
+      <iframe id="app-iframe" title="Beágyazott eszköz" allow="fullscreen"></iframe>
     </div>
   </div>
 
-  <a class="sr-only" href="#main">Skip to main content</a>
+  <a class="sr-only" href="#main">Ugrás a fő tartalomhoz</a>
   <div class="container">
 
     <header>
-      <div class="brand" aria-label="NARBE brand header">
+      <div class="brand" aria-label="NARBE fejléc">
         <div class="brand-left">
           <div>
             <div class="title">NARBE HUB</div>
@@ -726,33 +726,33 @@
     <main id="main" tabindex="-1">
       <!-- HOME SCREEN -->
       <section id="screen-home" class="screen active" aria-labelledby="home-heading" data-screen="home" tabindex="-1">
-        <h2 id="home-heading" class="sr-only">Meniu principal</h2>
-        <div class="grid" role="group" aria-label="Butoanele meniului principal">
+        <h2 id="home-heading" class="sr-only">Főmenü</h2>
+        <div class="grid" role="group" aria-label="A főmenü gombjai">
           <button class="card-btn nav" data-target="tools">
-            <div class="btn-title">Instrumente</div>
+            <div class="btn-title">Eszközök</div>
             <div class="row">
-              <span class="pill">Deschide</span>
+              <span class="pill">Megnyitás</span>
             </div>
           </button>
 
           <button class="card-btn nav" data-target="games">
-            <div class="btn-title">Jocuri</div>
+            <div class="btn-title">Játékok</div>
             <div class="row">
-              <span class="pill">Deschide</span>
+              <span class="pill">Megnyitás</span>
             </div>
           </button>
 
           <button class="card-btn nav" data-target="settings">
-            <div class="btn-title">Setări</div>
+            <div class="btn-title">Beállítások</div>
             <div class="row">
-              <span class="pill">Deschide</span>
+              <span class="pill">Megnyitás</span>
             </div>
           </button>
 
           <button class="card-btn nav" data-target="system">
-            <div class="btn-title">Setările sistemului</div>
+            <div class="btn-title">Rendszerbeállítások</div>
             <div class="row">
-              <span class="pill">Configurează</span>
+              <span class="pill">Beállítás</span>
             </div>
           </button>
         </div>
@@ -762,220 +762,220 @@
       <section id="screen-tools" class="screen" aria-labelledby="tools-heading" data-screen="tools" tabindex="-1">
         <div class="controls-bar">
           <div class="controls-left">
-            <button class="backbtn" data-target="home" aria-label="Înapoi la meniu principal">← Înapoi</button>
-            <button class="nav-btn" id="tools-genre-toggle">Filter: Toate</button>
-            <button class="nav-btn" id="tools-genre-reset">Resetează</button>
+            <button class="backbtn" data-target="home" aria-label="Vissza a főmenübe">← Vissza</button>
+            <button class="nav-btn" id="tools-genre-toggle">Szűrő: Mind</button>
+            <button class="nav-btn" id="tools-genre-reset">Visszaállítás</button>
           </div>
           <div class="controls-right">
-            <span class="page-info" id="tools-page-info">Pagina 1 din 1</span>
-            <button class="nav-btn" id="tools-prev" disabled aria-label="Previous page">← Anterior</button>
-            <button class="nav-btn" id="tools-next" disabled aria-label="Next page">Următorul →</button>
+            <span class="page-info" id="tools-page-info">1. oldal / 1</span>
+            <button class="nav-btn" id="tools-prev" disabled aria-label="Előző oldal">← Előző</button>
+            <button class="nav-btn" id="tools-next" disabled aria-label="Következő oldal">Következő →</button>
           </div>
         </div>
-        <h2 id="tools-heading" class="sr-only">Instrumente</h2>
-        <div class="grid" role="group" aria-label="Lista instrumentelor" id="tools-grid">
+        <h2 id="tools-heading" class="sr-only">Eszközök</h2>
+        <div class="grid" role="group" aria-label="Az eszközök listája" id="tools-grid">
           <!-- Tools will be populated by JavaScript -->
         </div>
-        <p class="footer-note">Apasă <span class="kbd">tasta space</span> pentru a focaliza. Apasă <span class="kbd">tasta Enter</span> pentru a selecta. Folosește butonul înapoi pentru a te întoarce.</p>
+        <p class="footer-note">Nyomd meg a <span class="kbd">Szóköz</span> billentyűt a fókusz mozgatásához. Nyomd meg az <span class="kbd">Enter</span> billentyűt a kiválasztáshoz. A visszalépéshez használd a Vissza gombot.</p>
       </section>
 
       <!-- GAMES SCREEN -->
       <section id="screen-games" class="screen" aria-labelledby="games-heading" data-screen="games" tabindex="-1">
         <div class="controls-bar">
           <div class="controls-left">
-            <button class="backbtn" data-target="home" aria-label="Înapoi la meniu principal">← Înapoi</button>
-            <button class="nav-btn" id="games-genre-toggle">Filter: Toate</button>
-            <button class="nav-btn" id="games-genre-reset">Resetează</button>
+            <button class="backbtn" data-target="home" aria-label="Vissza a főmenübe">← Vissza</button>
+            <button class="nav-btn" id="games-genre-toggle">Szűrő: Mind</button>
+            <button class="nav-btn" id="games-genre-reset">Visszaállítás</button>
           </div>
           <div class="controls-right">
-            <span class="page-info" id="games-page-info">Page 1 of 1</span>
-            <button class="nav-btn" id="games-prev" disabled aria-label="Previous page">← Previous</button>
-            <button class="nav-btn" id="games-next" disabled aria-label="Next page">Next →</button>
+            <span class="page-info" id="games-page-info">1. oldal / 1</span>
+            <button class="nav-btn" id="games-prev" disabled aria-label="Előző oldal">← Előző</button>
+            <button class="nav-btn" id="games-next" disabled aria-label="Következő oldal">Következő →</button>
           </div>
         </div>
-        <h2 id="games-heading" class="sr-only">Jocuri</h2>
-        <div class="grid" role="group" aria-label="Lista jocurilor" id="games-grid">
+        <h2 id="games-heading" class="sr-only">Játékok</h2>
+        <div class="grid" role="group" aria-label="A játékok listája" id="games-grid">
           <!-- Games will be populated by JavaScript -->
         </div>
-        <p class="footer-note">Apasă <span class="kbd">tasta spacebar</span> pentru a focaliza. Apasă <span class="kbd">tasta enter</span> pentru a deschide jocul. Folosește butonul înapoi pentru a te întoarce.</p>
+        <p class="footer-note">Nyomd meg a <span class="kbd">Szóköz</span> billentyűt a fókusz mozgatásához. Nyomd meg az <span class="kbd">Enter</span> billentyűt a játék megnyitásához. A visszalépéshez használd a Vissza gombot.</p>
       </section>
 
       <!-- GENRE FILTER SCREEN -->
       <section id="screen-genre-filter" class="screen" aria-labelledby="genre-filter-heading" data-screen="genre-filter" tabindex="-1">
         <div class="controls-bar">
           <div class="controls-left">
-            <button class="backbtn" id="genre-back-btn" aria-label="Înapoi la meniul anterior">← Înapoi</button>
+            <button class="backbtn" id="genre-back-btn" aria-label="Vissza az előző menübe">← Vissza</button>
           </div>
           <div class="controls-right">
-            <span class="genre-filter" id="current-filter">Toate elementele</span>
+            <span class="genre-filter" id="current-filter">Minden elem</span>
           </div>
         </div>
-        <h2 id="genre-filter-heading" class="sr-only">Filtrare după gen</h2>
-        <div class="grid" role="group" aria-label="Opțiuni de filtrare după gen" id="genre-grid">
+        <h2 id="genre-filter-heading" class="sr-only">Szűrés műfaj szerint</h2>
+        <div class="grid" role="group" aria-label="Műfajszűrő beállítások" id="genre-grid">
           <!-- Genre options will be populated by JavaScript -->
         </div>
-        <p class="footer-note">Apasă <span class="kbd">tasta space</span> pentru a focaliza. Apasă <span class="kbd">tasta enter</span> pentru a selecta un filtru.</p>
+        <p class="footer-note">Nyomd meg a <span class="kbd">Szóköz</span> billentyűt a fókusz mozgatásához. Nyomd meg az <span class="kbd">Enter</span> billentyűt egy szűrő kiválasztásához.</p>
       </section>
 
       <!-- SETTINGS SCREEN -->
       <section id="screen-settings" class="screen" aria-labelledby="settings-heading" data-screen="settings" tabindex="-1">
         <div class="controls-bar">
           <div class="controls-left">
-            <button class="backbtn" data-target="home" aria-label="Înapoi la meniu principal">← Înapoi</button>
+            <button class="backbtn" data-target="home" aria-label="Vissza a főmenübe">← Vissza</button>
           </div>
         </div>
-        <h2 id="settings-heading" class="sr-only">Setări</h2>
-        <div class="grid" role="group" aria-label="Lista setărilor">
+        <h2 id="settings-heading" class="sr-only">Beállítások</h2>
+        <div class="grid" role="group" aria-label="A beállítások listája">
           <button class="card-btn" id="highlight-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Culoarea evidențierii</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Kiemelés színe</div>
             <div class="row">
-              <p class="desc">Schimbă culoarea evidențierii</p>
-              <span class="pill" id="highlight-status">Albastru</span>
+              <p class="desc">A kiemelés színének módosítása</p>
+              <span class="pill" id="highlight-status">Kék</span>
             </div>
           </button>
 
           <button class="card-btn" id="highlight-style-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Stilul evidențierii</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Kiemelés stílusa</div>
             <div class="row">
-              <p class="desc">Comută între evidențierea conturului sau a întregii celule</p>
-              <span class="pill" id="highlight-style-status">Contur</span>
+              <p class="desc">Váltás a körvonalas és a teljes mezős kiemelés között</p>
+              <span class="pill" id="highlight-style-status">Körvonal</span>
             </div>
           </button>
 
           <button class="card-btn" id="textcolor-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Culoarea textului</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Szöveg színe</div>
             <div class="row">
-              <p class="desc">Schimbă schema de culori a textului</p>
-              <span class="pill" id="textcolor-status">Implicit</span>
+              <p class="desc">A szöveg színsémájának módosítása</p>
+              <span class="pill" id="textcolor-status">Alapértelmezett</span>
             </div>
           </button>
 
           <button class="card-btn" id="bgtheme-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Tema fundalului</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Háttér témája</div>
             <div class="row">
-              <p class="desc">Schimbă culorile fundalului</p>
-              <span class="pill" id="bgtheme-status">Implicit</span>
+              <p class="desc">A háttérszínek módosítása</p>
+              <span class="pill" id="bgtheme-status">Alapértelmezett</span>
             </div>
           </button>
 
           <button class="card-btn" id="tts-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Feedback vocal</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Hangvisszajelzés</div>
             <div class="row">
-              <p class="desc">Activează feedbackul vocal</p>
-              <span class="pill" id="tts-status">Activat</span>
+              <p class="desc">A hangvisszajelzés bekapcsolása</p>
+              <span class="pill" id="tts-status">Be</span>
             </div>
           </button>
 
           <button class="card-btn" id="voice-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Voce</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Hang</div>
             <div class="row">
-              <p class="desc">Schimbă vocea TTS</p>
-              <span class="pill" id="voice-status">Implicit</span>
+              <p class="desc">A felolvasó hang módosítása</p>
+              <span class="pill" id="voice-status">Alapértelmezett</span>
             </div>
           </button>
 
           <button class="card-btn" id="autoscan-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Scanare automată</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Automatikus pásztázás</div>
             <div class="row">
-              <p class="desc">Mută automat focalizare la fiecare 2 secunde</p>
-              <span class="pill" id="autoscan-status">Dezactivat</span>
+              <p class="desc">A fókusz automatikus mozgatása 2 másodpercenként</p>
+              <span class="pill" id="autoscan-status">Ki</span>
             </div>
           </button>
 
           <button class="card-btn" id="scanspeed-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Viteză de scanare</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Pásztázási sebesség</div>
             <div class="row">
-              <p class="desc">Schimbă viteza scanării</p>
-              <span class="pill" id="scanspeed-status">Mediu</span>
+              <p class="desc">A pásztázás sebességének módosítása</p>
+              <span class="pill" id="scanspeed-status">Közepes</span>
             </div>
           </button>
 
           <button class="card-btn" id="uisize-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Mărime</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Méret</div>
             <div class="row">
-              <p class="desc">Schimbă mărimea textului și a căsuțelor</p>
-              <span class="pill" id="uisize-status">Implicit</span>
+              <p class="desc">A szöveg és a mezők méretének módosítása</p>
+              <span class="pill" id="uisize-status">Alapértelmezett</span>
             </div>
           </button>
 
           <button class="card-btn" id="games-sync-toggle">
-            <span class="kicker">Setare</span>
-            <div class="btn-title">Sincronizare jocuri</div>
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Játékok szinkronizálása</div>
             <div class="row">
-              <p class="desc">Descarcă librăria de jocuri NARBE</p>
-              <span class="pill" id="games-sync-status">Nesincronizat</span>
+              <p class="desc">A NARBE játéktár letöltése</p>
+              <span class="pill" id="games-sync-status">Nincs szinkronizálva</span>
             </div>
           </button>
         </div>
-        <p class="footer-note">Apasă <span class="kbd">tasta space</span> pentru a schimba focalizare. Apasă <span class="kbd">tasta enter</span> pentru a schimba setările. Folosește butonul înapoi pentru a te întoarce.</p>
+        <p class="footer-note">Nyomd meg a <span class="kbd">Szóköz</span> billentyűt a fókusz mozgatásához. Nyomd meg az <span class="kbd">Enter</span> billentyűt a beállítások módosításához. A visszalépéshez használd a Vissza gombot.</p>
       </section>
 
       <!-- SYSTEM SETTINGS SCREEN -->
       <section id="screen-system" class="screen" aria-labelledby="system-heading" data-screen="system" tabindex="-1">
         <div class="controls-bar">
           <div class="controls-left">
-            <button class="backbtn" data-target="home">← Înapoi</button>
+            <button class="backbtn" data-target="home">← Vissza</button>
           </div>
-          <h2 id="system-heading" class="title">System Operations</h2>
+          <h2 id="system-heading" class="title">Rendszerműveletek</h2>
         </div>
         
         <div class="grid">
           <button class="card-btn" onclick="sysCall('volume/up')">
-            <div class="btn-title">Crește volumul</div>
-            <div class="row"><span class="pill">Mai tare</span></div>
+            <div class="btn-title">Hangerő növelése</div>
+            <div class="row"><span class="pill">Hangosabb</span></div>
           </button>
           <button class="card-btn" onclick="sysCall('volume/down')">
-            <div class="btn-title">Scade volumul</div>
-             <div class="row"><span class="pill">Mai încet</span></div>
+            <div class="btn-title">Hangerő csökkentése</div>
+             <div class="row"><span class="pill">Halkabb</span></div>
           </button>
            <button class="card-btn" onclick="sysCall('volume/mute')">
-            <div class="btn-title">Dezactivează sunetul / Activează sunetul</div>
-             <div class="row"><span class="pill">Comută</span></div>
+            <div class="btn-title">Némítás / Némítás feloldása</div>
+             <div class="row"><span class="pill">Váltás</span></div>
           </button>
 
           <button class="card-btn" onclick="sysCall('timer/30')">
-            <div class="btn-title">Închide sistemul în 30 de minute</div>
-             <div class="row"><span class="pill">Cronometru</span></div>
+            <div class="btn-title">Rendszer leállítása 30 perc múlva</div>
+             <div class="row"><span class="pill">Időzítő</span></div>
           </button>
           <button class="card-btn" onclick="sysCall('timer/60')">
-            <div class="btn-title">Închide sistemul în 60 de minute</div>
-             <div class="row"><span class="pill">Cronometru</span></div>
+            <div class="btn-title">Rendszer leállítása 60 perc múlva</div>
+             <div class="row"><span class="pill">Időzítő</span></div>
           </button>
           <button class="card-btn" onclick="sysCall('timer/90')">
-            <div class="btn-title">Închide sistemul în 90 de minute</div>
-             <div class="row"><span class="pill">Cronometru</span></div>
+            <div class="btn-title">Rendszer leállítása 90 perc múlva</div>
+             <div class="row"><span class="pill">Időzítő</span></div>
           </button>
           <button class="card-btn" onclick="sysCall('power/cancel')">
-            <div class="btn-title">Oprește cronometrul</div>
-             <div class="row"><span class="pill">Acțiune</span></div>
+            <div class="btn-title">Időzítő leállítása</div>
+             <div class="row"><span class="pill">Művelet</span></div>
           </button>
 
           <button class="card-btn danger" onclick="sysCall('power/restart')">
-            <div class="btn-title">Respornire sistem</div>
-            <div class="row"><span class="pill" style="background:#ffb703;color:black">Repornire</span></div>
+            <div class="btn-title">Rendszer újraindítása</div>
+            <div class="row"><span class="pill" style="background:#ffb703;color:black">Újraindítás</span></div>
           </button>
           <button class="card-btn danger" onclick="sysCall('power/shutdown')">
-            <div class="btn-title">Închide sistemul</div>
-            <div class="row"><span class="pill" style="background:#ff0000;color:white">Oprire</span></div>
+            <div class="btn-title">Rendszer leállítása</div>
+            <div class="row"><span class="pill" style="background:#ff0000;color:white">Leállítás</span></div>
           </button>
 
           <button class="card-btn danger" onclick="sysCall('close_app')">
-            <div class="btn-title">Închide aplicația</div>
-            <div class="row"><span class="pill" style="background:#666">Ieșire din hub</span></div>
+            <div class="btn-title">Alkalmazás bezárása</div>
+            <div class="row"><span class="pill" style="background:#666">Kilépés a főmenüből</span></div>
           </button>
 
           <button class="card-btn danger" onclick="sysCall('emergency')">
-            <div class="btn-title">URGENȚĂ</div>
-            <div class="row"><span class="pill" style="background:red; font-weight:bold;">ALERTĂ</span></div>
+            <div class="btn-title">VÉSZHELYZET</div>
+            <div class="row"><span class="pill" style="background:red; font-weight:bold;">RIASZTÁS</span></div>
           </button>
         </div>
       </section>
@@ -1125,7 +1125,8 @@
         // games - see README "Games".
         let liveGames = null;
         try {
-          const liveResponse = await fetchWithTimeout(GAMES_LIVE_MANIFEST_URL, GAMES_LIVE_FETCH_TIMEOUT_MS);
+          // Hungarian hub: games come only from the local games.json (no live English manifest).
+          const liveResponse = { ok: false };
           if (liveResponse.ok) {
             const liveData = await liveResponse.json();
             liveGames = liveData.games || [];
@@ -1239,10 +1240,20 @@
       };
     }
 
+    // Display names for tool/game genres. The genre keys come from tools.json
+    // and stay English (they are used for filtering); only the label is translated.
+    const genreNamesHU = {
+      'Communication': 'Kommunikáció', 'Accessibility': 'Hozzáférhetőség', 'Media': 'Média',
+      'Action': 'Akció', 'Puzzle': 'Logikai', 'Arcade': 'Játékterem', 'Educational': 'Oktató',
+      'Sports': 'Sport', 'Strategy': 'Stratégia', 'Music': 'Zene', 'Casual': 'Könnyed',
+      'Memory': 'Memória', 'Board': 'Társasjáték', 'Adventure': 'Kaland', 'All Items': 'Minden elem'
+    };
+    function genreHU(g) { return genreNamesHU[g] || g; }
+
     // Create app card HTML
     function createAppCard(app, category) {
-      const categoryLabel = category === 'tools' ? 'Tool' : 'Game';
-      const actionLabel = category === 'tools' ? 'Deschide' : 'Joacă';
+      const categoryLabel = category === 'tools' ? 'Eszköz' : 'Játék';
+      const actionLabel = category === 'tools' ? 'Megnyitás' : 'Játék';
       
       const hasImage = !!app.image;
       const hasImgClass = hasImage ? 'has-img' : '';
@@ -1296,9 +1307,9 @@
     function createGenreCard(genre, isAll = false) {
       return `
         <button class="card-btn genre-btn" data-genre="${genre}">
-          <div class="btn-title">${genre}</div>
+          <div class="btn-title">${genreHU(genre)}</div>
           <div class="row">
-            <span class="pill">Selectează</span>
+            <span class="pill">Kiválasztás</span>
           </div>
         </button>
       `;
@@ -1321,9 +1332,9 @@
       
       // Update page info
       if (paginatedData.totalPages > 0) {
-        pageInfo.textContent = `Pagina ${paginatedData.currentPage} din ${paginatedData.totalPages}`;
+        pageInfo.textContent = `${paginatedData.currentPage}. oldal / ${paginatedData.totalPages}`;
       } else {
-        pageInfo.textContent = 'Nu au fost găsite elemente';
+        pageInfo.textContent = 'Nem található elem';
       }
       
       // Update navigation buttons
@@ -1406,11 +1417,11 @@
                 }, 1000);
               } else {
                 console.error('Failed to start server app');
-                speak('Eroare a pornirii aplicației');
+                speak('Hiba az alkalmazás indításakor');
               }
             } catch (err) {
               console.error('Server app launch failed:', err);
-              speak('Eroare a pornirii aplicației');
+              speak('Hiba az alkalmazás indításakor');
             }
           }
           // Check if this is a standalone app (has launchUrl instead of path)
@@ -1434,23 +1445,23 @@
       const backBtn = document.getElementById('genre-back-btn');
       
       const genres = getGenres(category);
-      const allGenres = ['All Items', ...genres];
+      const allGenres = ['All Items', ...genres]; // keys stay English; shown via genreHU()
       
       grid.innerHTML = allGenres.map((genre, index) => {
         const genreValue = index === 0 ? 'all' : genre;
         return `
           <button class="card-btn genre-btn" data-genre="${genreValue}">
-            <span class="kicker">Filter</span>
-            <div class="btn-title">${genre}</div>
+            <span class="kicker">Szűrő</span>
+            <div class="btn-title">${genreHU(genre)}</div>
             <div class="row">
-              <p class="desc">${index === 0 ? 'Arată toate elementele' : `Arată doar elementele de tip ${genre.toLowerCase()}`}</p>
-              <span class="pill">Selectează</span>
+              <p class="desc">${index === 0 ? 'Minden elem megjelenítése' : `Csak a(z) ${genreHU(genre).toLowerCase()} típusú elemek megjelenítése`}</p>
+              <span class="pill">Kiválasztás</span>
             </div>
           </button>
         `;
       }).join('');
       
-      currentFilter.textContent = filterState[category].genre === 'all' ? 'All Items' : filterState[category].genre;
+      currentFilter.textContent = filterState[category].genre === 'all' ? 'Minden elem' : genreHU(filterState[category].genre);
       
       // Update back button target
       backBtn.setAttribute('data-target', returnScreen);
@@ -1499,7 +1510,7 @@
       // Apply highlight color - use word boundary to avoid matching highlight-style-full
       document.body.className = document.body.className.replace(/\bhighlight-(blue|green|purple|red|yellow|white)\b/g, '');
       document.body.classList.add(`highlight-${settings.highlightColor}`);
-      const highlightNames = { blue: 'Albastru', green: 'Verde', purple: 'Mov', red: 'Roșu', yellow: 'Galben', white: 'Alb' };
+      const highlightNames = { blue: 'Kék', green: 'Zöld', purple: 'Lila', red: 'Piros', yellow: 'Sárga', white: 'Fehér' };
       document.getElementById('highlight-status').textContent = highlightNames[settings.highlightColor];
 
       // Apply highlight style
@@ -1510,7 +1521,7 @@
       }
       const styleStatus = document.getElementById('highlight-style-status');
       if(styleStatus) {
-        styleStatus.textContent = settings.highlightStyle === 'full' ? 'Celulă completă' : 'Contur';
+        styleStatus.textContent = settings.highlightStyle === 'full' ? 'Teljes mező' : 'Körvonal';
       }
 
       // Apply text color - be specific about which classes to remove
@@ -1518,7 +1529,7 @@
       if (settings.textColor !== 'default') {
         document.body.classList.add(`text-${settings.textColor}`);
       }
-      const textColorNames = { default: 'Implicit', green: 'Verde', purple: 'Mov', red: 'Roșu', gold: 'Auriu', black: 'Negru', white: 'Alb' };
+      const textColorNames = { default: 'Alapértelmezett', green: 'Zöld', purple: 'Lila', red: 'Piros', gold: 'Arany', black: 'Fekete', white: 'Fehér' };
       document.getElementById('textcolor-status').textContent = textColorNames[settings.textColor];
 
       // Apply UI size - be specific about which classes to remove
@@ -1526,7 +1537,7 @@
       if (settings.uiSize && settings.uiSize !== 'default') {
         document.body.classList.add(`size-${settings.uiSize}`);
       }
-      const sizeNames = { default: 'Implicit', large: 'Mare', larger: 'Imens', largest: 'Enorm' };
+      const sizeNames = { default: 'Alapértelmezett', large: 'Nagy', larger: 'Nagyobb', largest: 'Legnagyobb' };
       const sizeEl = document.getElementById('uisize-status');
       if (sizeEl) sizeEl.textContent = sizeNames[settings.uiSize || 'default'];
 
@@ -1536,42 +1547,42 @@
         document.body.classList.add(`bg-${settings.bgTheme}`);
       }
       const bgThemeNames = { 
-        default: 'Implicit', 
-        ocean: 'Ocean', 
-        forest: 'Pădure', 
-        sunset: 'Apus', 
-        midnight: 'Miezul Nopții', 
-        rose: 'Trandafir',
-        sky: 'Cer',
-        cream: 'Cremă',
-        mint: 'Mentă',
-        lavender: 'Lavandă',
-        peach: 'Piersică'
+        default: 'Alapértelmezett', 
+        ocean: 'Óceán', 
+        forest: 'Erdő', 
+        sunset: 'Naplemente', 
+        midnight: 'Éjfél', 
+        rose: 'Rózsa',
+        sky: 'Ég',
+        cream: 'Krém',
+        mint: 'Menta',
+        lavender: 'Levendula',
+        peach: 'Őszibarack'
       };
       document.getElementById('bgtheme-status').textContent = bgThemeNames[settings.bgTheme];
 
       // Apply scan speed
       let autoScan = false;
-      let scanSpeedName = 'Medium';
+      let scanSpeedName = 'Közepes';
       
       if (window.NarbeScanManager) {
           const scanSettings = window.NarbeScanManager.getSettings();
           autoScan = scanSettings.autoScan;
           
           // Map index to name
-          const speedNames = ['Fast (1s)', 'Medium (2s)', 'Slow (3s)', 'Super Slow (4s)'];
-          scanSpeedName = speedNames[scanSettings.scanSpeedIndex] || 'Medium (2s)';
+          const speedNames = ['Gyors (1mp)', 'Közepes (2mp)', 'Lassú (3mp)', 'Nagyon lassú (4mp)'];
+          scanSpeedName = speedNames[scanSettings.scanSpeedIndex] || 'Közepes (2mp)';
       }
 
       document.getElementById('scanspeed-status').textContent = scanSpeedName;
 
       // Apply auto scan setting
-      document.getElementById('autoscan-status').textContent = autoScan ? 'On' : 'Off';
+      document.getElementById('autoscan-status').textContent = autoScan ? 'Be' : 'Ki';
       
       // Update autoscan description
       const speedSec = getScanDelay() / 1000;
       const autoScanDesc = document.querySelector('#autoscan-toggle .desc');
-      if(autoScanDesc) autoScanDesc.textContent = `Automatically move focus every ${speedSec} seconds`;
+      if(autoScanDesc) autoScanDesc.textContent = `A fókusz automatikus mozgatása ${speedSec} másodpercenként`;
 
       if (autoScan) {
         // Restart to apply new speed if changed
@@ -1583,7 +1594,7 @@
 
       // Apply TTS status (from voice manager)
       const voiceSettings = window.NarbeVoiceManager.getSettings();
-      document.getElementById('tts-status').textContent = voiceSettings.ttsEnabled ? 'On' : 'Off';
+      document.getElementById('tts-status').textContent = voiceSettings.ttsEnabled ? 'Be' : 'Ki';
 
       // Apply Voice display (from voice manager)
       updateVoiceDisplay();
@@ -1648,60 +1659,60 @@
     // Settings toggles
     document.getElementById('highlight-toggle').addEventListener('click', () => {
       const colors = ['blue', 'green', 'purple', 'red', 'yellow', 'white'];
-      const highlightNamesRO = {
-  blue: 'Albastru',
-  green: 'Verde',
-  purple: 'Mov',
-  red: 'Roșu',
-  yellow: 'Galben',
-  white: 'Alb'
+      const highlightNamesHU = {
+  blue: 'Kék',
+  green: 'Zöld',
+  purple: 'Lila',
+  red: 'Piros',
+  yellow: 'Sárga',
+  white: 'Fehér'
 };
       const currentIndex = colors.indexOf(settings.highlightColor);
       settings.highlightColor = colors[(currentIndex + 1) % colors.length];
       applySettings();
       saveSettings();
-      speak(`Culoare de evidențiere schimbată în ${highlightNamesRO[settings.highlightColor]}`);
+      speak(`A kiemelés színe: ${highlightNamesHU[settings.highlightColor]}`);
     });
 
     document.getElementById('highlight-style-toggle').addEventListener('click', () => {
       settings.highlightStyle = settings.highlightStyle === 'outline' ? 'full' : 'outline';
       applySettings();
       saveSettings();
-      speak(`Stilul evidențierii este de ${settings.highlightStyle === 'full' ? 'Celulă completă' : 'Contur'}`);
+      speak(`A kiemelés stílusa: ${settings.highlightStyle === 'full' ? 'teljes mező' : 'körvonal'}`);
     });
 
     document.getElementById('textcolor-toggle').addEventListener('click', () => {
       const textColors = ['default', 'green', 'purple', 'red', 'gold', 'black', 'white'];
-      const textColorNamesRO = {
-    default: 'Implicit', green: 'Verde', purple: 'Mov',
-    red: 'Roșu', gold: 'Auriu', black: 'Negru', white: 'Alb'
+      const textColorNamesHU = {
+    default: 'Alapértelmezett', green: 'Zöld', purple: 'Lila',
+    red: 'Piros', gold: 'Arany', black: 'Fekete', white: 'Fehér'
   };
       const currentIndex = textColors.indexOf(settings.textColor);
       settings.textColor = textColors[(currentIndex + 1) % textColors.length];
       applySettings();
       saveSettings();
-      speak(`Culoarea textului schimbată în ${textColorNamesRO[settings.textColor]}`);
+      speak(`A szöveg színe: ${textColorNamesHU[settings.textColor]}`);
     });
 
     document.getElementById('bgtheme-toggle').addEventListener('click', () => {
       const bgThemes = ['default', 'ocean', 'forest', 'sunset', 'midnight', 'rose', 'sky', 'cream', 'mint', 'lavender', 'peach'];
-      const bgThemeNamesRO = {
-    default: 'Implicit', ocean: 'Ocean', forest: 'Pădure', sunset: 'Apus',
-    midnight: 'Miezul nopții', rose: 'Roz', sky: 'Cer', cream: 'Crem',
-    mint: 'Mentă', lavender: 'Lavandă', peach: 'Piersică'
+      const bgThemeNamesHU = {
+    default: 'Alapértelmezett', ocean: 'Óceán', forest: 'Erdő', sunset: 'Naplemente',
+    midnight: 'Éjfél', rose: 'Rózsa', sky: 'Ég', cream: 'Krém',
+    mint: 'Menta', lavender: 'Levendula', peach: 'Őszibarack'
   };
       const currentIndex = bgThemes.indexOf(settings.bgTheme);
       settings.bgTheme = bgThemes[(currentIndex + 1) % bgThemes.length];
       applySettings();
       saveSettings();
-      speak(`Tema fundalului schimbată în ${bgThemeNamesRO[settings.bgTheme]}`);
+      speak(`A háttér témája: ${bgThemeNamesHU[settings.bgTheme]}`);
     });
 
     document.getElementById('tts-toggle').addEventListener('click', () => {
       const ttsEnabled = window.NarbeVoiceManager.toggleTTS();
       applySettings();
       if (ttsEnabled) {
-        speak('Feedback vocal pornit');
+        speak('Hangvisszajelzés bekapcsolva');
       }
     });
 
@@ -1711,7 +1722,7 @@
       // Announce the new voice using the new voice
       const currentVoice = window.NarbeVoiceManager.getCurrentVoice();
       const displayName = window.NarbeVoiceManager.getVoiceDisplayName(currentVoice);
-      speak(`Voce ${displayName}`);
+      speak(`Hang: ${displayName}`);
     });
 
     document.getElementById('autoscan-toggle').addEventListener('click', () => {
@@ -1719,30 +1730,30 @@
         const current = window.NarbeScanManager.getSettings().autoScan;
         window.NarbeScanManager.setAutoScan(!current);
         applySettings();
-        speak(`Scanare automată ${!current ? 'pornită' : 'oprită'}`);
+        speak(`Automatikus pásztázás ${!current ? 'bekapcsolva' : 'kikapcsolva'}`);
       }
     });
 
     document.getElementById('scanspeed-toggle').addEventListener('click', () => {
       if (window.NarbeScanManager) {
           const newIndex = window.NarbeScanManager.cycleScanSpeed();
-          const speedNames = ['Rapidă', 'Medie', 'Lentă', 'Foarte lentă'];
-          const name = speedNames[newIndex] || 'Medie';
+          const speedNames = ['Gyors', 'Közepes', 'Lassú', 'Nagyon lassú'];
+          const name = speedNames[newIndex] || 'Közepes';
           applySettings();
-          speak(`Viteza de scanare este ${name}`);
+          speak(`A pásztázás sebessége: ${name}`);
       }
     });
 
     document.getElementById('uisize-toggle').addEventListener('click', () => {
       const sizes = ['default', 'large', 'larger', 'largest'];
-      const sizeNamesRO = {
-    default: 'Implicit', large: 'Mare', larger: 'Mai mare', largest: 'Cel mai mare'
+      const sizeNamesHU = {
+    default: 'Alapértelmezett', large: 'Nagy', larger: 'Nagyobb', largest: 'Legnagyobb'
   };
       const currentIndex = sizes.indexOf(settings.uiSize || 'default');
       settings.uiSize = sizes[(currentIndex + 1) % sizes.length];
       applySettings();
       saveSettings();
-      speak(`Dimensiunea schimbată în ${sizeNamesRO[settings.uiSize]}`);
+      speak(`A méret módosítva: ${sizeNamesHU[settings.uiSize]}`);
     });
 
     // Downloads a local offline copy of every game from bennyshub.com so
@@ -1756,9 +1767,9 @@
         const status = await window.electronAPI.games.getSyncStatus();
         if (status && status.allSyncedAt) {
           const when = new Date(status.allSyncedAt);
-          gamesSyncStatusEl.textContent = `Synced ${when.toLocaleDateString()}`;
+          gamesSyncStatusEl.textContent = `Szinkronizálva: ${when.toLocaleDateString('hu-HU')}`;
         } else {
-          gamesSyncStatusEl.textContent = 'Not synced';
+          gamesSyncStatusEl.textContent = 'Nincs szinkronizálva';
         }
       } catch (e) {
         console.log('[Hub] Unable to read games sync status:', e.message);
@@ -1768,30 +1779,30 @@
     document.getElementById('games-sync-toggle').addEventListener('click', async () => {
       if (gamesSyncInProgress) return;
       if (!(typeof window !== 'undefined' && window.electronAPI && window.electronAPI.games)) {
-        speak('Sincronizarea jocurilor este disponibilă doar pe aplicația de desktop.');
+        speak('A játékok szinkronizálása csak az asztali alkalmazásban érhető el.');
         return;
       }
       gamesSyncInProgress = true;
-      gamesSyncStatusEl.textContent = 'Syncing...';
-      announce('Syncing games for offline play. This may take a few minutes.');
-      speak('Sincronizarea jocurilor pentru utilizare fără internet. Acest proces va dura câteva minute.');
+      gamesSyncStatusEl.textContent = 'Szinkronizálás…';
+      announce('Játékok szinkronizálása offline használatra. Ez néhány percig tarthat.');
+      speak('A játékok szinkronizálása internet nélküli használatra. Ez néhány percig tart.');
 
       window.electronAPI.games.onSyncProgress(({ done, total }) => {
-        if (total) gamesSyncStatusEl.textContent = `Syncing ${done}/${total}...`;
+        if (total) gamesSyncStatusEl.textContent = `Szinkronizálás ${done}/${total}…`;
       });
 
       try {
         const result = await window.electronAPI.games.sync();
         if (result && result.success) {
-          announce('Games synced for offline play.');
-          speak('Jocurilor sunt disponibile pentru utilizare fără internet.');
+          announce('A játékok szinkronizálva, offline is használhatók.');
+          speak('A játékok internet nélkül is elérhetők.');
         } else {
-          gamesSyncStatusEl.textContent = 'Sync failed';
-          speak('Sincronizarea jocurilor a esuat. Verifică conexiunea la internet și încearcă din nou.');
+          gamesSyncStatusEl.textContent = 'A szinkronizálás nem sikerült';
+          speak('A játékok szinkronizálása nem sikerült. Ellenőrizd az internetkapcsolatot, és próbáld újra.');
         }
       } catch (e) {
-        gamesSyncStatusEl.textContent = 'Sync failed';
-        speak('Sincronizarea jocurilor a esuat. Verifică conexiunea la internet și încearcă din nou.');
+        gamesSyncStatusEl.textContent = 'A szinkronizálás nem sikerült';
+        speak('A játékok szinkronizálása nem sikerült. Ellenőrizd az internetkapcsolatot, és próbáld újra.');
       } finally {
         gamesSyncInProgress = false;
         refreshGamesSyncStatus();
@@ -1832,8 +1843,8 @@
         if (localPath) {
           showIframe(localPath, title);
         } else {
-          announce(`${title} necesită o conexiune la internet și nu a fost sincronizată pentru utilizare în lipsa internetului.`);
-          speak(`${title} necesită o conexiune la internet și nu a fost sincronizată pentru utilizare în lipsa internetului.`);
+          announce(`A(z) ${title} internetkapcsolatot igényel, és nincs szinkronizálva offline használatra.`);
+          speak(`A(z) ${title} internetkapcsolatot igényel, és nincs szinkronizálva offline használatra.`);
         }
       }
     }
@@ -1845,7 +1856,7 @@
       appIframe.src = src;
       iframeContainer.classList.add('active');
       iframeBack.focus();
-      announce(`${title} a fost încărcat`);
+      announce(`${title} betöltve`);
       
       setTimeout(() => {
         try {
@@ -1898,22 +1909,22 @@
         }
       }
       
-      announce('Întors la meniu');
-      speak('Întors la meniu, apasă tasta space pentru a focaliza');
+      announce('Vissza a menübe');
+      speak('Vissza a menübe, nyomd meg a Szóközt a fókusz mozgatásához');
     }
 
     iframeBack.addEventListener('click', () => {
-      speak('Se închide aplicația');
+      speak('Az alkalmazás bezárása');
       closeIframe();
     });
 
     // Screen management   
-    const screenNamesRO = {
-  home: 'Meniu principal',
-  tools: 'Instrumente',
-  games: 'Jocuri',
-  settings: 'Setări',
-  system: 'Sistem'
+    const screenNamesHU = {
+  home: 'Főmenü',
+  tools: 'Eszközök',
+  games: 'Játékok',
+  settings: 'Beállítások',
+  system: 'Rendszer'
 };
     function showScreen(name) {
       isTransitioning = true;
@@ -1953,9 +1964,9 @@
           }
         }
        
-        const spokenName = screenNamesRO[name] || name;
+        const spokenName = screenNamesHU[name] || name;
         announce(`${spokenName}`);
-        speak(`${spokenName}. Apasă tasta space pentru a focaliza`);
+        speak(`${spokenName}. Nyomd meg a Szóközt a fókusz mozgatásához`);
         
         // Re-enable pointer events after transition
         document.body.style.pointerEvents = '';
@@ -1995,7 +2006,7 @@
           text += `. ${descEl.textContent}`;
         }
       } else if (el.classList.contains('backbtn')) {
-        text = 'Înapoi';
+        text = 'Vissza';
       } else if (el.classList.contains('nav-btn')) {
         text = el.textContent;
       } else {
@@ -2044,7 +2055,7 @@
         }
         
         const target = btn.getAttribute('data-target') || 'home';
-        speak('Revenire înapoi');
+        speak('Vissza');
         showScreen(target);
       });
     });
@@ -2055,7 +2066,7 @@
         if (filterState[category].page > 0) {
           filterState[category].page--;
           renderAppsGrid(category);
-          speak('Pagina anterioară');
+          speak('Előző oldal');
         }
       });
 
@@ -2065,7 +2076,7 @@
         if (filterState[category].page < totalPages - 1) {
           filterState[category].page++;
           renderAppsGrid(category);
-          speak('Pagina următoare');
+          speak('Következő oldal');
         }
       });
     });
@@ -2074,8 +2085,8 @@
     function updateGenreButtonText(category, genre) {
       const btn = document.getElementById(`${category}-genre-toggle`);
       if (btn) {
-        const displayGenre = genre === 'all' ? 'All' : genre;
-        btn.textContent = `Filter: ${displayGenre}`;
+        const displayGenre = genre === 'all' ? 'Mind' : genreHU(genre);
+        btn.textContent = `Szűrő: ${displayGenre}`;
       }
     }
 
@@ -2094,13 +2105,13 @@
       updateGenreButtonText(category, nextGenre);
       renderAppsGrid(category);
       
-      const displayGenre = nextGenre === 'all' ? 'All' : nextGenre;
-      speak(`Filtrul setat pe ${displayGenre}`);
+      const displayGenre = nextGenre === 'all' ? 'Mind' : genreHU(nextGenre);
+      speak(`Szűrő beállítva: ${displayGenre}`);
     }
 
     function resetGenre(category) {
       if (filterState[category].genre === 'all') {
-         speak('Sunt deja afișate toate elementele');
+         speak('Már minden elem látható');
          return;
       }
       filterState[category].genre = 'all';
@@ -2179,7 +2190,7 @@
       if(list.length === 0) return;
       
       if (focusIndex === -1) {
-        speak('Apasă tasta space pentru a selecta un element');
+        speak('Nyomd meg a Szóközt egy elem kiválasztásához');
         return;
       }
       
@@ -2221,7 +2232,7 @@
         // Set timeout for backwards scanning
         spaceHoldTimeout = setTimeout(() => {
           if (spacePressed && !iframeContainer.classList.contains('active')) {
-            speak('Scanare înapoi');
+            speak('Visszafelé pásztázás');
             focusPrevious();
             
             // Start backwards auto-scan
@@ -2327,17 +2338,17 @@
             return;
         }
 
-        let msg = "Procesare";
-        if (path.includes('volume/up')) msg = "Volumul a fost crescut";
-        else if (path.includes('volume/down')) msg = "Volumul a fost scăzut";
-        else if (path.includes('volume/mute')) msg = "Volumul a fost dezactivat";
-        else if (path.includes('timer/30')) msg = "Sistemul se va opri în 30 de minute";
-        else if (path.includes('timer/60')) msg = "Sistemul se va opri în 60 de minute";
-        else if (path.includes('timer/90')) msg = "Sistemul se va opri în 90 de minute";
-        else if (path.includes('power/cancel')) msg = "Cronometrul a fost oprit";
-        else if (path.includes('power/restart')) msg = "Repornire sistem";
-        else if (path.includes('power/shutdown')) msg = "Oprirea sistemului";
-        else if (path.includes('close_app')) msg = "Oprirea aplicației";
+        let msg = "Feldolgozás";
+        if (path.includes('volume/up')) msg = "A hangerő növelve";
+        else if (path.includes('volume/down')) msg = "A hangerő csökkentve";
+        else if (path.includes('volume/mute')) msg = "A hang némítva";
+        else if (path.includes('timer/30')) msg = "A rendszer 30 perc múlva leáll";
+        else if (path.includes('timer/60')) msg = "A rendszer 60 perc múlva leáll";
+        else if (path.includes('timer/90')) msg = "A rendszer 90 perc múlva leáll";
+        else if (path.includes('power/cancel')) msg = "Az időzítő leállítva";
+        else if (path.includes('power/restart')) msg = "A rendszer újraindul";
+        else if (path.includes('power/shutdown')) msg = "A rendszer leáll";
+        else if (path.includes('close_app')) msg = "Az alkalmazás leáll";
         
         if(msg) speak(msg);
 
@@ -2496,7 +2507,7 @@
         document.getElementById('main').focus();
       }
       
-      speak('Apasă tasta de spațiu pentru a începe');
+      speak('Nyomd meg a Szóközt a kezdéshez');
       
       // Start navigation signal handling (Electron IPC or HTTP polling)
       startNavSignalPolling();

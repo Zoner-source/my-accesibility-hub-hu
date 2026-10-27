@@ -6,7 +6,7 @@
                 "image": "dog.png",
                 "sound": null,
                 "title": "dog",
-                "altTitle": "Câine",
+                "altTitle": "Kutya",
                 "ttsText": "",
                 "_created": 1767981795066
             },
@@ -14,7 +14,7 @@
                 "image": "cat.png",
                 "sound": null,
                 "title": "cat",
-                "altTitle": "Pisică",
+                "altTitle": "Macska",
                 "ttsText": "",
                 "_created": 1767982247378
             },
@@ -22,7 +22,7 @@
                 "image": "fish.svg",
                 "sound": null,
                 "title": "fish",
-                "altTitle": "Pește",
+                "altTitle": "Hal",
                 "ttsText": "",
                 "_created": 1767982256169
             },
@@ -30,7 +30,7 @@
                 "image": "turtle.svg",
                 "sound": null,
                 "title": "turtle",
-                "altTitle": "Broască țestoasă",
+                "altTitle": "Teknős",
                 "ttsText": "",
                 "_created": 1767982267557
             },
@@ -38,7 +38,7 @@
                 "image": "lizard.svg",
                 "sound": null,
                 "title": "lizard",
-                "altTitle": "Șopârlă",
+                "altTitle": "Gyík",
                 "ttsText": "",
                 "_created": 1767982281450
             },
@@ -46,7 +46,7 @@
                 "image": "bird.png",
                 "sound": null,
                 "title": "bird",
-                "altTitle": "Pasăre",
+                "altTitle": "Madár",
                 "ttsText": "",
                 "_created": 1767982293761
             },
@@ -54,7 +54,7 @@
                 "image": "ferret.svg",
                 "sound": null,
                 "title": "ferret",
-                "altTitle": "Dihor",
+                "altTitle": "Görény",
                 "ttsText": "",
                 "_created": 1767982305316
             },
@@ -62,7 +62,7 @@
                 "image": "mouse.svg",
                 "sound": null,
                 "title": "mouse",
-                "altTitle": "Șoarece",
+                "altTitle": "Egér",
                 "ttsText": "",
                 "_created": 1767982316785
             },
@@ -70,7 +70,7 @@
                 "image": "mole.png",
                 "sound": null,
                 "title": "mole",
-                "altTitle": "Cârtiță",
+                "altTitle": "Vakond",
                 "ttsText": "",
                 "_created": 1768680802034
             },
@@ -78,7 +78,7 @@
                 "image": "squirrel.png",
                 "sound": null,
                 "title": "squirrel",
-                "altTitle": "Veveriță",
+                "altTitle": "Mókus",
                 "ttsText": "",
                 "_created": 1768680838231
             },
@@ -86,7 +86,7 @@
                 "image": "rabbit.png",
                 "sound": null,
                 "title": "rabbit",
-                "altTitle": "Iepure",
+                "altTitle": "Nyúl",
                 "ttsText": "",
                 "_created": 1768680879725
             },
@@ -94,7 +94,7 @@
                 "image": "frog.svg",
                 "sound": null,
                 "title": "frog",
-                "altTitle": "Broască",
+                "altTitle": "Béka",
                 "ttsText": "",
                 "_created": 1768680894567
             }
@@ -104,7 +104,7 @@
                 "image": "whale.png",
                 "sound": null,
                 "title": "whale",
-                "altTitle": "Balenă",
+                "altTitle": "Bálna",
                 "ttsText": "",
                 "_created": 1768920901744
             },
@@ -112,7 +112,7 @@
                 "image": "elephant.png",
                 "sound": null,
                 "title": "elephant",
-                "altTitle": "Elefant",
+                "altTitle": "Elefánt",
                 "ttsText": "",
                 "_created": 1768920915904
             },
@@ -120,7 +120,7 @@
                 "image": "giraffe.png",
                 "sound": null,
                 "title": "giraffe",
-                "altTitle": "Girafă",
+                "altTitle": "Zsiráf",
                 "ttsText": "",
                 "_created": 1768920931770
             },
@@ -128,7 +128,7 @@
                 "image": "rhino.svg",
                 "sound": null,
                 "title": "rhino",
-                "altTitle": "Rinocer",
+                "altTitle": "Orrszarvú",
                 "ttsText": "",
                 "_created": 1768920944816
             },
@@ -136,7 +136,7 @@
                 "image": "moose.png",
                 "sound": null,
                 "title": "moose",
-                "altTitle": "Elan",
+                "altTitle": "Jávorszarvas",
                 "ttsText": "",
                 "_created": 1768921042649
             },
@@ -144,7 +144,7 @@
                 "image": "hippopotamus.png",
                 "sound": null,
                 "title": "hippopotamus",
-                "altTitle": "Hipopotam",
+                "altTitle": "Víziló",
                 "ttsText": "",
                 "_created": 1768921078097
             },
@@ -152,7 +152,7 @@
                 "image": "horse.png",
                 "sound": null,
                 "title": "horse",
-                "altTitle": "Cal",
+                "altTitle": "Ló",
                 "ttsText": "",
                 "_created": 1768921118458
             },
@@ -160,7 +160,7 @@
                 "image": "gorilla.svg",
                 "sound": null,
                 "title": "gorilla",
-                "altTitle": "Gorilă",
+                "altTitle": "Gorilla",
                 "ttsText": "",
                 "_created": 1768921144297
             },
@@ -168,7 +168,7 @@
                 "image": "bison.png",
                 "sound": null,
                 "title": "bison",
-                "altTitle": "Bizon",
+                "altTitle": "Bölény",
                 "ttsText": "",
                 "_created": 1768921164288
             }

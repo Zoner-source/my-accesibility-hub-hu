@@ -80,17 +80,18 @@
       return 2000; // Fallback default
   }
 
+  let currentScanSpeed = "medium";
   let autoScanInterval = null;
   let isAutoScanning = false;
 
   // Theme management
   const themes = ["default", "light", "dark", "blue", "green", "purple", "orange", "red"];
-  const themeNamesRO = { default: "Implicit", light: "Deschis", dark: "Întunecat", blue: "Albastru", green: "Verde", purple: "Mov", orange: "Portocaliu", red: "Roșu" };
+  const themeNamesHU = { default: "Alapértelmezett", light: "Világos", dark: "Sötét", blue: "Kék", green: "Zöld", purple: "Lila", orange: "Narancs", red: "Piros" };
   let currentThemeIndex = themes.indexOf(settings.theme) || 0;
 
   // Highlight color management
   const highlightColors = ["yellow", "pink", "green", "orange", "black", "white", "purple", "red"];
-  const highlightNamesRO = { yellow: "Galben", pink: "Roz", green: "Verde", orange: "Portocaliu", black: "Negru", white: "Alb", purple: "Mov", red: "Roșu" };
+  const highlightNamesHU = { yellow: "Sárga", pink: "Rózsaszín", green: "Zöld", orange: "Narancs", black: "Fekete", white: "Fehér", purple: "Lila", red: "Piros" };
   let currentHighlightIndex = highlightColors.indexOf(settings.highlightColor) || 0;
 
   function applyTheme(theme) {
@@ -172,27 +173,30 @@
 
   // Keyboard layout with symbols for control buttons
   const rows = [
-    ["Spațiu", "Șterge literă", "Șterge cuvânt", "Șterge tot", "Setări", "Ieșire"],
-    ["A","Ă","Â","B","C","D"],
-    ["E","F","G","H","I","Î"],
-    ["J","L","M","N","O","P"],
-    ["R","S","Ș","T","Ț","U"],
-    ["V","Z","0","1","2","3"],
+    ["Szóköz", "Betű törlése", "Szó törlése", "Mindent töröl", "Beállítások", "Kilépés"],
+    ["A","Á","B","C","D","E"],
+    ["É","F","G","H","I","Í"],
+    ["J","K","L","M","N","O"],
+    ["Ó","Ö","Ő","P","R","S"],
+    ["T","U","Ú","Ü","Ű","V"],
+    ["Y","Z","0","1","2","3"],
     ["4","5","6","7","8","9"]
   ];
-  // Note: K, Q, W, X, Y are omitted — they aren't native Romanian letters
-  // (only used in foreign loanwords/names) and dropping them keeps the
-  // grid at exactly 26 letters + 10 digits = 36 keys, i.e. 6 per row,
-  // which is what highlightRow()/highlightButton() assume below.
+  // Hungarian alphabet: 32 letters (a á b c d e é f g h i í j k l m n o ó ö ő
+  // p r s t u ú ü ű v y z; Q, W, X are omitted as they only occur in foreign
+  // words; digraphs such as cs, sz, zs, gy are typed as two letters) plus 10
+  // digits = 42 keys = 7 rows of 6, plus the control row = 8 rows.
+  // The scanning code derives everything from rows.length, so no other
+  // row numbers are hardcoded (CSS grid-template-rows must be 8).
 
   // Control button symbols
   const controlSymbols = {
-    "Spațiu": "—",          // Em dash symbol (changed from underscore)
-    "Șterge literă": "⌫",   // Backspace symbol
-    "Șterge cuvânt": "⌦",   // Delete forward symbol
-    "Șterge tot": "✕",      // Clear/X symbol
-    "Setări": "⚙",          // Gear symbol
-    "Ieșire": "⏻"           // Power/Exit symbol
+    "Szóköz": "—",
+    "Betű törlése": "⌫",
+    "Szó törlése": "⌦",
+    "Mindent töröl": "✕",
+    "Beállítások": "⚙",
+    "Kilépés": "⏻"
   };
 
   function renderKeyboard() {
@@ -202,9 +206,9 @@
         const btn = document.createElement("button");
         btn.className = "key" + (rIdx === 0 ? " ctrl" : "");
         
-        if (key === "Settings") {
+        if (key === "Beállítások") {
           btn.classList.add("settings");
-        } else if (key === "Exit") {
+        } else if (key === "Kilépés") {
           btn.classList.add("exit");
         }
         
@@ -650,7 +654,7 @@
       const savedButtonIndex = currentButtonIndex;
       
       // Get word predictions FIRST
-      let predictions = ["DA", "NU", "AJUTOR", "ȘI", "EU", "TU"]; // Default fallback
+      let predictions = ["IGEN", "NEM", "SEGÍTSÉG", "ÉS", "ÉN", "TE"]; // Default fallback
       
       if (window.predictionSystem && window.predictionSystem.getHybridPredictions) {
         try {
@@ -726,7 +730,7 @@
   }
 
   function renderLetterPredictions(wordPredictions = []) {
-    let letterPredictions = ['A', 'I', 'E', 'U', 'R', 'N']; // Default
+    let letterPredictions = ['A', 'E', 'T', 'S', 'N', 'K']; // Default
     
     console.log(`[renderLetterPredictions] Word predictions passed:`, wordPredictions);
     console.log(`[renderLetterPredictions] Buffer:`, buffer);
@@ -740,6 +744,13 @@
       }
     }
     
+    // Only offer letters that actually exist on this keyboard (shared prediction
+    // data may contain letters such as Q, W, X or Romanian diacritics).
+    const allowedLetters = new Set(rows.slice(1).flat().filter(k => /^[A-ZÁÉÍÓÖŐÚÜŰ]$/.test(k)));
+    letterPredictions = letterPredictions
+      .map(l => String(l).toUpperCase())
+      .filter(l => allowedLetters.has(l));
+
     letterPredictBar.innerHTML = "";
     letterPredictions.slice(0, 6).forEach(letter => {
       const chip = document.createElement("button");
@@ -863,32 +874,34 @@
       if (letters) {
         speak(letters);
       } else {
-        speak("nicio literă prezisă");
+        speak("nincs előrejelzett betű");
       }
     }
   }
 
   function speakRowTitle(rowIndex) {
     const rowTitles = [
-      "comenzi", 
-      "a ă â b c d", 
-      "e f g h i î", 
-      "j l m n o p", 
-      "r s ș t ț u", 
-      "v z 0 1 2 3", 
-      "4 5 6 7 8 9", 
-      "predicții litere",
-      "predicții cuvinte"
+      "parancsok",
+      "a á b c d e",
+      "é f g h i í",
+      "j k l m n o",
+      "ó ö ő p r s",
+      "t u ú ü ű v",
+      "y z 0 1 2 3",
+      "4 5 6 7 8 9",
+      "betű előrejelzések",
+      "szó előrejelzések"
     ];
+
     
-    // Check if it's the letter predictions row (index 7)
-    if (rowIndex === 7) {
+    // Letter predictions row sits right after the keyboard rows
+    if (rowIndex === rows.length) {
       speakLetterPredictions();
       return;
     }
     
-    // Check if it's the word predictions row (index 8)
-    if (rowIndex === 8) {
+    // Word predictions row follows the letter predictions row
+    if (rowIndex === rows.length + 1) {
       speakPredictions();
       return;
     }
@@ -903,8 +916,7 @@
     let spokenLabel = label.toLowerCase();
     
     // Special phrasing for control-row labels
-    if (spokenLabel === "șterge literă") spokenLabel = "șterge o literă";
-    if (spokenLabel === "șterge cuvânt") spokenLabel = "șterge un cuvânt";
+    if (spokenLabel === "betű törlése") spokenLabel = "betű törlése";
     
     // For single letters and short words, let the voice manager handle pronunciation
     // Remove the special case handling here since voice manager now handles it
@@ -955,10 +967,10 @@
           speak(announcement);
         }
       } else {
-        speak("nu există predicții disponibile");
+        speak("nincs elérhető előrejelzés");
       }
     } else {
-      speak("nu există predicții disponibile");
+      speak("nincs elérhető előrejelzés");
     }
   }
 
@@ -1095,7 +1107,7 @@
         
       case "close":
         closeSettings();
-        speak("setări închise");
+        speak("beállítások bezárva");
         break;
     }
   }
@@ -1113,18 +1125,18 @@
         
         if (result && result.success) {
           console.log('Volume adjusted:', direction);
-          speak(direction === "up" ? "volum crescut" : "volum scăzut");
+          speak(direction === "up" ? "hangerő növelve" : "hangerő csökkentve");
         } else {
           console.error('Failed to control volume');
-          speak("controlul volumului a eșuat");
+          speak("a hangerő szabályozása nem sikerült");
         }
       } else {
         console.error('Electron API not available for volume control');
-        speak("controlul volumului nu este disponibil");
+        speak("a hangerő szabályozása nem érhető el");
       }
     } catch (error) {
       console.error('Error controlling volume:', error);
-      speak("eroare la controlul volumului");
+      speak("hiba a hangerő szabályozásakor");
     }
   }
 
@@ -1132,13 +1144,13 @@
     currentThemeIndex = (currentThemeIndex + 1) % themes.length;
     const newTheme = themes[currentThemeIndex];
     applyTheme(newTheme);
-    speak(themeNamesRO[newTheme]);
+    speak(themeNamesHU[newTheme]);
   }
 
   function updateThemeDisplay() {
     const themeValue = $("#themeValue");
     if (themeValue) {
-      themeValue.textContent = themeNamesRO[themes[currentThemeIndex]];
+      themeValue.textContent = themeNamesHU[themes[currentThemeIndex]];
     }
   }
 
@@ -1147,11 +1159,11 @@
         window.NarbeScanManager.cycleScanSpeed();
         // Update is handled by subscription
         const speed = getScanInterval();
-        speak(`viteză de scanare ${speed/1000} secunde`);
+        speak(`pásztázási sebesség ${speed/1000} másodperc`);
     } else {
         // Fallback if manager missing
         const speeds = ["slow", "medium", "fast"];
-        const speedNamesRO = { slow: "lentă", medium: "medie", fast: "rapidă" };
+        const speedNamesRO = { slow: "lassú", medium: "közepes", fast: "gyors" };
         const currentIndex = speeds.indexOf(currentScanSpeed);
         const nextIndex = (currentIndex + 1) % speeds.length;
         currentScanSpeed = speeds[nextIndex];
@@ -1172,11 +1184,11 @@
     const speedValue = $("#scanSpeedValue");
     if (speedValue) {
       if (window.NarbeScanManager) {
-          const names = ["Rapidă (1s)", "Medie (2s)", "Lentă (3s)", "Foarte lentă (4s)"];
+          const names = ["Gyors (1mp)", "Közepes (2mp)", "Lassú (3mp)", "Nagyon lassú (4mp)"];
           const idx = window.NarbeScanManager.getSettings().scanSpeedIndex;
-          speedValue.textContent = names[idx] || "Medie (2s)";
+          speedValue.textContent = names[idx] || "Közepes (2mp)";
       } else {
-        speedValue.textContent = "Medie";
+        speedValue.textContent = "Közepes";
       }
     }
   }
@@ -1189,7 +1201,7 @@
             updateVoiceDisplay();
           });
       }
-      speak("se inițializează vocile");
+      speak("a hangok betöltése folyamatban");
       return;
     }
     
@@ -1200,9 +1212,9 @@
             updateVoiceDisplay();
             const currentVoice = window.NarbeVoiceManager.getCurrentVoice();
             const displayName = window.NarbeVoiceManager.getVoiceDisplayName(currentVoice);
-            speak(`voce schimbată în ${displayName}`);
+            speak(`hang megváltoztatva: ${displayName}`);
         } else {
-             speak("se actualizează lista de voci");
+             speak("a hanglista frissítése folyamatban");
         }
     }
   }
@@ -1220,28 +1232,28 @@
     currentHighlightIndex = (currentHighlightIndex + 1) % highlightColors.length;
     const newColor = highlightColors[currentHighlightIndex];
     applyHighlightColor(newColor);
-    speak(highlightNamesRO[newColor]);
+    speak(highlightNamesHU[newColor]);
   }
 
   function updateHighlightDisplay() {
     const highlightValue = $("#highlightValue");
     if (highlightValue) {
       const colorName = highlightColors[currentHighlightIndex];
-      highlightValue.textContent = highlightNamesRO[colorName];
+      highlightValue.textContent = highlightNamesHU[colorName];
     }
   }
 
   function toggleTTS() {
     const ttsEnabled = window.NarbeVoiceManager.toggleTTS();
     updateTTSToggleDisplay();
-    speak(ttsEnabled ? "Feedback vocal activat" : "Feedback vocal dezactivat");
+    speak(ttsEnabled ? "Hangvisszajelzés bekapcsolva" : "Hangvisszajelzés kikapcsolva");
   }
 
   function updateTTSToggleDisplay() {
     const ttsValue = $("#ttsToggleValue");
     if (ttsValue) {
       const voiceSettings = window.NarbeVoiceManager.getSettings();
-      ttsValue.textContent = voiceSettings.ttsEnabled ? "Pornit" : "Oprit";
+      ttsValue.textContent = voiceSettings.ttsEnabled ? "Be" : "Ki";
     }
   }
 
@@ -1250,7 +1262,7 @@
     settings.autoScan = isAutoScanning;
     saveSettings();
     updateAutoScanDisplay();
-    speak(isAutoScanning ? "Scanare automată activată" : "Scanare automată dezactivată");
+    speak(isAutoScanning ? "Automatikus pásztázás bekapcsolva" : "Automatikus pásztázás kikapcsolva");
     
     if (isAutoScanning) {
       startAutoScan();
@@ -1262,7 +1274,7 @@
   function updateAutoScanDisplay() {
     const autoScanValue = $("#autoScanValue");
     if (autoScanValue) {
-      autoScanValue.textContent = isAutoScanning ? "Pornit" : "Oprit";
+      autoScanValue.textContent = isAutoScanning ? "Be" : "Ki";
     }
   }
 
@@ -1290,30 +1302,30 @@
 
   function readInstructions() {
     const instructions = `
-      Bun venit la Tastatura lui Ben. Iată instrucțiunile pentru folosirea acestei tastaturi.
-      
-      Comenzi de navigare:
-      O apăsare scurtă pe bara de spațiu avansează prin rânduri și butoane.
-      O apăsare lungă și susținută pe bara de spațiu se deplasează înapoi prin rânduri și butoane, până când o eliberezi.
-      
-      Comenzi de selecție:
-      O apăsare scurtă pe tasta Enter selectează elementul evidențiat.
-      O apăsare lungă pe Enter, când ești pe un buton, te întoarce la selecția de rânduri.
-      O apăsare lungă pe Enter, când ești pe selecția de rânduri, sare direct la textul predictiv.
-      
-      Tastatura are mai multe rânduri:
-      Primul este bara de text, unde apare textul scris. Selecteaz-o pentru a auzi textul citit cu voce tare.
-      Al doilea este rândul de text predictiv, cu sugestii de cuvinte.
-      Al treilea este rândul de comenzi: spațiu, ștergere, șterge tot, setări și ieșire.
-      Apoi urmează rândurile cu literele alfabetului românesc și rândurile cu cifrele de la 0 la 9.
-      
-      Sfaturi:
-      Dacă spui același text de trei ori, cuvintele respective se salvează în predicții, pentru o scriere mai rapidă pe viitor.
-      Poți schimba tema, viteza de scanare, vocea și culorile de evidențiere din setări.
-      Comutatorul de redare vocală controlează dacă elementele sunt citite cu voce tare în timp ce navighezi.
-      Comutatorul de scanare automată activează parcurgerea automată a rândurilor și butoanelor.
-      
-      Apasă Enter pentru a continua să folosești tastatura.
+      Üdvözöljük Ben billentyűzetében. Itt vannak a használati utasítások.
+
+      Navigációs vezérlők:
+      A szóköz billentyű rövid megnyomása előrelép a sorokon és a gombokon.
+      A szóköz billentyű hosszan tartó lenyomása hátrafelé halad a sorokon és a gombokon, amíg fel nem engedi.
+
+      Kiválasztási vezérlők:
+      Az Enter billentyű rövid megnyomása kiválasztja a kiemelt elemet.
+      Az Enter billentyű hosszú lenyomása gombon állva visszavisz a sorválasztáshoz.
+      Az Enter billentyű hosszú lenyomása sorválasztáskor egyenesen a szójóslathoz ugrik.
+
+      A billentyűzet több sorból áll:
+      Az első a szövegsáv, ahol a beírt szöveg megjelenik. Válassza ki, hogy felolvassa a szöveget.
+      A második a parancssor: szóköz, törlés, mindent töröl, beállítások és kilépés.
+      Ezután következnek a magyar ábécé betűit tartalmazó sorok és a nullától kilencig terjedő számjegyek sorai.
+      A betűk és a szavak előrejelzései a billentyűzet alatt találhatók.
+
+      Tippek:
+      Ha ugyanazt a szöveget háromszor mondatja fel, a szavak mentésre kerülnek az előrejelzések közé, így később gyorsabban írhat.
+      A beállításokban módosíthatja a témát, a pásztázási sebességet, a hangot és a kiemelés színét.
+      A hangvisszajelzés kapcsoló szabályozza, hogy az elemeket felolvassa-e navigálás közben.
+      Az automatikus pásztázás kapcsoló automatikusan végigjárja a sorokat és gombokat.
+
+      Nyomja meg az Enter billentyűt a billentyűzet használatának folytatásához.
     `;
     
     if (window.NarbeVoiceManager) {
@@ -1323,15 +1335,15 @@
   }
 
   function handleControl(key) {
-    if (key === "Spațiu") return insertKey(" ");
-    if (key === "Șterge literă") { setBuffer(buffer.slice(0, -1)); return; }
-    if (key === "Șterge cuvânt")   { setBuffer(buffer.trimEnd().replace(/\S+\s*$/, "")); return; }
-    if (key === "Șterge tot")      { setBuffer(""); return; }
-    if (key === "Setări")   { 
+    if (key === "Szóköz") return insertKey(" ");
+    if (key === "Betű törlése") { setBuffer(buffer.slice(0, -1)); return; }
+    if (key === "Szó törlése")   { setBuffer(buffer.trimEnd().replace(/\S+\s*$/, "")); return; }
+    if (key === "Mindent töröl")      { setBuffer(""); return; }
+    if (key === "Beállítások")   { 
       openSettings();
       return; 
     }
-    if (key === "Ieșire")       { 
+    if (key === "Kilépés")       { 
       console.log("Exit button pressed - closing Chrome");
       closeChrome();
       return; 
@@ -1339,21 +1351,21 @@
   }
 
   async function closeChrome() {
-      speak("Se închide");
+      speak("Bezárás");
       // Since we are running in an iframe within Benny's Hub, we should communicate with the parent
       // to close this app (which just hides the iframe).
       try {
           window.parent.postMessage({ action: 'closeApp' }, '*');
       } catch (e) {
           console.error("Failed to post message to parent:", e);
-          speak("Eroare la închidere");
+          speak("Hiba a bezáráskor");
       }
   }
 
   function insertKey(k) {
     // Auto-capitalize first letter of every word (start of buffer or after a space)
-    // Includes Romanian diacritics — without this they'd never get capitalized
-    if (k.length === 1 && /[a-zA-ZĂÂÎȘȚăâîșț]/.test(k)) {
+    // Includes Hungarian diacritics — without this they'd never get capitalized
+    if (k.length === 1 && /[a-zA-ZÁÉÍÓÖŐÚÜŰáéíóöőúüű]/.test(k)) {
       const prev = buffer.replace('|', '').slice(-1);
       if (!prev || /\s/.test(prev)) k = k.toUpperCase();
     }

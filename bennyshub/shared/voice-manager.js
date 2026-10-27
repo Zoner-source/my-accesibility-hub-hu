@@ -132,16 +132,18 @@ window.NarbeVoiceManager = (function() {
     availableVoices = window.speechSynthesis.getVoices();
     
     if (availableVoices.length > 0) {
-      // Filter for English voices
-      englishVoices = availableVoices.filter(voice => 
-        voice.lang.startsWith('en-') || 
-        voice.lang.startsWith('ro-') || 
-        voice.lang === 'en' ||
-        voice.lang === 'ro' ||
-        voice.name.toLowerCase().includes('english') ||
-        voice.name.toLowerCase().includes('romanian')
+      // Keep only Hungarian voices (same voice objects as before, just filtered)
+      englishVoices = availableVoices.filter(voice =>
+        voice.lang.replace('_', '-').toLowerCase().startsWith('hu') ||
+        voice.name.toLowerCase().includes('hungarian') ||
+        voice.name.toLowerCase().includes('hungary') ||
+        voice.name.toLowerCase().includes('magyar') ||
+        voice.name.toLowerCase().includes('szabolcs') ||
+        String(voice.voiceURI || '').toLowerCase().includes('hu-hu')
       );
-      
+      console.log('NarbeVoiceManager: all voices the browser exposes:',
+                  availableVoices.map(v => v.name + ' | ' + v.lang));
+
       // If no English voices found, fallback to any English voice
       if (englishVoices.length === 0) {
         englishVoices = availableVoices.filter(voice => voice.lang.startsWith('en'));
@@ -421,11 +423,17 @@ window.NarbeVoiceManager = (function() {
       utterance.rate = options.rate || settings.rate;
       utterance.pitch = options.pitch || settings.pitch;
       utterance.volume = options.volume || settings.volume;
+      // Hungarian build: always tag the utterance with a Hungarian language so
+      // the engine pronounces text correctly even if no Hungarian voice is picked.
+      utterance.lang = 'hu-HU';
       
       // Set voice - should be available now
       const currentVoice = getCurrentVoice();
       if (currentVoice) {
         utterance.voice = currentVoice;
+        if (currentVoice.lang && currentVoice.lang.toLowerCase().startsWith('hu')) {
+          utterance.lang = currentVoice.lang;
+        }
       } else {
         console.warn('NarbeVoiceManager: No voice available, using default');
       }
@@ -441,9 +449,8 @@ window.NarbeVoiceManager = (function() {
    */
   function processTextForTTS(text) {
     // List of common 2-letter words that should be spoken as words, not letters
-    const twoLetterWords = ['IT', 'IS', 'IN', 'AT', 'ON', 'TO', 'OF', 'AS', 'BY', 'IF', 
-                           'OR', 'SO', 'UP', 'DO', 'GO', 'HE', 'WE', 'ME', 'BE', 'NO', 
-                           'MY', 'AN', 'AM', 'US', 'OK', 'HI', 'OH', 'AH', 'HA'];
+    const twoLetterWords = ['AZ', 'EZ', 'ÉS', 'IS', 'NE', 'DE', 'HA', 'EL', 'KI', 'BE',
+                           'LE', 'FÖL', 'OK', 'ÓH', 'AH', 'HÁ', 'ÚJ', 'ŐK', 'ÖT', 'ÖN'];
     
     return text.split(' ').map(fullWord => {
       // Handle contractions
@@ -465,11 +472,11 @@ window.NarbeVoiceManager = (function() {
           return fullWord.toLowerCase();
         }
         // For other all-caps words longer than 2 letters, convert to lowercase
-        else if (fullWord.length > 2 && fullWord === fullWord.toUpperCase() && /^[A-Z]+$/.test(fullWord)) {
+        else if (fullWord.length > 2 && fullWord === fullWord.toUpperCase() && /^[A-ZÁÉÍÓÖŐÚÜŰ]+$/.test(fullWord)) {
           return fullWord.toLowerCase();
         }
         // Keep single letters as uppercase (they should be spelled out)
-        else if (fullWord.length === 1 && /^[A-Z]$/.test(fullWord)) {
+        else if (fullWord.length === 1 && /^[A-ZÁÉÍÓÖŐÚÜŰ]$/.test(fullWord)) {
           return fullWord;
         }
         // Default: convert to lowercase for natural speech

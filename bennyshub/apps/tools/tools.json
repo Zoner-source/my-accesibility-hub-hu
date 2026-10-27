@@ -2,28 +2,37 @@
   "tools": [
     {
       "id": "phraseboard",
-      "title": "Phrase & Media Board",
-      "description": "Editable phrase & media tiles with scanning and speak-out.",
+      "title": "Kifejezés- és médiatábla",
+      "description": "Szerkeszthető kifejezés- és médiacsempék pásztázással és felolvasással.",
       "path": "apps/tools/phraseboard/index.html",
       "image": "images/tools/phraseboard.png",
-      "genres": ["Communication", "Accessibility"],
+      "genres": [
+        "Communication",
+        "Accessibility"
+      ],
       "needsServer": true
     },
     {
-  "id": "romanian-keyboard",
-  "title": "Tastatura Română",
-  "description": "Tastatură scanabilă cu litere românești (ă, â, î, ș, ț) și text predictiv.",
-  "path": "apps/tools/keyboard/index.html",
-  "image": "images/tools/keyboard.png",
-  "genres": ["Communication", "Accessibility"]
-},
-{
-  "id": "youtube",
-  "title": "Videoclipuri YouTube",
-  "description": "Listă de videoclipuri YouTube cu scanare și redare prin switch.",
-  "path": "apps/tools/youtube/index.html",
-  "image": "images/tools/youtube.png",
-  "genres": ["Media", "Accessibility"]
-}
+      "id": "keyboard",
+      "title": "Magyar billentyűzet",
+      "description": "Pásztázható billentyűzet magyar ékezetes betűkkel (á, é, í, ó, ö, ő, ú, ü, ű) és szójóslattal.",
+      "path": "apps/tools/keyboard/index.html",
+      "image": "images/tools/keyboard.png",
+      "genres": [
+        "Communication",
+        "Accessibility"
+      ]
+    },
+    {
+      "id": "youtube",
+      "title": "YouTube videók",
+      "description": "YouTube-videók listája pásztázással és kapcsolós lejátszással.",
+      "path": "apps/tools/youtube/index.html",
+      "image": "images/tools/youtube.png",
+      "genres": [
+        "Media",
+        "Accessibility"
+      ]
+    }
   ]
 }

@@ -1,16 +1,6 @@
 {
-    "_help": "Fiecare videoclip are un titlu si fie un 'id' (cele 11 caractere din link, dupa v=) fie un 'url' (orice link YouTube). Ordinea de aici este ordinea din lista, de sus in jos. Optional: 'thumbnail' pentru o alta imagine.",
+    "_help": "Minden videónak van címe és vagy egy 'id' (a link v= utáni 11 karaktere), vagy egy 'url' (bármilyen YouTube-link). A lista sorrendje felülről lefelé ugyanez. Opcionális: 'thumbnail' egy másik képhez.",
     "videos": [
-        { "title": "Rățuștele mele pe apă s-au dus", "url": "https://www.youtube.com/watch?v=5D3-bH9ufFs&list=RD5D3-bH9ufFs&start_radio=1"},
-        { "title": "Un motan cât un pisoi", "url": "https://www.youtube.com/watch?v=7E3uUxoyk0c&list=RD7E3uUxoyk0c&start_radio=1"},
-        { "title": "O rățușcă stă pe lac", "url": "https://www.youtube.com/watch?v=hdAWSmGC0Eo&list=RDhdAWSmGC0Eo&start_radio=1"},
-        { "title": "Elefantul Cici", "url": "https://www.youtube.com/watch?v=AbAiDVg93yk&list=RDAbAiDVg93yk&start_radio=1"},
-        { "title": "În pădurea cu alune", "url": "https://www.youtube.com/watch?v=pxbfR-4X3Hs&list=RDpxbfR-4X3Hs&start_radio=1"},
-        { "title": "Un elefant se legăna...", "url": "https://www.youtube.com/watch?v=9DjhFbIbHVM&list=RD9DjhFbIbHVM&start_radio=1"},
-        { "title": "Ursul doarme și visează", "url": "https://www.youtube.com/watch?v=qtCx_YkX7aw&list=RDqtCx_YkX7aw&start_radio=1"},
-        { "title": "Plec la drum", "url": "https://www.youtube.com/watch?v=K0ZnddoxLc0&list=RDK0ZnddoxLc0&start_radio=1"},
-        { "title": "Degetele", "url": "https://www.youtube.com/watch?v=hPISrY5QInI&list=RDhPISrY5QInI&start_radio=1"},
-        { "title": "Două mânuțe", "url": "https://www.youtube.com/watch?v=PvAT4gRA2_I&list=RDPvAT4gRA2_I&start_radio=1"},
-        { "title": "Bate vântul frunzele", "url": "https://www.youtube.com/watch?v=uFReGC-w8Bs&list=RDuFReGC-w8Bs&start_radio=1"}
+        { "title": "Példa: az első YouTube-videó", "id": "jNQXAC9IVRw" }
     ]
 }

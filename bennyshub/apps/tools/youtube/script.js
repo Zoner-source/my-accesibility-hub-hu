@@ -5,7 +5,7 @@
 //  - Space = move to the next row, Enter = select  (same as the other tools)
 //  - Space held 3s = scan backwards, Enter held 3s = reverse a setting
 //  - While a video plays, ANY Space/Enter pauses it and shows a small
-//    top-to-bottom menu (Redă / De la început / Următorul / Înapoi la listă).
+//    top-to-bottom menu (Lejátszás / Elölről / Következő / Vissza a listához).
 //    The video is paused while that menu is up, so speech never competes
 //    with the video's own sound.
 //  - Videos come from videos.json (see that file).
@@ -15,37 +15,37 @@
 //  All user-facing text lives here, so wording can be changed in one place.
 // ---------------------------------------------------------------------
 const STR = {
-    listTitle: 'VIDEOCLIPURI',
-    settingsTitle: 'SETĂRI',
-    hint: 'Spațiu = înainte  ·  Enter = selectează',
-    listSpoken: 'Videoclipuri',
-    settingsSpoken: 'Setări',
-    settings: 'Setări',
-    exit: 'Ieșire',
-    back: 'Înapoi',
-    on: 'Pornit',
-    off: 'Oprit',
-    tts: 'Redare vocală',
-    autoScan: 'Scanare automată',
-    scanSpeed: 'Viteză scanare',
-    hlStyle: 'Stil evidențiere',
-    hlOutline: 'Contur',
-    hlFull: 'Celulă completă',
-    hlColor: 'Culoare evidențiere',
-    nowPlaying: t => `Se redă: ${t}`,
-    paused: 'Pauză',
-    resume: 'Redă',
-    restart: 'De la început',
-    next: 'Următorul videoclip',
-    backToList: 'Înapoi la listă',
-    loading: 'Se încarcă…',
-    ended: 'Videoclip terminat',
-    notStarted: 'Videoclipul nu a pornit',
-    cannotPlay: 'Acest videoclip nu poate fi redat',
-    cannotLoad: 'Nu se poate încărca YouTube. Verifică conexiunea la internet.',
-    empty: 'Nu există videoclipuri. Adaugă-le în fișierul videos.json.',
-    untitled: 'Videoclip fără titlu',
-    exiting: 'Se revine la Hub'
+    listTitle: 'YOUTUBE VIDEÓK',
+    settingsTitle: 'BEÁLLÍTÁSOK',
+    hint: 'Szóköz = előre  ·  Enter = kiválaszt',
+    listSpoken: 'Videók',
+    settingsSpoken: 'Beállítások',
+    settings: 'Beállítások',
+    exit: 'Kilépés',
+    back: 'Vissza',
+    on: 'Be',
+    off: 'Ki',
+    tts: 'Hangvisszajelzés',
+    autoScan: 'Automatikus pásztázás',
+    scanSpeed: 'Pásztázási sebesség',
+    hlStyle: 'Kiemelés stílusa',
+    hlOutline: 'Körvonal',
+    hlFull: 'Teljes mező',
+    hlColor: 'Kiemelés színe',
+    nowPlaying: t => `Lejátszás: ${t}`,
+    paused: 'Szünet',
+    resume: 'Lejátszás',
+    restart: 'Elölről',
+    next: 'Következő videó',
+    backToList: 'Vissza a listához',
+    loading: 'Betöltés…',
+    ended: 'A videó véget ért',
+    notStarted: 'A videó nem indult el',
+    cannotPlay: 'Ez a videó nem játszható le',
+    cannotLoad: 'A YouTube nem tölthető be. Ellenőrizze az internetkapcsolatot.',
+    empty: 'Nincsenek videók. Adja hozzá őket a videos.json fájlban.',
+    untitled: 'Cím nélküli videó',
+    exiting: 'Vissza a főmenübe'
 };
 
 // ---------------------------------------------------------------------
@@ -59,16 +59,16 @@ const config = {
 
 // Used only if videos.json cannot be loaded at all.
 const DEFAULT_VIDEOS = [
-    { title: 'Exemplu: primul videoclip de pe YouTube', id: 'jNQXAC9IVRw' }
+    { title: 'Példa: az első YouTube-videó', id: 'jNQXAC9IVRw' }
 ];
 
 // Highlight colours. These are real CSS colour names applied directly via the
 // --hl CSS variable, so the array must stay in English. Only the label shown or
 // spoken is translated (same rule as the other tools).
 const highlightColors = ['Yellow', 'Cyan', 'Lime', 'Magenta', 'Orange', 'White'];
-const highlightColorNamesRO = {
-    Yellow: 'Galben', Cyan: 'Azuriu', Lime: 'Verde lime',
-    Magenta: 'Magenta', Orange: 'Portocaliu', White: 'Alb'
+const highlightColorNamesHU = {
+    Yellow: 'Sárga', Cyan: 'Ciánkék', Lime: 'Lime zöld',
+    Magenta: 'Bíbor', Orange: 'Narancs', White: 'Fehér'
 };
 
 // ---------------------------------------------------------------------
@@ -132,7 +132,7 @@ function speak(text) {
     } else if (settings.tts && 'speechSynthesis' in window) {
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'ro-RO';
+        u.lang = 'hu-HU';
         speechSynthesis.speak(u);
     }
 }
@@ -256,7 +256,7 @@ function settingsItems() {
           action: cycleScanSpeed, onPrev: cycleScanSpeed },
         { icon: '🔲', text: () => `${STR.hlStyle}: ${settings.highlightStyle === 'outline' ? STR.hlOutline : STR.hlFull}`,
           action: toggleHighlightStyle, onPrev: toggleHighlightStyle },
-        { icon: '🎨', text: () => `${STR.hlColor}: ${highlightColorNamesRO[highlightColors[settings.highlightColorIndex]]}`,
+        { icon: '🎨', text: () => `${STR.hlColor}: ${highlightColorNamesHU[highlightColors[settings.highlightColorIndex]]}`,
           action: () => cycleHighlightColor(1), onPrev: () => cycleHighlightColor(-1) },
         { icon: '◀', text: STR.back, action: () => showList() }
     ];
@@ -486,7 +486,7 @@ function ensurePlayer() {
     playerPromise = loadYouTubeAPI().then(() => new Promise(resolve => {
         const vars = {
             autoplay: 1, controls: 0, disablekb: 1, fs: 0, rel: 0,
-            modestbranding: 1, playsinline: 1, iv_load_policy: 3, hl: 'ro'
+            modestbranding: 1, playsinline: 1, iv_load_policy: 3, hl: 'hu'
         };
         if (/^https?:$/.test(location.protocol)) vars.origin = location.origin;
         ytPlayer = new YT.Player('yt-player', {
@@ -549,7 +549,7 @@ function playVideo(i) {
         if (state.mode !== 'player' || state.playingSeen) return;
         if (state.playerReady) {
             el.status.textContent = '';
-            showControls(STR.notStarted);       // user can press "Redă" (a real key press can start playback)
+            showControls(STR.notStarted);       // user can press "Lejátszás" (a real key press can start playback)
         } else {
             handleVideoError('timeout');
         }

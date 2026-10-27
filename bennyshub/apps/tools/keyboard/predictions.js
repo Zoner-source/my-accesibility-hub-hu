@@ -13,38 +13,38 @@ class PredictionSystem {
     this.initializeLetterFrequencies();
   }
 
-  // Initialize default Romanian letter frequencies
+  // Initialize default Hungarian letter frequencies
   initializeLetterFrequencies() {
-    // Approximate Romanian letter frequencies as a starting point.
-    // These are rough estimates, not precise corpus statistics — the app
+    // Approximate Hungarian letter frequencies as a starting point.
+    // These are rough estimates, not precise corpus statistics - the app
     // refines them over time from what's actually typed (see recordLetterNgrams).
     const defaultFrequencies = {
-      'A': 120, 'I': 100, 'E': 95, 'U': 75, 'R': 65,
-      'N': 62, 'T': 60, 'C': 55, 'L': 50, 'S': 48,
-      'O': 45, 'D': 35, 'M': 32, 'P': 30, 'Ă': 28,
-      'B': 22, 'V': 20, 'G': 18, 'F': 14, 'Z': 10,
-      'Ș': 9, 'Î': 8, 'H': 7, 'Ț': 6, 'J': 4, 'Â': 3
+      'E': 150, 'A': 115, 'T': 90, 'L': 85, 'S': 75,
+      'N': 70, 'K': 65, 'O': 60, 'M': 50, 'I': 45,
+      'R': 45, 'Z': 42, 'Á': 40, 'G': 35, 'D': 30,
+      'É': 30, 'B': 25, 'V': 25, 'Y': 20, 'H': 20,
+      'U': 18, 'J': 17, 'Ö': 12, 'P': 12, 'F': 10,
+      'Ó': 8, 'Ü': 8, 'C': 8, 'Í': 6, 'Ő': 6, 'Ú': 3, 'Ű': 2
     };
-    
-    // Common Romanian letter bigrams (approximate)
+
+    // Common Hungarian letter bigrams (approximate)
     const commonBigrams = {
-      'DE': 100, 'ES': 90, 'RE': 85, 'ST': 80, 'IN': 75,
-      'AR': 70, 'AT': 65, 'AN': 60, 'CA': 58, 'EA': 55,
-      'ER': 52, 'IE': 50, 'IN': 48, 'LA': 46, 'NT': 44,
-      'RA': 42, 'RI': 40, 'TA': 38, 'TE': 36, 'UL': 34,
-      'UN': 32, 'CE': 30, 'CO': 28, 'IA': 26, 'IT': 24,
-      'OS': 22, 'PA': 20, 'SE': 18, 'TR': 16, 'ȘI': 14
+      'EG': 100, 'AT': 95, 'ET': 92, 'ES': 90, 'EN': 88,
+      'AZ': 85, 'EL': 82, 'LE': 80, 'AL': 78, 'TA': 76,
+      'ÉS': 74, 'SZ': 72, 'KE': 70, 'EK': 68, 'AK': 66,
+      'ME': 64, 'GY': 62, 'LA': 60, 'MI': 58, 'TT': 56,
+      'ER': 54, 'NE': 52, 'EM': 50, 'AR': 48, 'ÁL': 46,
+      'ÁN': 44, 'OK': 42, 'KO': 40, 'TE': 38, 'ZT': 36
     };
-    
-    // Common Romanian letter trigrams (approximate)
+
+    // Common Hungarian letter trigrams (approximate)
     const commonTrigrams = {
-      'ULU': 100, 'ARE': 90, 'ELE': 85, 'EST': 80, 'ENT': 75,
-      'ATE': 70, 'INT': 65, 'ITA': 60, 'REA': 55, 'TUL': 50,
-      'CEA': 48, 'CON': 46, 'STE': 44, 'ANT': 42, 'ATI': 40,
-      'CAR': 38, 'DIN': 36, 'ILE': 34, 'IST': 32, 'LOR': 30,
-      'RIL': 28, 'SUL': 26, 'TII': 24, 'UNT': 22, 'ULE': 20
+      'SZE': 100, 'MEG': 95, 'EGY': 90, 'AZT': 85, 'ESZ': 80,
+      'OTT': 75, 'ETT': 70, 'SZT': 65, 'TAL': 60, 'ENY': 55,
+      'GYO': 52, 'NEM': 50, 'KEZ': 48, 'ELE': 46, 'ÉRT': 44,
+      'ISM': 42, 'LEG': 40, 'SZA': 38, 'KÖS': 36, 'TÁS': 34
     };
-    
+
     // Set defaults
     for (const [letter, count] of Object.entries(defaultFrequencies)) {
       this.letterData.unigrams[letter] = { count, last_used: new Date().toISOString() };
@@ -80,6 +80,33 @@ class PredictionSystem {
       console.error('Error loading predictions:', error);
       this.data = { frequent_words: {}, bigrams: {}, trigrams: {} };
     }
+    this.seedHungarianWords();
+  }
+
+  // Starter vocabulary so word prediction works before anything has been learned.
+  // Words already present in the loaded data are left alone.
+  seedHungarianWords() {
+    const seed = [
+      'IGEN','NEM','SEGÍTSÉG','ÉS','ÉN','TE','ŐK','MI','ŐT','ŐKET','KÉREM','KÖSZÖNÖM','SZERETNÉK',
+      'ENNI','INNI','VÍZ','ÉHES','SZOMJAS','FÁRADT','JÓ','ROSSZ','FÁJ','MENNI','JÖJJ','GYERE',
+      'MAMA','APA','ANYA','ANYUKA','APUKA','NAGYMAMA','NAGYAPA','TESTVÉR','BARÁT','TANÁR',
+      'SZERETLEK','SZERETEM','NEM SZERETEM','MÉG','TÖBB','KEVESEBB','KÉSZ','VÁRJ','MOST','KÉSŐBB',
+      'HOL','MI','MIÉRT','HOGYAN','KI','MIKOR','HOVA','MELYIK','EGY','KETTŐ','HÁROM',
+      'ITT','OTT','BE','KI','FEL','LE','HAZA','ISKOLA','PARK','JÁTÉK','JÁTSZANI','ZENE','MESE',
+      'TV','TELEFON','KÖNYV','LABDA','AUTÓ','KUTYA','MACSKA','REGGELI','EBÉD','VACSORA','ALVÁS',
+      'FÜRDŐ','WC','HIDEG','MELEG','FÁZOM','BOCSÁNAT','SZIA','VISZLÁT','JÓ REGGELT','JÓ ÉJSZAKÁT',
+      'IGAZÁN','NAGYON','SZÉP','KEDVES','BOLDOG','SZOMORÚ','HARAGOS','ÖRÜLÖK','TETSZIK','AKAROK',
+      'NEM AKAROK','TUDOM','NEM TUDOM','LÁTOM','HALLOM','VAN','NINCS','LEHET','KELL','SZABAD'
+    ];
+    if (!this.data) this.data = {};
+    if (!this.data.frequent_words) this.data.frequent_words = {};
+    const stamp = new Date(0).toISOString();
+    seed.forEach(w => {
+      if (w.indexOf(' ') !== -1) return; // single words only
+      if (!this.data.frequent_words[w]) {
+        this.data.frequent_words[w] = { count: 3, last_used: stamp };
+      }
+    });
   }
 
   calculateScore(data) {
@@ -122,7 +149,7 @@ class PredictionSystem {
     const words = cleaned ? cleaned.split(' ') : [];
     
     // Default words fallback
-    const DEFAULT_WORDS = ["DA", "NU", "AJUTOR", "ȘI", "EU", "TU"];
+    const DEFAULT_WORDS = ["IGEN", "NEM", "SEGÍTSÉG", "ÉS", "ÉN", "TE"];
     
     if (!words.length) {
       return DEFAULT_WORDS;
@@ -450,7 +477,7 @@ class PredictionSystem {
 
   // Record letter n-grams from typed text (for learning)
   recordLetterNgrams(word) {
-    const upperWord = word.toUpperCase().replace(/[^A-ZĂÂÎȘȚ]/g, '');
+    const upperWord = word.toUpperCase().replace(/[^A-ZÁÉÍÓÖŐÚÜŰ]/g, '');
     const timestamp = new Date().toISOString();
     
     for (let i = 0; i < upperWord.length; i++) {

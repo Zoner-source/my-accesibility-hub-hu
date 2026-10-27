@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baschet</title>
+    <title>Kosárlabda</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #87CEEB; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         #canvas-container { width: 100vw; height: 100vh; display: block; }
@@ -216,13 +216,13 @@
     <div id="ui-layer">
         <div id="header">
             <!-- <h1>BENNY'S BASKETBALL SHOOTER</h1> -->
-            <div id="score-board">Scor: 0 | Aruncarea: 1/12</div>
+            <div id="score-board">Pont: 0 | Dobás: 1/12</div>
         </div>
         
-        <div id="message">COȘ!</div>
+        <div id="message">KOSÁR!</div>
 
         <div id="instructions" style="display:none;">
-            <p>Apasă <strong>SPAȚIU</strong> pentru a ochi</p>
+            <p>Nyomd meg a <strong>SZÓKÖZT</strong> a célzáshoz</p>
         </div>
 
         <div id="pause-button">&#10074;&#10074;</div>
@@ -234,12 +234,12 @@
 
     <!-- Pause Screen -->
     <div id="pause-screen" class="screen" style="display:none;">
-        <h1>PAUZĂ</h1>
+        <h1>SZÜNET</h1>
         <div class="menu-items-list" id="pause-menu-list">
-            <div class="menu-item selected" data-action="resume">CONTINUĂ JOCUL</div>
-            <div class="menu-item" data-action="restart">REPORNEȘTE JOCUL</div>
-            <div class="menu-item" data-action="settings">SETĂRI</div>
-            <div class="menu-item" data-action="menu">MENIU PRINCIPAL</div>
+            <div class="menu-item selected" data-action="resume">JÁTÉK FOLYTATÁSA</div>
+            <div class="menu-item" data-action="restart">JÁTÉK ÚJRAINDÍTÁSA</div>
+            <div class="menu-item" data-action="settings">BEÁLLÍTÁSOK</div>
+            <div class="menu-item" data-action="menu">FŐMENÜ</div>
         </div>
     </div>
 
@@ -247,26 +247,26 @@
     <div id="start-screen" class="screen">
         <h1>BENNY'S BASKETBALL</h1>
         <div class="menu-items-list" id="main-menu-list">
-            <div class="menu-item selected" data-action="start">ÎNCEPE JOCUL</div>
-            <div class="menu-item" data-action="settings">SETĂRI</div>
-            <div class="menu-item" data-action="exit">IEȘI DIN JOC</div>
+            <div class="menu-item selected" data-action="start">JÁTÉK INDÍTÁSA</div>
+            <div class="menu-item" data-action="settings">BEÁLLÍTÁSOK</div>
+            <div class="menu-item" data-action="exit">KILÉPÉS</div>
         </div>
-        <p style="margin-top:20px; font-size: 1.2em;">Spațiu pentru scanare | Enter pentru selectare</p>
+        <p style="margin-top:20px; font-size: 1.2em;">Szóköz = pásztázás | Enter = kiválasztás</p>
     </div>
 
         <!-- Settings Screen -->
     <div id="settings-screen" class="screen" style="display:none; overflow-y: auto;">
-        <h1>SETĂRI</h1>
+        <h1>BEÁLLÍTÁSOK</h1>
         <div class="menu-items-list" id="settings-menu-list">
             <!-- Dynamic Settings will be injected here -->
         </div>
     </div>    <!-- Game Over Screen -->
     <div id="game-over-screen" class="screen" style="display:none;">
-        <h1>JOC TERMINAT</h1>
-        <div id="final-score" style="font-size:3em; margin:20px;">Scor: 0</div>
+        <h1>JÁTÉK VÉGE</h1>
+        <div id="final-score" style="font-size:3em; margin:20px;">Pont: 0</div>
         <div class="menu-items-list" id="gameover-menu-list">
-            <div class="menu-item selected" data-action="restart">JOACĂ DIN NOU</div>
-            <div class="menu-item" data-action="menu">MENIU PRINCIPAL</div>
+            <div class="menu-item selected" data-action="restart">ÚJRA JÁTSZOM</div>
+            <div class="menu-item" data-action="menu">FŐMENÜ</div>
         </div>
     </div>
 
@@ -314,9 +314,9 @@
         // switch() that picks the ball's render color. Those stored values
         // must stay exactly as cycled (English) — only the settings-menu
         // label text is translated, via these lookups.
-        const aimerSpeedNamesRO = { default: 'Normală', slower: 'Mai lentă', slowest: 'Cea mai lentă' };
-        const aimerColorNamesRO = { white: 'Alb', red: 'Roșu', green: 'Verde', pink: 'Roz', blue: 'Albastru', yellow: 'Galben', orange: 'Portocaliu' };
-        const ballThemeNamesRO = { standard: 'Standard', orange: 'Portocalie', red: 'Roșie', blue: 'Albastră', yellow: 'Galbenă', brown: 'Maro', green: 'Verde' };
+        const aimerSpeedNamesHU = { default: 'Normál', slower: 'Lassabb', slowest: 'Leglassabb' };
+        const aimerColorNamesHU = { white: 'Fehér', red: 'Piros', green: 'Zöld', pink: 'Rózsaszín', blue: 'Kék', yellow: 'Sárga', orange: 'Narancs' };
+        const ballThemeNamesHU = { standard: 'Normál', orange: 'Narancs', red: 'Piros', blue: 'Kék', yellow: 'Sárga', brown: 'Barna', green: 'Zöld' };
 
         // --- Audio System ---
         class AudioManager {
@@ -363,6 +363,7 @@
                 } else if (this.ttsEnabled && 'speechSynthesis' in window) {
                     speechSynthesis.cancel();
                     const u = new SpeechSynthesisUtterance(text);
+                    u.lang = 'hu-HU';
                     speechSynthesis.speak(u);
                 }
             }
@@ -660,9 +661,9 @@
             ctx.font = "bold 40px Courier New";
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
-            ctx.fillText("SCOR", 128, 50);
+            ctx.fillText("PONT", 128, 50);
             ctx.fillStyle = "cyan";
-            ctx.fillText("ARUNC.", 384, 50);
+            ctx.fillText("DOBÁS", 384, 50);
             
             // Scores
             ctx.font = "bold 100px Courier New";
@@ -1193,8 +1194,8 @@
                 // Determine if we go to Bonus or Game Over
                 if (perfectGame) {
                     bonusMode = true;
-                    audio.speak("Joc perfect! Se intră în modul Bonus! Moarte subită!");
-                    showMessage("MOD BONUS!", "gold");
+                    audio.speak("Hibátlan játék! Bónusz mód! Hirtelen halál!");
+                    showMessage("BÓNUSZ MÓD!", "gold");
                     // Continue to setup round...
                 } else {
                     gameOver();
@@ -1229,13 +1230,13 @@
             // Visuals
             document.getElementById('instructions').style.display = 'block';
             if (GameSettings.autoScan) {
-                 document.getElementById('instructions').innerHTML = "<p>Țintire automată activă<br>Apasă <strong>ENTER</strong> pentru încărcare</p>";
+                 document.getElementById('instructions').innerHTML = "<p>Automatikus célzás aktív<br>Nyomd meg az <strong>ENTER</strong>t a töltéshez</p>";
             } else {
-                 document.getElementById('instructions').innerHTML = "<p>Ține apăsat <strong>SPAȚIU</strong> pentru a ochi</p>";
+                 document.getElementById('instructions').innerHTML = "<p>Tartsd lenyomva a <strong>SZÓKÖZT</strong> a célzáshoz</p>";
             }
             
             if (bonusMode) {
-                document.getElementById('instructions').innerHTML += "<p style='color:gold'>MOD BONUS: MOARTE SUBITĂ</p>";
+                document.getElementById('instructions').innerHTML += "<p style='color:gold'>BÓNUSZ MÓD: HIRTELEN HALÁL</p>";
             }
             
             document.getElementById('power-container').style.display = 'none';
@@ -1248,7 +1249,7 @@
 
             updateScoreBoard();
             
-            let msg = bonusMode ? `BONUS ${round-12}` : `Aruncarea ${round}/${MAX_SHOTS}`;
+            let msg = bonusMode ? `BÓNUSZ ${round-12}` : `${round}. dobás / ${MAX_SHOTS}`;
             showMessage(msg, bonusMode ? "gold" : "yellow");
         }
         
@@ -1256,9 +1257,9 @@
             gameState = 'MENU'; 
             MenuManager.setActiveMenu('gameover');
             document.getElementById('game-over-screen').style.display = 'flex';
-            document.getElementById('final-score').innerText = "Scor: " + score;
-            document.getElementById('high-score-display').innerText = "Record: " + highScore;
-            audio.speak("Joc terminat. Scor final " + score);
+            document.getElementById('final-score').innerText = "Pont: " + score;
+            document.getElementById('high-score-display').innerText = "Rekord: " + highScore;
+            audio.speak("Vége a játéknak. Végeredmény: " + score + " pont");
         }
 
         // Removed old setupUI function as we use MenuSystem now
@@ -1296,7 +1297,7 @@
         }
 
         function updateScoreBoard() {
-            document.getElementById('score-board').innerText = `Scor: ${score} | Aruncarea: ${round}/${MAX_SHOTS}`;
+            document.getElementById('score-board').innerText = `Pont: ${score} | Dobás: ${round}/${MAX_SHOTS}`;
             
             // Update 3D Scoreboard Texture
             if (scoreboardMesh && scoreboardMesh.material) {
@@ -1446,7 +1447,7 @@
 
             startCharging() {
                 gameState = 'CHARGING';
-                document.getElementById('instructions').innerHTML = "<p>Eliberează pentru a arunca</p>";
+                document.getElementById('instructions').innerHTML = "<p>Engedd el a dobáshoz</p>";
                 document.getElementById('power-container').style.display = 'block';
                 chargePower = 0;
                 lastChargeBeep = 0;
@@ -1502,7 +1503,7 @@
                         }, 10000); // 10 seconds hold to pause
                         
                         gameState = 'CHARGING';
-                        document.getElementById('instructions').innerHTML = "<p>Ține apăsat <strong>ENTER</strong> pentru încărcare</p><p>Eliberează pentru a arunca</p>";
+                        document.getElementById('instructions').innerHTML = "<p>Tartsd lenyomva az <strong>ENTER</strong>t a töltéshez</p><p>Engedd el a dobáshoz</p>";
                         document.getElementById('power-container').style.display = 'block';
                         chargePower = 0;
                         lastChargeBeep = 0;
@@ -1678,16 +1679,16 @@
                 }
                 
                 const settings = [
-                    { label: `Redare vocală: ${(window.NarbeVoiceManager ? window.NarbeVoiceManager.getSettings().ttsEnabled : GameSettings.tts) ? 'Pornit' : 'Oprit'}`, action: 'toggle_tts' },
-                    { label: `Efecte sonore: ${GameSettings.sfx ? 'Pornit' : 'Oprit'}`, action: 'toggle_sfx' },
-                    { label: `Muzică: ${GameSettings.music ? 'Pornit' : 'Oprit'}`, action: 'toggle_music' },
-                    { label: `Asistent la aruncare: ${GameSettings.aimAssist ? 'Pornit' : 'Oprit'}`, action: 'toggle_aimassist' },
-                    { label: `Scanare automată: ${scanSettings.autoScan ? 'Pornit' : 'Oprit'}`, action: 'toggle_autoscan' },
-                    { label: `Viteză scanare: ${displaySpeed}s`, action: 'cycle_speed' },
-                    { label: `Viteză țintă: ${aimerSpeedNamesRO[GameSettings.aimerSpeed]}`, action: 'cycle_aimer_speed' },
-                    { label: `Culoare țintă: ${aimerColorNamesRO[GameSettings.aimerColor]}`, action: 'cycle_aimer' },
-                    { label: `Minge: ${ballThemeNamesRO[GameSettings.ballTheme] || GameSettings.ballTheme}`, action: 'cycle_ball' },
-                    { label: `ÎNAPOI`, action: 'back' }
+                    { label: `Hangvisszajelzés: ${(window.NarbeVoiceManager ? window.NarbeVoiceManager.getSettings().ttsEnabled : GameSettings.tts) ? 'Be' : 'Ki'}`, action: 'toggle_tts' },
+                    { label: `Hangeffektek: ${GameSettings.sfx ? 'Be' : 'Ki'}`, action: 'toggle_sfx' },
+                    { label: `Zene: ${GameSettings.music ? 'Be' : 'Ki'}`, action: 'toggle_music' },
+                    { label: `Dobássegéd: ${GameSettings.aimAssist ? 'Be' : 'Ki'}`, action: 'toggle_aimassist' },
+                    { label: `Automatikus pásztázás: ${scanSettings.autoScan ? 'Be' : 'Ki'}`, action: 'toggle_autoscan' },
+                    { label: `Pásztázási sebesség: ${displaySpeed} mp`, action: 'cycle_speed' },
+                    { label: `Célzási sebesség: ${aimerSpeedNamesHU[GameSettings.aimerSpeed]}`, action: 'cycle_aimer_speed' },
+                    { label: `Célkereszt színe: ${aimerColorNamesHU[GameSettings.aimerColor]}`, action: 'cycle_aimer' },
+                    { label: `Labda: ${ballThemeNamesHU[GameSettings.ballTheme] || GameSettings.ballTheme}`, action: 'cycle_ball' },
+                    { label: `VISSZA`, action: 'back' }
                 ];
                 
                 settings.forEach(opt => {
@@ -1769,7 +1770,7 @@
                     case 'start':
                         this.stopAutoScan(); // Ensure menu scan stops
                         document.getElementById('start-screen').style.display = 'none';
-                        audio.speak("Se începe jocul");
+                        audio.speak("A játék indul");
                         shotsTaken = 0;
                         score = 0;
                         setupRound();
@@ -1783,12 +1784,12 @@
                         
                         document.querySelectorAll('.screen').forEach(s => s.style.display='none');
                         document.getElementById('settings-screen').style.display = 'flex';
-                        audio.speak("Setări");
+                        audio.speak("Beállítások");
                         this.setActiveMenu('settings');
                         // Keep previous gameState (MENU or PAUSED)
                         break;
                     case 'exit':
-                        audio.speak("Se revine la Hub");
+                        audio.speak("Vissza a főmenübe");
                         setTimeout(() => {
                             if (window.parent && window.parent !== window) {
                               window.parent.postMessage({ action: 'focusBackButton' }, '*');
@@ -1894,7 +1895,7 @@
                     
                     case 'back':
                         document.querySelectorAll('.screen').forEach(s => s.style.display='none');
-                        audio.speak("Înapoi");
+                        audio.speak("Vissza");
                         
                         if (this.returnToId === 'pause') {
                              document.getElementById('pause-screen').style.display = 'flex';
@@ -1909,7 +1910,7 @@
 
                     case 'resume':
                         document.getElementById('pause-screen').style.display = 'none';
-                        audio.speak("Continuă jocul");
+                        audio.speak("Játék folytatása");
                         gameState = 'AIMING'; 
                         chargePower = 0;
                        
@@ -1919,13 +1920,13 @@
                     case 'restart':
                         this.stopAutoScan(); // Ensure menu scan stops
                         document.querySelectorAll('.screen').forEach(s => s.style.display='none');
-                        audio.speak("Se repornește jocul");
+                        audio.speak("A játék újraindul");
                         resetGame();
                         break;
                     case 'menu':
                         document.querySelectorAll('.screen').forEach(s => s.style.display='none');
                         document.getElementById('start-screen').style.display = 'flex';
-                        audio.speak("Meniu principal");
+                        audio.speak("Főmenü");
                         this.setActiveMenu('start');
                         gameState = 'MENU';
                         break;
@@ -1947,7 +1948,7 @@
                     gameState = 'PAUSED';
                     document.getElementById('pause-screen').style.display = 'flex';
                     this.setActiveMenu('pause');
-                    audio.speak("Pauză");
+                    audio.speak("Szünet");
                 }
             }
         }
@@ -2049,8 +2050,8 @@
                 if (!scored) {
                     // Check if ball has fallen below floor or stopped
                     // Just timeout handled this generally, but if we call this from timeout:
-                    audio.speak("Ratat");
-                    showMessage("RATAT", "red");
+                    audio.speak("Mellé");
+                    showMessage("MELLÉ", "red");
                     
                     if (bonusMode) {
                         perfectGame = false;
@@ -2411,7 +2412,7 @@
                             const points = isThreePointer ? 3 : 2;
                             score += points;
                             
-                            const msg = points + " PUNCTE!";
+                            const msg = points + " PONT!";
                             
                             audio.playSwish(); // Net sound
                             setTimeout(() => audio.playCheer(), 200); // Delayed applause
@@ -2516,7 +2517,7 @@
             // Initial call to setup menu state
             MenuManager.setActiveMenu('start');
             setTimeout(() => {
-                audio.speak("Bun venit la Baschetul lui Benny. Apasă Spațiu pentru a scana opțiunile meniului. Apasă Enter pentru a selecta.");
+                audio.speak("Üdvözlünk Benny kosárlabdajátékában. Nyomd meg a Szóközt a menüpontok pásztázásához. Nyomd meg az Entert a kiválasztáshoz.");
             }, 1000);
             
             // Start Loop ONLY if not running (prevent double speed on reload/cached state)

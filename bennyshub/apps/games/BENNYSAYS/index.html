@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,7 +14,7 @@
 <body>
   <div id="wrap">
     <canvas id="game"></canvas>
-    <div class="hint">Space = scan (hold Space = scan back). Return = select. Click = direct select.</div>
+    <div class="hint">Szóköz = pásztázás (hosszan = vissza). Enter = kiválasztás. Kattintás = közvetlen kiválasztás.</div>
   </div>
 
   <!-- Include shared voice manager -->
@@ -31,12 +31,12 @@
   const RETURN_DEBOUNCE     = 160;    // ms debounce for return release
 
   const COLORS = ['#ff5c00', '#5bb0ff', '#39d353', '#a78bfa'];
-  const NAMES  = ['Portocaliu','Albastru','Verde','Mov'];
+  const NAMES  = ['Narancs','Kék','Zöld','Lila'];
   
-  const MAIN_MENU_ITEMS = ['Joacă', 'Setări', 'Ieși din joc'];
+  const MAIN_MENU_ITEMS = ['Játék', 'Beállítások', 'Kilépés'];
   const MAIN_COLORS = ['#3bb273', '#8b5cf6', '#ef4444', '#f97316']; 
   
-  const DIFFICULTY_ITEMS = ['Ușor', 'Mediu', 'Greu', 'Înapoi'];
+  const DIFFICULTY_ITEMS = ['Könnyű', 'Közepes', 'Nehéz', 'Vissza'];
   const DIFFICULTY_COLORS = ['#60a5fa', '#34d399', '#f59e0b', '#64748b']; 
 
   const HILITE = '#ffffff';
@@ -264,7 +264,6 @@
 
   function speak(text) {
     if (!text) return;
-    if (window.__debugLog) window.__debugLog('speak() called with: ' + text + ' | ttsEnabled=' + isTTSEnabled());
 
     // Check if TTS is enabled globally
     if (!isTTSEnabled()) {
@@ -280,6 +279,7 @@
       window.speechSynthesis.cancel(); // Cancel previous
       
       const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hu-HU';
       
       // CRITICAL FIX: Bind to window to prevent Garbage Collection on iOS
       window._iosUtterance = utterance;
@@ -287,10 +287,8 @@
       // Attempt to select a valid voice
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
-         // Try to find Samantha or Daniel (high quality iOS voices) or any English
-         const preferred = voices.find(v => v.name === 'Samantha') || 
-                           voices.find(v => v.name === 'Daniel') || 
-                           voices.find(v => v.lang.startsWith('en'));
+         // Prefer a Hungarian voice (e.g. Tünde on iOS)
+         const preferred = voices.find(v => v.lang.replace('_','-').toLowerCase().startsWith('hu'));
          if (preferred) {
              utterance.voice = preferred;
              console.log('Using iOS Voice:', preferred.name);
@@ -330,6 +328,7 @@
       console.log('Using fallback speech synthesis');
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hu-HU';
       window.speechSynthesis.speak(utterance);
     }
   }
@@ -380,7 +379,6 @@
 
   function handlePlayerPick(pick) {
     if (phase !== Phase.PLAYER) return;
-    if (window.__debugLog) window.__debugLog('picked index ' + pick + ' = ' + NAMES[pick]);
     flashQuadrant(pick, 300);
     beep(pick, 550);
 
@@ -395,7 +393,7 @@
         // speak() always cancels any speech in progress, so calling it twice
         // in a row (color name, then round number) meant the second call was
         // silently cutting off the first before it could be heard.
-        speak(NAMES[pick] + '. Runda ' + round);
+        speak(NAMES[pick] + '. ' + round + '. kör');
         phase = Phase.SHOWING;
         setTimeout(showSequence, 320);
       } else {
@@ -412,7 +410,7 @@
     // Combined into one speak() call for the same reason as handlePlayerPick above —
     // two back-to-back speak() calls cancel each other, so the wrong color's name
     // would otherwise be cut off by "Game over" starting immediately after it.
-    speak((wrongPickName ? wrongPickName + '. ' : '') + 'Joc încheiat');
+    speak((wrongPickName ? wrongPickName + '. ' : '') + 'Vége a játéknak');
     setTimeout(() => {
       phase = Phase.MAIN;
       mainHighlight = -1; // No highlight until spacebar is pressed
@@ -422,7 +420,7 @@
   }
 
   function exitApp() {
-    speak('Înapoi la hub');
+    speak('Vissza a főmenübe');
     setTimeout(() => {
       if (window.parent && window.parent !== window) {
         window.parent.postMessage({ action: 'focusBackButton' }, '*');
@@ -436,13 +434,13 @@
   if (!window.NarbeScanManager) return;
   const s = window.NarbeScanManager.getSettings();
   const ttsEnabled = isTTSEnabled();
-  const onOffRO = (val) => val ? 'Pornit' : 'Oprit';
+  const onOffHU = (val) => val ? 'Be' : 'Ki';
   settingsItems = [
-    `Voce: ${onOffRO(ttsEnabled)}`,
-    `Sunet: ${onOffRO(isAudioActive)}`,
-    `Scanare automată: ${onOffRO(s.autoScan)}`,
-    `Viteză: ${s.scanInterval/1000}s`,
-    'Înapoi'
+    `Beszéd: ${onOffHU(ttsEnabled)}`,
+    `Hang: ${onOffHU(isAudioActive)}`,
+    `Automatikus pásztázás: ${onOffHU(s.autoScan)}`,
+    `Sebesség: ${s.scanInterval/1000} mp`,
+    'Vissza'
   ];
 }
 
@@ -534,22 +532,22 @@
       if (phase === Phase.MAIN) {
         if (mainHighlight >= 0 && mainHighlight < MAIN_MENU_ITEMS.length) {
           const sel = MAIN_MENU_ITEMS[mainHighlight];
-          if (sel === 'Joacă') {
+          if (sel === 'Játék') {
              // iOS Audio Unlock Intent
              beep(0, 60);
              
              phase = Phase.DIFFICULTY;
              diffHighlight = -1;
-             speak('Alege dificultatea');
+             speak('Válassz nehézségi szintet');
              startAutoScan();
-          } else if (sel === 'Setări') {
+          } else if (sel === 'Beállítások') {
              phase = Phase.SETTINGS;
              settingsHighlight = 0;
              updateSettingsItems();
-             speak('Setări');
+             speak('Beállítások');
              speak(settingsItems[0]);
              startAutoScan();
-          } else if (sel === 'Ieși din joc') {
+          } else if (sel === 'Kilépés') {
              exitApp();
           }
         }
@@ -559,15 +557,15 @@
       if (phase === Phase.DIFFICULTY) {
         if (diffHighlight >= 0 && diffHighlight < DIFFICULTY_ITEMS.length) {
           const sel = DIFFICULTY_ITEMS[diffHighlight];
-          if (sel === 'Înapoi') {
+          if (sel === 'Vissza') {
              phase = Phase.MAIN;
              mainHighlight = 0;
-             speak('Meniu principal');
+             speak('Főmenü');
              startAutoScan();
           } else {
              // Speak Round 1 immediately in the user gesture before any delays
-             speak('Runda întâi');
-             colorCount = sel === 'Ușor' ? 2 : (sel === 'Mediu' ? 3 : 4);
+             speak('1. kör');
+             colorCount = sel === 'Könnyű' ? 2 : (sel === 'Közepes' ? 3 : 4);
              startNewGame();
           }
         }
@@ -607,22 +605,22 @@
         const b = menuBounds[i];
         if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
           const sel = MAIN_MENU_ITEMS[i];
-          if (sel === 'Joacă') {
+          if (sel === 'Játék') {
              // iOS Audio Unlock Intent - SKIP beep to avoid TTS conflict
              // beep(0, 60);
              
              phase = Phase.DIFFICULTY;
              diffHighlight = -1;
-             speak('Alege dificultatea');
+             speak('Válassz nehézségi szintet');
              startAutoScan();
-          } else if (sel === 'Setări') {
+          } else if (sel === 'Beállítások') {
              phase = Phase.SETTINGS;
              settingsHighlight = 0;
              updateSettingsItems();
-             speak('Setări');
+             speak('Beállítások');
              speak(settingsItems[0]);
              startAutoScan();
-          } else if (sel === 'Ieșire din joc') {
+          } else if (sel === 'Kilépés') {
              exitApp();
           }
           return;
@@ -633,15 +631,15 @@
         const b = menuBounds[i];
         if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
            const sel = DIFFICULTY_ITEMS[i];
-           if (sel === 'Înapoi') {
+           if (sel === 'Vissza') {
              phase = Phase.MAIN;
              mainHighlight = 0;
-             speak('Meniu principal');
+             speak('Főmenü');
              startAutoScan();
            } else {
              // Speak Round 1 immediately in the user gesture before any delays
-             speak('Runda întâi');
-             colorCount = sel === 'Ușor' ? 2 : (sel === 'Mediu' ? 3 : 4);
+             speak('1. kör');
+             colorCount = sel === 'Könnyű' ? 2 : (sel === 'Közepes' ? 3 : 4);
              startNewGame();
            }
            return;
@@ -691,21 +689,21 @@
         const b = menuBounds[i];
         if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
           const sel = MAIN_MENU_ITEMS[i];
-          if (sel === 'Joacă') {
+          if (sel === 'Játék') {
              // iOS Audio Unlock Intent - SKIP beep to avoid TTS conflict
              // beep(0, 60);
              
              phase = Phase.DIFFICULTY;
              diffHighlight = -1;
-             speak('Alege dificultatea');
+             speak('Válassz nehézségi szintet');
              startAutoScan();
-          } else if (sel === 'Setări') {
+          } else if (sel === 'Beállítások') {
              phase = Phase.SETTINGS;
              settingsHighlight = 0;
              updateSettingsItems();
-             speak('Setări');
+             speak('Beállítások');
              speak(settingsItems[0]);
-          } else if (sel === 'Ieșire din joc') {
+          } else if (sel === 'Kilépés') {
              exitApp();
           }
           return;
@@ -716,15 +714,15 @@
         const b = menuBounds[i];
         if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
           const sel = DIFFICULTY_ITEMS[i];
-          if (sel === 'Înapoi') {
+          if (sel === 'Vissza') {
              phase = Phase.MAIN;
              mainHighlight = 0;
-             speak('Meniu principal');
+             speak('Főmenü');
              startAutoScan();
           } else {
              // Speak Round 1 immediately in the user gesture before any delays
-             speak('Runda întâi');
-             colorCount = sel === 'Ușor' ? 2 : (sel === 'Mediu' ? 3 : 4);
+             speak('1. kör');
+             colorCount = sel === 'Könnyű' ? 2 : (sel === 'Közepes' ? 3 : 4);
              startNewGame();
           }
           return;
@@ -850,7 +848,7 @@
           menuBounds.push({x: mx, y: y, w: mw, h: btnH});
           
           let color = MAIN_COLORS[i];
-          if (MAIN_MENU_ITEMS[i] === 'Ieși din joc') color = '#ef4444'; // Keep Exit red
+          if (MAIN_MENU_ITEMS[i] === 'Kilépés') color = '#ef4444'; // Keep Exit red
 
           ctx.fillStyle = color;
           roundRect(mx, y, mw, btnH, radius);
@@ -872,10 +870,10 @@
         ctx.font = '400 14px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillStyle = '#e5e7eb';
-        ctx.fillText('Space = scanează, Return = selectează, Click = selectează direct', w/2, startY + rows*(btnH+gap) + 8);
+        ctx.fillText('Szóköz = pásztázás, Enter = kiválasztás, Kattintás = közvetlen kiválasztás', w/2, startY + rows*(btnH+gap) + 8);
 
       } else if (phase === Phase.DIFFICULTY) {
-        ctx.fillText('Alege dificultatea', w/2, 24);
+        ctx.fillText('Válassz nehézségi szintet', w/2, 24);
 
         menuBounds = [];
         const mx = 20; const mw = w - 40;
@@ -908,7 +906,7 @@
           ctx.fillText(DIFFICULTY_ITEMS[i], mx + mw/2, y + btnH/2);
         }
       } else if (phase === Phase.SETTINGS) {
-        ctx.fillText('Setări', w/2, 24);
+        ctx.fillText('Beállítások', w/2, 24);
 
         menuBounds = [];
         const mx = 20; const mw = w - 40;
@@ -939,12 +937,12 @@
           ctx.fillText(settingsItems[i], mx + 24, y + btnH/2);
         }
       } else if (phase === Phase.GAMEOVER) {
-        ctx.fillText('Joc încheiat', w/2, 24);
+        ctx.fillText('Vége a játéknak', w/2, 24);
         ctx.font = '400 16px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
-        ctx.fillText('Înapoi la meniu...', w/2, 60);
+        ctx.fillText('Vissza a menübe...', w/2, 60);
 
       } else {
-        ctx.fillText('Rundă ' + round, w/2, 24);
+        ctx.fillText(round + '. kör', w/2, 24);
 
         // Gameplay tiles (fill screen based on colorCount)
         tileBounds = [];
@@ -985,7 +983,7 @@
         ctx.fillStyle = '#bbf7d0';
         ctx.font = '800 26px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText('Rundă completă!', w/2, h/2);
+        ctx.fillText('Kör kész!', w/2, h/2);
         ctx.restore();
       }
 
@@ -1057,7 +1055,7 @@
     
     // Test TTS on load (will only work on non-iOS or after user interaction)
     if (!isIOS) {
-      setTimeout(() => speak('Benny spune încărcat'), 1000);
+      setTimeout(() => speak('Benny mondja betöltve'), 1000);
     }
     
     if (window.NarbeScanManager) {
@@ -1079,20 +1077,6 @@
   // Start
   requestAnimationFrame(draw);
 
-  // ===== TEMPORARY DEBUG STRIP — safe to delete once the TTS issue is found =====
-  (function setupDebugStrip() {
-    const box = document.createElement('div');
-    box.style.cssText = 'position:fixed; bottom:0; left:0; right:0; background:#000; color:#0f0; font:12px monospace; padding:6px; z-index:99999; max-height:120px; overflow:auto; pointer-events:none;';
-    document.body.appendChild(box);
-    window.__debugLog = function(msg) {
-      const line = document.createElement('div');
-      line.textContent = msg;
-      box.appendChild(line);
-      box.scrollTop = box.scrollHeight;
-    };
-    window.__debugLog('Debug strip ready');
-  })();
-  // ===== END TEMPORARY DEBUG STRIP =====
   </script>
 </body>
 </html>

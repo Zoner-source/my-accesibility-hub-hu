@@ -6,26 +6,26 @@ const config = {
 };
 
 const themes = [
-    { name: 'Implicit', bg: 'linear-gradient(135deg, #ff4b1f, #ff9068)' },
-    { name: 'Ocean', bg: 'linear-gradient(135deg, #2193b0, #6dd5ed)' },
-    { name: 'Miezul nopții', bg: 'linear-gradient(135deg, #232526, #414345)' },
-    { name: 'Pădure', bg: 'linear-gradient(135deg, #134e5e, #71b280)' },
-    { name: 'Apus', bg: 'linear-gradient(135deg, #f12711, #f5af19)' },
-    { name: 'Lavandă', bg: 'linear-gradient(135deg, #834d9b, #d04ed6)' },
-    { name: 'Mentă', bg: 'linear-gradient(135deg, #00b09b, #96c93d)' },
-    { name: 'Albastru închis', bg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)' }
+    { name: 'Alapértelmezett', bg: 'linear-gradient(135deg, #ff4b1f, #ff9068)' },
+    { name: 'Óceán', bg: 'linear-gradient(135deg, #2193b0, #6dd5ed)' },
+    { name: 'Éjfél', bg: 'linear-gradient(135deg, #232526, #414345)' },
+    { name: 'Erdő', bg: 'linear-gradient(135deg, #134e5e, #71b280)' },
+    { name: 'Naplemente', bg: 'linear-gradient(135deg, #f12711, #f5af19)' },
+    { name: 'Levendula', bg: 'linear-gradient(135deg, #834d9b, #d04ed6)' },
+    { name: 'Menta', bg: 'linear-gradient(135deg, #00b09b, #96c93d)' },
+    { name: 'Sötétkék', bg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)' }
 ];
 
 const basicColors = [
     'Red', 'Orange', 'Yellow', 'Lime', 'Green', 'Teal', 'Cyan', 'Blue', 'Purple', 'Magenta', 'Pink', 'White', 'Gray', 'Black'
 ];
-// Romanian display names. basicColors itself is fed directly into
+// Hungarian display names. basicColors itself is fed directly into
 // cell.style.color, so the array must stay in English — only the
 // settings-menu label is translated, via this lookup.
-const basicColorNamesRO = {
-    'Red': 'Roșu', 'Orange': 'Portocaliu', 'Yellow': 'Galben', 'Lime': 'Verde lime', 'Green': 'Verde',
-    'Teal': 'Turcoaz', 'Cyan': 'Azuriu', 'Blue': 'Albastru', 'Purple': 'Mov', 'Magenta': 'Magenta',
-    'Pink': 'Roz', 'White': 'Alb', 'Gray': 'Gri', 'Black': 'Negru'
+const basicColorNamesHU = {
+    'Red': 'Piros', 'Orange': 'Narancs', 'Yellow': 'Sárga', 'Lime': 'Lime zöld', 'Green': 'Zöld',
+    'Teal': 'Pávakék', 'Cyan': 'Ciánkék', 'Blue': 'Kék', 'Purple': 'Lila', 'Magenta': 'Bíbor',
+    'Pink': 'Rózsaszín', 'White': 'Fehér', 'Gray': 'Szürke', 'Black': 'Fekete'
 };
 
 const highlightColors = [
@@ -34,10 +34,10 @@ const highlightColors = [
 // Same rule: highlightColors feeds style.borderColor/backgroundColor
 // directly (see getHighlightColor/updateHighlights), so it stays English —
 // only the label text is translated.
-const highlightColorNamesRO = {
-    'Theme Default': 'Implicit (temă)', 'Yellow': 'Galben', 'White': 'Alb', 'Cyan': 'Azuriu',
-    'Lime': 'Verde lime', 'Magenta': 'Magenta', 'Red': 'Roșu', 'Orange': 'Portocaliu',
-    'Pink': 'Roz', 'Gold': 'Auriu', 'DeepSkyBlue': 'Albastru cer', 'SpringGreen': 'Verde primăvară', 'Violet': 'Violet'
+const highlightColorNamesHU = {
+    'Theme Default': 'Alapértelmezett (téma)', 'Yellow': 'Sárga', 'White': 'Fehér', 'Cyan': 'Ciánkék',
+    'Lime': 'Lime zöld', 'Magenta': 'Bíbor', 'Red': 'Piros', 'Orange': 'Narancs',
+    'Pink': 'Rózsaszín', 'Gold': 'Arany', 'DeepSkyBlue': 'Égkék', 'SpringGreen': 'Tavaszi zöld', 'Violet': 'Ibolya'
 };
 
 // Note: Scan speeds are now managed by NarbeScanManager
@@ -131,7 +131,6 @@ function loadSettings() {
         const saved = localStorage.getItem('tictactoe_settings');
         if (saved) {
             Object.assign(settings, JSON.parse(saved));
-            if (settings.scanSpeedIndex >= scanSpeeds.length) settings.scanSpeedIndex = 0;
         }
         const savedStats = localStorage.getItem('tictactoe_stats');
         if (savedStats) {
@@ -222,11 +221,11 @@ function getColorSwatch(color) {
 
 const menus = {
     main: [
-        { text: "Un jucător", action: () => startGame('single') },
-        { text: "Doi jucători", action: () => startGame('two') },
-        { text: "Setări", action: () => showSettingsMenu() },
-        { text: "Ieșire", action: () => {
-             speak("Se revine la Hub");
+        { text: "Egy játékos", action: () => startGame('single') },
+        { text: "Két játékos", action: () => startGame('two') },
+        { text: "Beállítások", action: () => showSettingsMenu() },
+        { text: "Kilépés", action: () => {
+             speak("Vissza a főmenübe");
              setTimeout(() => {
                  if (window.parent && window.parent !== window) {
                      window.parent.postMessage({ action: 'focusBackButton' }, '*');
@@ -237,37 +236,37 @@ const menus = {
         } }
     ],
     settings: [
-        { text: () => `Schimbă tema: ${themes[settings.themeIndex].name}`, action: () => cycleTheme(1), onPrev: () => cycleTheme(-1) },
-        { text: () => `Redare vocală: ${(window.NarbeVoiceManager ? window.NarbeVoiceManager.getSettings().ttsEnabled : settings.tts) ? 'Pornit' : 'Oprit'}`, action: () => toggleTTS(), onPrev: () => toggleTTS() },
-        { text: () => `Voce poziție: ${settings.locationTTS ? 'Pornit' : 'Oprit'}`, action: () => toggleLocationTTS(), onPrev: () => toggleLocationTTS() },
+        { text: () => `Téma váltása: ${themes[settings.themeIndex].name}`, action: () => cycleTheme(1), onPrev: () => cycleTheme(-1) },
+        { text: () => `Hangvisszajelzés: ${(window.NarbeVoiceManager ? window.NarbeVoiceManager.getSettings().ttsEnabled : settings.tts) ? 'Be' : 'Ki'}`, action: () => toggleTTS(), onPrev: () => toggleTTS() },
+        { text: () => `Pozíció hang: ${settings.locationTTS ? 'Be' : 'Ki'}`, action: () => toggleLocationTTS(), onPrev: () => toggleLocationTTS() },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Scanare automată: ${window.NarbeScanManager.getSettings().autoScan ? 'Pornit' : 'Oprit'}`;
-                 return "Scanare automată: Oprit";
+                 if(window.NarbeScanManager) return `Automatikus pásztázás: ${window.NarbeScanManager.getSettings().autoScan ? 'Be' : 'Ki'}`;
+                 return "Automatikus pásztázás: Ki";
             }, 
             action: () => toggleAutoScan(), 
             onPrev: () => toggleAutoScan() 
         },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Viteză scanare: ${window.NarbeScanManager.getScanInterval()/1000}s`;
-                 return "Viteză scanare: 2s";
+                 if(window.NarbeScanManager) return `Pásztázási sebesség: ${window.NarbeScanManager.getScanInterval()/1000} mp`;
+                 return "Pásztázási sebesség: 2 mp";
             }, 
             action: () => cycleScanSpeed(1), 
             onPrev: () => cycleScanSpeed(-1) 
         },
-        { text: () => `Stil evidențiere: ${settings.highlightStyle === 'outline' ? 'Contur' : 'Celulă completă'}`, action: () => toggleHighlightStyle(), onPrev: () => toggleHighlightStyle() },
-        { text: () => `Culoare evidențiere: ${highlightColorNamesRO[highlightColors[settings.highlightColorIndex]]}${getColorSwatch(highlightColors[settings.highlightColorIndex])}`, action: () => cycleHighlightColor(1), onPrev: () => cycleHighlightColor(-1) },
-        { text: () => `Culoare J1 (X): ${basicColorNamesRO[settings.p1Color]}${getColorSwatch(settings.p1Color)}`, action: () => cycleP1Color(1), onPrev: () => cycleP1Color(-1) },
-        { text: () => `Culoare J2 (O): ${basicColorNamesRO[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1), onPrev: () => cycleP2Color(-1) },
-        { text: "Înapoi", action: () => showMainMenu() }
+        { text: () => `Kiemelés stílusa: ${settings.highlightStyle === 'outline' ? 'Körvonal' : 'Teljes mező'}`, action: () => toggleHighlightStyle(), onPrev: () => toggleHighlightStyle() },
+        { text: () => `Kiemelés színe: ${highlightColorNamesHU[highlightColors[settings.highlightColorIndex]]}${getColorSwatch(highlightColors[settings.highlightColorIndex])}`, action: () => cycleHighlightColor(1), onPrev: () => cycleHighlightColor(-1) },
+        { text: () => `1. játékos színe (X): ${basicColorNamesHU[settings.p1Color]}${getColorSwatch(settings.p1Color)}`, action: () => cycleP1Color(1), onPrev: () => cycleP1Color(-1) },
+        { text: () => `2. játékos színe (O): ${basicColorNamesHU[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1), onPrev: () => cycleP2Color(-1) },
+        { text: "Vissza", action: () => showMainMenu() }
     ],
     pause: [
-        { text: "Continuă jocul", action: () => resumeGame() },
-        { text: "Setări", action: () => showPauseSettings() },
-        { text: "Înapoi la meniu", action: () => showMainMenu() },
-        { text: "Ieșire", action: () => {
-             speak("Se revine la Hub");
+        { text: "Játék folytatása", action: () => resumeGame() },
+        { text: "Beállítások", action: () => showPauseSettings() },
+        { text: "Vissza a menübe", action: () => showMainMenu() },
+        { text: "Kilépés", action: () => {
+             speak("Vissza a főmenübe");
              setTimeout(() => {
                  if (window.parent && window.parent !== window) {
                      window.parent.postMessage({ action: 'focusBackButton' }, '*');
@@ -278,34 +277,34 @@ const menus = {
         } }
     ],
     pauseSettings: [
-        { text: () => `Schimbă tema: ${themes[settings.themeIndex].name}`, action: () => cycleTheme(1, true), onPrev: () => cycleTheme(-1, true) },
-        { text: () => `Redare vocală: ${(window.NarbeVoiceManager ? window.NarbeVoiceManager.getSettings().ttsEnabled : settings.tts) ? 'Pornit' : 'Oprit'}`, action: () => toggleTTS(true), onPrev: () => toggleTTS(true) },
-        { text: () => `Voce poziție: ${settings.locationTTS ? 'Pornit' : 'Oprit'}`, action: () => toggleLocationTTS(true), onPrev: () => toggleLocationTTS(true) },
+        { text: () => `Téma váltása: ${themes[settings.themeIndex].name}`, action: () => cycleTheme(1, true), onPrev: () => cycleTheme(-1, true) },
+        { text: () => `Hangvisszajelzés: ${(window.NarbeVoiceManager ? window.NarbeVoiceManager.getSettings().ttsEnabled : settings.tts) ? 'Be' : 'Ki'}`, action: () => toggleTTS(true), onPrev: () => toggleTTS(true) },
+        { text: () => `Pozíció hang: ${settings.locationTTS ? 'Be' : 'Ki'}`, action: () => toggleLocationTTS(true), onPrev: () => toggleLocationTTS(true) },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Scanare automată: ${window.NarbeScanManager.getSettings().autoScan ? 'Pornit' : 'Oprit'}`;
-                 return "Scanare automată: Oprit";
+                 if(window.NarbeScanManager) return `Automatikus pásztázás: ${window.NarbeScanManager.getSettings().autoScan ? 'Be' : 'Ki'}`;
+                 return "Automatikus pásztázás: Ki";
             }, 
             action: () => toggleAutoScan(true), 
             onPrev: () => toggleAutoScan(true) 
         },
         { 
             text: () => {
-                 if(window.NarbeScanManager) return `Viteză scanare: ${window.NarbeScanManager.getScanInterval()/1000}s`;
-                 return "Viteză scanare: 2s";
+                 if(window.NarbeScanManager) return `Pásztázási sebesség: ${window.NarbeScanManager.getScanInterval()/1000} mp`;
+                 return "Pásztázási sebesség: 2 mp";
             }, 
             action: () => cycleScanSpeed(1, true), 
             onPrev: () => cycleScanSpeed(-1, true) 
         },
-        { text: () => `Stil evidențiere: ${settings.highlightStyle === 'outline' ? 'Contur' : 'Celulă completă'}`, action: () => toggleHighlightStyle(true), onPrev: () => toggleHighlightStyle(true) },
-        { text: () => `Culoare evidențiere: ${highlightColorNamesRO[highlightColors[settings.highlightColorIndex]]}${getColorSwatch(highlightColors[settings.highlightColorIndex])}`, action: () => cycleHighlightColor(1, true), onPrev: () => cycleHighlightColor(-1, true) },
-        { text: () => `Culoare J1 (X): ${basicColorNamesRO[settings.p1Color]}${getColorSwatch(settings.p1Color)}`, action: () => cycleP1Color(1, true), onPrev: () => cycleP1Color(-1, true) },
-        { text: () => `Culoare J2 (O): ${basicColorNamesRO[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1, true), onPrev: () => cycleP2Color(-1, true) },
-        { text: "Înapoi", action: () => showPauseMenu() }
+        { text: () => `Kiemelés stílusa: ${settings.highlightStyle === 'outline' ? 'Körvonal' : 'Teljes mező'}`, action: () => toggleHighlightStyle(true), onPrev: () => toggleHighlightStyle(true) },
+        { text: () => `Kiemelés színe: ${highlightColorNamesHU[highlightColors[settings.highlightColorIndex]]}${getColorSwatch(highlightColors[settings.highlightColorIndex])}`, action: () => cycleHighlightColor(1, true), onPrev: () => cycleHighlightColor(-1, true) },
+        { text: () => `1. játékos színe (X): ${basicColorNamesHU[settings.p1Color]}${getColorSwatch(settings.p1Color)}`, action: () => cycleP1Color(1, true), onPrev: () => cycleP1Color(-1, true) },
+        { text: () => `2. játékos színe (O): ${basicColorNamesHU[settings.p2Color]}${getColorSwatch(settings.p2Color)}`, action: () => cycleP2Color(1, true), onPrev: () => cycleP2Color(-1, true) },
+        { text: "Vissza", action: () => showPauseMenu() }
     ],
     gameover: [
-        { text: "Da", action: () => restartGame() },
-        { text: "Nu", action: () => showMainMenu() }
+        { text: "Igen", action: () => restartGame() },
+        { text: "Nem", action: () => showMainMenu() }
     ]
 };
 
@@ -373,14 +372,14 @@ function showMainMenu() {
     document.getElementById('status-display').innerText = ""; // Clear status
     
     renderMenu('menu-container', menus.main, "BENNY'S<br>TIC TAC TOE");
-    speak("Tic Tac Toe al lui Benny. Un jucător");
+    speak("Benny Tic Tac Toe játéka. Egy játékos");
     startAutoScan();
 }
 
 function showSettingsMenu() {
     state.menuState = 'settings';
     state.menuIndex = 0;
-    renderMenu('menu-container', menus.settings, "SETĂRI");
+    renderMenu('menu-container', menus.settings, "BEÁLLÍTÁSOK");
     announceCurrentMenuItem();
     startAutoScan();
 }
@@ -394,16 +393,16 @@ function showPauseMenu() {
     overlay.style.display = 'flex';
     overlay.innerHTML = ''; // Clear previous
     
-    renderMenu('pause-overlay', menus.pause, "PAUZĂ");
+    renderMenu('pause-overlay', menus.pause, "SZÜNET");
     updateHighlights();
-    speak("Pauză. Continuă jocul");
+    speak("Szünet. Játék folytatása");
     startAutoScan();
 }
 
 function showPauseSettings() {
     state.pauseMenuState = 'settings';
     state.pauseIndex = 0;
-    renderMenu('pause-overlay', menus.pauseSettings, "SETĂRI");
+    renderMenu('pause-overlay', menus.pauseSettings, "BEÁLLÍTÁSOK");
     announceCurrentPauseItem();
     startAutoScan();
 }
@@ -428,7 +427,7 @@ function showGameOver(result) {
     overlay.style.display = 'flex';
     overlay.innerHTML = '';
     
-    let message = result === 'Tie' ? "Egalitate!" : `Jucătorul ${result} câștigă!`;
+    let message = result === 'Tie' ? "Döntetlen!" : `${result} nyer!`;
     
     renderMenu('pause-overlay', menus.gameover, message);
 
@@ -439,19 +438,19 @@ function showGameOver(result) {
     statsDiv.className = 'status-message';
     statsDiv.style.fontSize = '24px';
     if (state.gameMode === 'single') {
-        statsDiv.innerText = `Victorii: ${gameStats.single.wins} | Înfrângeri: ${gameStats.single.losses} | Egalități: ${gameStats.single.ties}`;
+        statsDiv.innerText = `Győzelmek: ${gameStats.single.wins} | Vereségek: ${gameStats.single.losses} | Döntetlenek: ${gameStats.single.ties}`;
     } else {
-         statsDiv.innerText = `Victorii J1: ${gameStats.two.p1Wins} | Victorii J2: ${gameStats.two.p2Wins} | Egalități: ${gameStats.two.ties}`;
+         statsDiv.innerText = `1. játékos győzelmei: ${gameStats.two.p1Wins} | 2. játékos győzelmei: ${gameStats.two.p2Wins} | Döntetlenek: ${gameStats.two.ties}`;
     }
     title.insertAdjacentElement('afterend', statsDiv);
 
     const sub = document.createElement('div');
     sub.className = 'status-message';
-    sub.innerText = "Joci din nou?";
+    sub.innerText = "Újra játszol?";
     statsDiv.insertAdjacentElement('afterend', sub);
     
     updateHighlights();
-    speak(message + ". Joci din nou? Da");
+    speak(message + ". Újra játszol? Igen");
     startAutoScan();
 }
 
@@ -623,14 +622,14 @@ function startGame(mode) {
     updateHighlights();
     startAutoScan();
     
-    let turnMsg = state.turn === 'X' ? "Începe X" : "Începe O";
+    let turnMsg = state.turn === 'X' ? "X kezd" : "O kezd";
     document.getElementById('status-display').innerText = `${turnMsg}`;
     
     if (state.gameMode === 'single' && state.turn === 'O') {
-        speak(turnMsg + ". Rândul calculatorului.");
+        speak(turnMsg + ". A számítógép következik.");
         setTimeout(computerMove, 1000);
     } else {
-        speak(turnMsg + ". Rândul tău.");
+        speak(turnMsg + ". Te jössz.");
     }
 }
 
@@ -642,7 +641,7 @@ function resumeGame() {
     state.mode = 'game';
     document.getElementById('pause-overlay').style.display = 'none';
     updateHighlights();
-    speak("Jocul a fost reluat");
+    speak("A játék folytatódik");
     startAutoScan();
 }
 
@@ -720,7 +719,7 @@ function computerMove() {
         
         if (move !== null) {
              if (settings.locationTTS) {
-                 speak(`Calculatorul a pus O pe celula ${move + 1}`);
+                 speak(`A számítógép a ${move + 1}. mezőre tette: O`);
              } else {
                  // Minimal announcement
              }
@@ -735,16 +734,16 @@ function computerMove() {
              
              state.turn = 'X';
              state.computerThinking = false;
-             document.getElementById('status-display').innerText = `Rândul: ${state.turn}`;
+             document.getElementById('status-display').innerText = `Következik: ${state.turn}`;
              
-             setTimeout(() => speak("Rândul tău"), settings.locationTTS ? 1500 : 500);
+             setTimeout(() => speak("Te jössz"), settings.locationTTS ? 1500 : 500);
         }
     }, 1000);
 }
 
 function playerMove(index) {
     if (state.board[index] !== "") {
-        speak("Ocupat");
+        speak("Foglalt");
         return;
     }
     
@@ -754,7 +753,7 @@ function playerMove(index) {
     resetAutoScan();
 
     if (settings.locationTTS) {
-         speak(`S-a pus ${state.turn} pe celula ${index + 1}`);
+         speak(`${index + 1}. mezőre került: ${state.turn}`);
     } else {
          speak(`${state.turn}`);
     }
@@ -768,13 +767,13 @@ function playerMove(index) {
     }
     
     state.turn = state.turn === 'X' ? 'O' : 'X';
-    document.getElementById('status-display').innerText = `Rândul: ${state.turn}`;
+    document.getElementById('status-display').innerText = `Következik: ${state.turn}`;
     
     if (state.gameMode === 'single' && state.turn === 'O') {
         state.computerThinking = true;
         computerMove(); // Handled with internal timeout
     } else {
-        setTimeout(() => speak("Rândul următor"), 1000);
+        setTimeout(() => speak("Következő játékos"), 1000);
     }
 }
 
@@ -864,13 +863,13 @@ function updateBoardUI() {
 function announceCell(index) {
     if (!settings.locationTTS) {
          const val = state.board[index];
-         speak(val === "" ? "Gol" : val);
+         speak(val === "" ? "Üres" : val);
          return;
     }
     
     const val = state.board[index];
-    if (val === "") speak(`Celula ${index + 1}: goală`);
-    else speak(`Celula ${index + 1}: ${val}`);
+    if (val === "") speak(`${index + 1}. mező: üres`);
+    else speak(`${index + 1}. mező: ${val}`);
 }
 
 // --- Input Handling ---
@@ -1034,15 +1033,15 @@ function performBackwardsToggle() {
 
 // --- TTS ---
 
-// A Romanian voice reads a bare "X" as the Roman numeral ten ("zece"), and
+// A voice may read a bare "X" as a Roman numeral, and
 // a bare "O" as an ambiguous letter. The board marks must stay 'X' / 'O'
 // internally and on screen (checkWinResult, gameStats and the cell display
 // all compare against them), so the fix happens here, at the last moment
-// before speech: X is spoken as the letter name "ics" and O as "zero".
+// before speech: X is spoken as "iksz" and O as "nulla".
 // Only standalone uppercase X / O are replaced (\b word boundaries), so no
 // other Romanian word is affected.
 function toSpokenMarks(text) {
-    return String(text).replace(/\bX\b/g, 'ics').replace(/\bO\b/g, 'zero');
+    return String(text).replace(/\bX\b/g, 'iksz').replace(/\bO\b/g, 'nulla');
 }
 
 function speak(text) {
@@ -1052,6 +1051,7 @@ function speak(text) {
     } else if (settings.tts && 'speechSynthesis' in window) {
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'hu-HU';
         speechSynthesis.speak(u);
     }
 }

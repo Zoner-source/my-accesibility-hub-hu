@@ -1,7 +1,7 @@
 {
   "ttsEnabled": true,
-  "voiceIndex": 3,
-  "voiceName": "Microsoft Andrei - Romanian (Romania)",
+  "voiceIndex": 0,
+  "voiceName": "Microsoft Szabolcs - Hungarian (Hungary)",
   "rate": 1,
   "pitch": 1,
   "volume": 1

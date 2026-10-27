@@ -6,7 +6,7 @@
                 "image": "train.png",
                 "sound": null,
                 "title": "train",
-                "altTitle": "Tren",
+                "altTitle": "Vonat",
                 "ttsText": "",
                 "_created": 1768921845726
             },
@@ -14,7 +14,7 @@
                 "image": "dumptruck.png",
                 "sound": null,
                 "title": "dump truck",
-                "altTitle": "Basculantă",
+                "altTitle": "Billencs teherautó",
                 "ttsText": "",
                 "_created": 1768921874515
             },
@@ -22,7 +22,7 @@
                 "image": "car.png",
                 "sound": null,
                 "title": "car",
-                "altTitle": "Mașină",
+                "altTitle": "Autó",
                 "ttsText": "",
                 "_created": 1768921888491
             },
@@ -30,7 +30,7 @@
                 "image": "forklift.svg",
                 "sound": null,
                 "title": "fork lift",
-                "altTitle": "Stivuitor",
+                "altTitle": "Targonca",
                 "ttsText": "",
                 "_created": 1768921907015
             },
@@ -38,7 +38,7 @@
                 "image": "airplane.svg",
                 "sound": null,
                 "title": "airplane",
-                "altTitle": "Avion",
+                "altTitle": "Repülőgép",
                 "ttsText": "",
                 "_created": 1768921928177
             },
@@ -46,7 +46,7 @@
                 "image": "pickuptruck.png",
                 "sound": null,
                 "title": "pickup truck",
-                "altTitle": "Camionetă",
+                "altTitle": "Pickup",
                 "ttsText": "",
                 "_created": 1768921943294
             },
@@ -54,7 +54,7 @@
                 "image": "minivan.png",
                 "sound": null,
                 "title": "minivan",
-                "altTitle": "Monovolum",
+                "altTitle": "Egyterű",
                 "ttsText": "",
                 "_created": 1768921956052
             },
@@ -62,7 +62,7 @@
                 "image": "sailboat.svg",
                 "sound": null,
                 "title": "sailboat",
-                "altTitle": "Barcă cu pânze",
+                "altTitle": "Vitorlás",
                 "ttsText": "",
                 "_created": 1768921982937
             },
@@ -70,7 +70,7 @@
                 "image": "f1car.png",
                 "sound": null,
                 "title": "F1 Car",
-                "altTitle": "Mașină de Formula 1",
+                "altTitle": "Formula 1-es autó",
                 "ttsText": "",
                 "_created": 1768922004739
             },
@@ -78,7 +78,7 @@
                 "image": "tractor.png",
                 "sound": null,
                 "title": "tractor",
-                "altTitle": "Tractor",
+                "altTitle": "Traktor",
                 "ttsText": "",
                 "_created": 1768922017126
             },
@@ -86,7 +86,7 @@
                 "image": "motorcycle.png",
                 "sound": null,
                 "title": "motorcycle",
-                "altTitle": "Motocicletă",
+                "altTitle": "Motorkerékpár",
                 "ttsText": "",
                 "_created": 1768922028773
             },
@@ -94,7 +94,7 @@
                 "image": "bicycle.png",
                 "sound": null,
                 "title": "bicycle",
-                "altTitle": "Bicicletă",
+                "altTitle": "Kerékpár",
                 "ttsText": "",
                 "_created": 1768922049478
             },
@@ -102,7 +102,7 @@
                 "image": "fighterjet.png",
                 "sound": null,
                 "title": "fighter jet",
-                "altTitle": "Avion de vânătoare",
+                "altTitle": "Vadászrepülő",
                 "ttsText": "",
                 "_created": 1768922067751
             },
@@ -110,7 +110,7 @@
                 "image": "minibus.svg",
                 "sound": null,
                 "title": "minibus",
-                "altTitle": "Minibuz",
+                "altTitle": "Kisbusz",
                 "ttsText": "",
                 "_created": 1768922087438
             }
@@ -120,7 +120,7 @@
                 "image": "rose.svg",
                 "sound": null,
                 "title": "rose",
-                "altTitle": "Trandafir",
+                "altTitle": "Rózsa",
                 "ttsText": "",
                 "_created": 1768922158951
             },
@@ -128,7 +128,7 @@
                 "image": "tulip.svg",
                 "sound": null,
                 "title": "tulip",
-                "altTitle": "Lalea",
+                "altTitle": "Tulipán",
                 "ttsText": "",
                 "_created": 1768922170186
             },
@@ -136,7 +136,7 @@
                 "image": "sunflower.svg",
                 "sound": null,
                 "title": "sunflower",
-                "altTitle": "Floarea-soarelui",
+                "altTitle": "Napraforgó",
                 "ttsText": "",
                 "_created": 1768922186339
             },
@@ -144,7 +144,7 @@
                 "image": "daisy.png",
                 "sound": null,
                 "title": "daisy",
-                "altTitle": "Margaretă",
+                "altTitle": "Százszorszép",
                 "ttsText": "",
                 "_created": 1768922200457
             },
@@ -152,7 +152,7 @@
                 "image": "daffodil.svg",
                 "sound": null,
                 "title": "daffodil",
-                "altTitle": "Narcisă",
+                "altTitle": "Nárcisz",
                 "ttsText": "",
                 "_created": 1768922221864
             },
@@ -160,7 +160,7 @@
                 "image": "lilies.png",
                 "sound": null,
                 "title": "lilies",
-                "altTitle": "Crini",
+                "altTitle": "Liliomok",
                 "ttsText": "",
                 "_created": 1768922475711
             },
@@ -168,7 +168,7 @@
                 "image": "orchid.png",
                 "sound": null,
                 "title": "orchid",
-                "altTitle": "Orhidee",
+                "altTitle": "Orchidea",
                 "ttsText": "",
                 "_created": 1768922499213
             },
@@ -176,7 +176,7 @@
                 "image": "lavender.png",
                 "sound": null,
                 "title": "lavender",
-                "altTitle": "Lavandă",
+                "altTitle": "Levendula",
                 "ttsText": "",
                 "_created": 1768922524376
             }

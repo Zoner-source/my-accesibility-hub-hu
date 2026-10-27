@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -482,16 +482,16 @@
         <div class="sentence-display" id="sentenceDisplay"></div>
         <button class="grid-button" id="deleteWordBtn">
           <span class="icon">⌫</span>
-          Șterge
+          Törlés
         </button>
         <button class="grid-button danger-btn" id="clearSentenceBtn">
           <span class="icon">🗑️</span>
-          Șterge tot
+          Mindent töröl
         </button>
       </div>
     </main>
 
-    <footer id="statusFooter">Ready - Load CSV to begin</footer>
+    <footer id="statusFooter">Kész – a kezdéshez töltsön be egy CSV-t</footer>
   </div>
 
   <div id="iframeModal" role="dialog" aria-modal="true">
@@ -499,14 +499,14 @@
       <!-- The iframe is created fresh in JS so reopens never break -->
       <iframe id="mediaFrame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
       <div id="iframeControls">
-        <button class="grid-button" id="playPauseBtn">Start/Pauză</button>
-        <button class="grid-button" id="prevBtn">⏮ Înainte</button>
-        <button class="grid-button" id="rewindBtn">Derulare înapoi</button>
-        <button class="grid-button" id="forwardBtn">Derulare înainte</button>
-        <button class="grid-button" id="nextBtn">⏭ Urmatorul</button>
-        <button class="grid-button" id="muteBtn">Sunet dezactivat</button>
-        <button class="grid-button" id="refreshBtn">Reîmprospătează</button>
-        <button class="grid-button danger-btn" id="closeIframeBtn">Close</button>
+        <button class="grid-button" id="playPauseBtn">Lejátszás/Szünet</button>
+        <button class="grid-button" id="prevBtn">⏮ Előző</button>
+        <button class="grid-button" id="rewindBtn">Visszatekerés</button>
+        <button class="grid-button" id="forwardBtn">Előretekerés</button>
+        <button class="grid-button" id="nextBtn">⏭ Következő</button>
+        <button class="grid-button" id="muteBtn">Némítva</button>
+        <button class="grid-button" id="refreshBtn">Frissítés</button>
+        <button class="grid-button danger-btn" id="closeIframeBtn">Bezárás</button>
       </div>
     </div>
   </div>
@@ -514,13 +514,13 @@
   <!-- Warning Modal for Create Board -->
   <div id="createBoardWarning" class="warning-modal" role="dialog" aria-modal="true">
     <div class="warning-content">
-      <div class="warning-title">⚠️ Avertisment</div>
+      <div class="warning-title">⚠️ Figyelmeztetés</div>
       <div class="warning-message">
-        Crearea unui panou va deschide o filă nouă și nu veți putea utiliza metoda de scanare și selectare pentru a reveni la panoul NARBE pentru fraze și media.
+        Egy tábla létrehozása új lapot nyit meg, és a pásztázással és kiválasztással nem lehet majd visszatérni a NARBE kifejezés- és médiatáblához.
       </div>
       <div class="warning-buttons">
-        <button class="warning-button back" id="createBoardBack">ÎNAPOI</button>
-        <button class="warning-button proceed" id="createBoardProceed">CONTINUĂ</button>
+        <button class="warning-button back" id="createBoardBack">VISSZA</button>
+        <button class="warning-button proceed" id="createBoardProceed">TOVÁBB</button>
       </div>
     </div>
   </div>
@@ -528,13 +528,13 @@
   <!-- Warning Modal for Load Board -->
   <div id="loadBoardWarning" class="warning-modal" role="dialog" aria-modal="true">
     <div class="warning-content">
-      <div class="warning-title">⚠️ Avertisment</div>
+      <div class="warning-title">⚠️ Figyelmeztetés</div>
       <div class="warning-message">
-        Încărcarea unui panou va deschide o fereastră nouă și nu veți putea utiliza metoda de scanare și selectare pentru a reveni la panoul NARBE pentru fraze și media.
+        Egy tábla betöltése új ablakot nyit meg, és a pásztázással és kiválasztással nem lehet majd visszatérni a NARBE kifejezés- és médiatáblához.
       </div>
       <div class="warning-buttons">
-        <button class="warning-button back" id="loadBoardBack">ÎNAPOI</button>
-        <button class="warning-button proceed" id="loadBoardProceed">CONTINUĂ</button>
+        <button class="warning-button back" id="loadBoardBack">VISSZA</button>
+        <button class="warning-button proceed" id="loadBoardProceed">TOVÁBB</button>
       </div>
     </div>
   </div>
@@ -654,11 +654,11 @@
     const SCAN_SPEEDS = { slow: 2000, medium: 1200, fast: 600 };
 
     const HIGHLIGHT_COLORS = {
-      Galben: '#ffff00', Verde: '#00ff00', Portocaliu: '#ffa500', Roșu: '#ff0000',
-      Albastru: '#0000ff', Mov: '#800080', Albastrudeschis: '#00ffff', Roz: '#ff69b4'
+      Sárga: '#ffff00', Zöld: '#00ff00', Narancs: '#ffa500', Piros: '#ff0000',
+      Kék: '#0000ff', Lila: '#800080', Ciánkék: '#00ffff', Rózsaszín: '#ff69b4'
     };
 
-    const THEMES = { light: 'Deschis', dark: 'Închis', blue: 'Albăstrui', green: 'Verzui', purple: 'Purpuriu' };
+    const THEMES = { light: 'Világos', dark: 'Sötét', blue: 'Kékes', green: 'Zöldes', purple: 'Lilás' };
 
     const el = {
       mainGrid: document.getElementById('mainGrid'),
@@ -694,7 +694,7 @@ function updateHeaderForCurrentView(){
   let title = 'Main Menu';
   switch(state.currentMenu){
     case 'main': title = 'Main Menu'; break;
-    case 'categories': title = state.currentBoardTitle || 'Categories'; break;
+    case 'categories': title = state.currentBoardTitle || 'Kategóriák'; break;
     case 'settings': title = 'Settings'; break;
     case 'gridsize': title = 'Grid Size'; break;
     case 'tts': title = 'Voice & TTS'; break;
@@ -734,14 +734,14 @@ function updateHeaderForCurrentView(){
           setTimeout(() => window.focus(), 0);
         };
         if (window.NarbeVoiceManager.getSettings().ttsEnabled) {
-          speak('Avertisment: Crearea unui panou va deschide o filă nouă și nu veți putea utiliza metoda de scanare și selectare pentru a reveni la panoul NARBE pentru fraze și media.');
+          speak('Figyelmeztetés: Egy tábla létrehozása új lapot nyit meg, és a pásztázással és kiválasztással nem lehet majd visszatérni a NARBE kifejezés- és médiatáblához.');
         }
       } else if (type === 'load') {
         el.loadBoardWarning.classList.add('active');
         state.modalButtons = [el.loadBoardBack, el.loadBoardProceed];
         state.pendingAction = () => el.csvFile.click();
         if (window.NarbeVoiceManager.getSettings().ttsEnabled) {
-          speak('Avertisment: Încărcarea unui panou va deschide o fereastră nouă și nu veți putea utiliza metoda de scanare și selectare pentru a reveni la panoul NARBE pentru fraze și media.');
+          speak('Figyelmeztetés: Egy tábla betöltése új ablakot nyit meg, és a pásztázással és kiválasztással nem lehet majd visszatérni a NARBE kifejezés- és médiatáblához.');
         }
       }
     }
@@ -784,8 +784,8 @@ function updateHeaderForCurrentView(){
     function selectModalButton() {
       if (!state.modalActive || state.modalScanIndex < 0 || !state.modalButtons[state.modalScanIndex]) return;
       const selectedButton = state.modalButtons[state.modalScanIndex];
-      if (selectedButton.textContent === 'ÎNAPOI') { hideWarningModal(); if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Revenire la meniu'); }
-      else if (selectedButton.textContent === 'CONTINUĂ') { hideWarningModal(); if (state.pendingAction) state.pendingAction(); }
+      if (selectedButton.textContent === 'VISSZA') { hideWarningModal(); if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Vissza a menübe'); }
+      else if (selectedButton.textContent === 'TOVÁBB') { hideWarningModal(); if (state.pendingAction) state.pendingAction(); }
     }
 
     // TTS using unified voice manager
@@ -840,7 +840,7 @@ function updateHeaderForCurrentView(){
         const voices = window.NarbeVoiceManager.getEnglishVoices();
         if (voices[specificVoiceIndex]) {
           window.NarbeVoiceManager.cancel();
-          const utterance = new SpeechSynthesisUtterance(text);
+          const utterance = new SpeechSynthesisUtterance(text); utterance.lang = "hu-HU";
           utterance.voice = voices[specificVoiceIndex];
           setupInputBlocking(utterance);
           window.speechSynthesis.speak(utterance);
@@ -850,7 +850,7 @@ function updateHeaderForCurrentView(){
       
       if (isChild && gender && state.childVoices[gender]) {
         window.NarbeVoiceManager.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
+        const utterance = new SpeechSynthesisUtterance(text); utterance.lang = "hu-HU";
         utterance.voice = state.childVoices[gender];
         utterance.pitch = gender === 'girl' ? 1.8 : 1.6;
         utterance.rate = 1.3;
@@ -894,7 +894,7 @@ function updateHeaderForCurrentView(){
       const voiceSettings = window.NarbeVoiceManager.getSettings();
       if (!voiceSettings.ttsEnabled || !text) return;
       window.NarbeVoiceManager.cancel();
-      const u = new SpeechSynthesisUtterance(text);
+      const u = new SpeechSynthesisUtterance(text); u.lang = "hu-HU";
       if (voice) u.voice = voice;
       window.speechSynthesis.speak(u);
     }
@@ -934,10 +934,10 @@ function updateHeaderForCurrentView(){
       const totalSlots = state.gridSize.rows * state.gridSize.cols;
       
       const coreItems = [
-        { text: 'Setări', icon: '⚙️', action: () => navigateTo('settings'), className: 'muted-blue-btn' },
-        { text: 'Ieșire', icon: '🚪', action: () => exitToHub(), className: 'muted-red-btn' },
-        { text: 'Creează panou', icon: '✏️', action: () => showWarningModal('create'), className: 'muted-green-btn' },
-        { text: 'Încarcă panou', icon: '📁', action: () => showWarningModal('load'), className: 'muted-yellow-btn' }
+        { text: 'Beállítások', icon: '⚙️', action: () => navigateTo('settings'), className: 'muted-blue-btn' },
+        { text: 'Kilépés', icon: '🚪', action: () => exitToHub(), className: 'muted-red-btn' },
+        { text: 'Tábla létrehozása', icon: '✏️', action: () => showWarningModal('create'), className: 'muted-green-btn' },
+        { text: 'Tábla betöltése', icon: '📁', action: () => showWarningModal('load'), className: 'muted-yellow-btn' }
       ];
       
       // Add local board if exists
@@ -1018,7 +1018,7 @@ function updateHeaderForCurrentView(){
         }
         
         // Always add Next button if multiple pages
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % recalcTotalPages; 
           renderMainMenu(); 
           updateHeaderForCurrentView(); 
@@ -1062,9 +1062,9 @@ function updateHeaderForCurrentView(){
       const endIdx = Math.min(startIdx + categoriesPerPage, state.categories.length);
       const gridPositions = [];
       if (state.page === 0) {
-        gridPositions.push({ type: 'mainmenu', button: createButton('Meniu principal', '🏠', () => { state.csvLoaded = false; navigateTo('main'); }, 'back-btn') });
+        gridPositions.push({ type: 'mainmenu', button: createButton('Főmenü', '🏠', () => { state.csvLoaded = false; navigateTo('main'); }, 'back-btn') });
       } else {
-        gridPositions.push({ type: 'back', button: createButton('Înapoi', '←', () => { state.page--; renderCategoryMenu(); }, 'back-btn') });
+        gridPositions.push({ type: 'back', button: createButton('Vissza', '←', () => { state.page--; renderCategoryMenu(); }, 'back-btn') });
       }
       for (let i = startIdx; i < endIdx; i++) {
         const cat = state.categories[i];
@@ -1092,7 +1092,7 @@ function updateHeaderForCurrentView(){
       }
       // Add Next button if there are multiple pages (loops back to first page from last page)
       if (totalPages > 1) {
-        gridPositions.push({ type: 'next', button: createButton('Următorul', '▶', () => { state.page = (state.page + 1) % totalPages; renderCategoryMenu(); }, 'next-btn') });
+        gridPositions.push({ type: 'next', button: createButton('Következő', '▶', () => { state.page = (state.page + 1) % totalPages; renderCategoryMenu(); }, 'next-btn') });
       }
       while (gridPositions.length < totalSlots) gridPositions.push({ type: 'empty', button: null });
       gridPositions.forEach(pos => { if (pos.button) el.mainGrid.appendChild(pos.button); });
@@ -1106,38 +1106,38 @@ function updateHeaderForCurrentView(){
       const totalSlots = state.gridSize.rows * state.gridSize.cols;
       
       const buttons = [
-        { text: 'Mărime grilă', icon: '⊞', action: () => navigateTo('gridsize') },
-        { text: 'Voce și TTS', icon: '🔊', action: () => navigateTo('tts') },
-        { text: 'Setări scanare', icon: '🎯', action: () => navigateTo('scan') },
-        { text: 'Evidențiere culori', icon: '🎨', action: () => navigateTo('highlight') },
-        { text: 'Tematică', icon: '🌈', action: () => navigateTo('theme') },
-        { text: 'Comută propoziția', icon: '💬', action: () => { toggleSentenceMode(); renderSettingsMenu(true); }, className: state.sentenceMode ? 'active-green' : '' },
-        { text: 'Crește volumul', icon: '🔈', action: async () => { 
+        { text: 'Rács mérete', icon: '⊞', action: () => navigateTo('gridsize') },
+        { text: 'Hang és felolvasás', icon: '🔊', action: () => navigateTo('tts') },
+        { text: 'Pásztázás beállításai', icon: '🎯', action: () => navigateTo('scan') },
+        { text: 'Kiemelés színe', icon: '🎨', action: () => navigateTo('highlight') },
+        { text: 'Téma', icon: '🌈', action: () => navigateTo('theme') },
+        { text: 'Mondatsáv ki/be', icon: '💬', action: () => { toggleSentenceMode(); renderSettingsMenu(true); }, className: state.sentenceMode ? 'active-green' : '' },
+        { text: 'Hangerő fel', icon: '🔈', action: async () => { 
           const isElectron = typeof window !== 'undefined' && window.electronAPI;
           if (isElectron && window.electronAPI.system) {
             try {
               await window.electronAPI.system.volumeUp();
-              speak('Volumul a crescut');
+              speak('A hangerő nőtt');
             } catch (err) {
               console.error('Volume up error:', err);
-              speak('Eroare în creșterea volumului');
+              speak('Hiba a hangerő növelésekor');
             }
           } else {
-            speak('Creșterea volumului indisponibilă');
+            speak('A hangerő növelése nem érhető el');
           }
         }},
-        { text: 'Scade volumul', icon: '🔉', action: async () => { 
+        { text: 'Hangerő le', icon: '🔉', action: async () => { 
           const isElectron = typeof window !== 'undefined' && window.electronAPI;
           if (isElectron && window.electronAPI.system) {
             try {
               await window.electronAPI.system.volumeDown();
-              speak('Volum scăzut');
+              speak('A hangerő csökkent');
             } catch (err) {
               console.error('Volume down error:', err);
-              speak('Eroare în scăderea volumului');
+              speak('Hiba a hangerő csökkentésekor');
             }
           } else {
-            speak('Scăderea volumului indisponibilă');
+            speak('A hangerő csökkentése nem érhető el');
           }
         }}
       ];
@@ -1148,10 +1148,10 @@ function updateHeaderForCurrentView(){
       
       // Back button logic
       if (state.page === 0) {
-        const backBtn = createButton('Meniu principal', '🏠', () => navigateBack(), 'back-btn');
+        const backBtn = createButton('Főmenü', '🏠', () => navigateBack(), 'back-btn');
         el.mainGrid.appendChild(backBtn);
       } else {
-        const backBtn = createButton('Înapoi', '←', () => {
+        const backBtn = createButton('Vissza', '←', () => {
           state.page--;
           renderSettingsMenu();
         }, 'back-btn');
@@ -1169,7 +1169,7 @@ function updateHeaderForCurrentView(){
       
       // Always add Next button if there are multiple pages (loops back to first page)
       if (totalPages > 1) {
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % totalPages; 
           renderSettingsMenu(); 
         }, 'next-btn');
@@ -1194,10 +1194,10 @@ function updateHeaderForCurrentView(){
       
       // Back button logic
       if (state.page === 0) {
-        const backBtn = createButton('Setări', '←', () => navigateBack(), 'back-btn');
+        const backBtn = createButton('Beállítások', '←', () => navigateBack(), 'back-btn');
         el.mainGrid.appendChild(backBtn);
       } else {
-        const backBtn = createButton('Înapoi', '←', () => {
+        const backBtn = createButton('Vissza', '←', () => {
           state.page--;
           renderGridSizeMenu();
         }, 'back-btn');
@@ -1211,7 +1211,7 @@ function updateHeaderForCurrentView(){
         const size = gridSizes[i];
         const btn = createButton(`${size}×${size}`, '⊞', () => { 
           setGridSize(size, size); 
-          speak(`Mărimea grilei ${size} cu ${size} selectată`);
+          speak(`Rácsméret: ${size} × ${size}`);
           renderGridSizeMenu(true); 
         });
         if (state.gridSize.rows === size && state.gridSize.cols === size) btn.classList.add('active-green');
@@ -1220,7 +1220,7 @@ function updateHeaderForCurrentView(){
       
       // Always add Next button if there are multiple pages (loops back to first page)
       if (totalPages > 1) {
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % totalPages; 
           renderGridSizeMenu(); 
         }, 'next-btn');
@@ -1242,10 +1242,10 @@ function updateHeaderForCurrentView(){
           speak(newState ? 'TTS pornit' : 'TTS oprit');
           renderTTSMenu(true); 
         }, className: window.NarbeVoiceManager.getSettings().ttsEnabled ? 'active-green' : '' },
-        { text: 'Scanare TTS', icon: '👆', action: () => { 
+        { text: 'Felolvasás pásztázáskor', icon: '👆', action: () => { 
           state.ttsOnScan = !state.ttsOnScan; 
           saveSettings();
-          speak(state.ttsOnScan ? 'Scanare TTS pornită' : 'Scanare TTS oprită');
+          speak(state.ttsOnScan ? 'Felolvasás pásztázáskor bekapcsolva' : 'Felolvasás pásztázáskor kikapcsolva');
           renderTTSMenu(true); 
         }, className: state.ttsOnScan ? 'active-green' : '' }
       ];
@@ -1263,7 +1263,7 @@ function updateHeaderForCurrentView(){
             window.NarbeVoiceManager.cycleVoice();
             const newVoice = window.NarbeVoiceManager.getCurrentVoice();
             const newVoiceName = window.NarbeVoiceManager.getVoiceDisplayName(newVoice);
-            speak(`Voce schimbată pe ${newVoiceName}`);
+            speak(`Hang: ${newVoiceName}`);
             renderTTSMenu(true);
           },
           className: 'voice-toggle'
@@ -1276,10 +1276,10 @@ function updateHeaderForCurrentView(){
       
       // Back button logic
       if (state.page === 0) {
-        const backBtn = createButton('Setări', '←', () => navigateBack(), 'back-btn');
+        const backBtn = createButton('Beállítások', '←', () => navigateBack(), 'back-btn');
         el.mainGrid.appendChild(backBtn);
       } else {
-        const backBtn = createButton('Înapoi', '←', () => {
+        const backBtn = createButton('Vissza', '←', () => {
           state.page--;
           renderTTSMenu();
         }, 'back-btn');
@@ -1297,7 +1297,7 @@ function updateHeaderForCurrentView(){
       
       // Always add Next button if there are multiple pages (loops back to first page)
       if (totalPages > 1) {
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % totalPages; 
           renderTTSMenu(); 
         }, 'next-btn');
@@ -1329,32 +1329,32 @@ function updateHeaderForCurrentView(){
       }
       
       const buttons = [
-        { text: 'Scanare automată', icon: '🔄', action: () => { 
+        { text: 'Automatikus pásztázás', icon: '🔄', action: () => { 
           const newVal = !autoScan;
           if (window.NarbeScanManager) {
              window.NarbeScanManager.setAutoScan(newVal);
           } else {
              state.autoScan = newVal;
           }
-          speak(newVal ? 'Scanare automată pornită' : 'Scanare automată oprită');
+          speak(newVal ? 'Automatikus pásztázás bekapcsolva' : 'Automatikus pásztázás kikapcsolva');
           // Update local state immediately for responsiveness
           state.autoScan = newVal;
           if (state.autoScan) startAutoScan(); else stopScanning(); 
           renderScanMenu(true); 
         }, className: autoScan ? 'active-green' : '' },
         
-        { text: 'Mod de scanare: ' + (state.userScanPreference === 'cell' ? 'Celulă' : 'Rând'), icon: '📐', action: () => {
+        { text: 'Pásztázási mód: ' + (state.userScanPreference === 'cell' ? 'Mező' : 'Sor'), icon: '📐', action: () => {
           state.userScanPreference = state.userScanPreference === 'cell' ? 'row' : 'cell';
           stopScanning();
           state.scanMode = state.userScanPreference === 'cell' ? 'cell' : 'row';
           state.currentRow = -1;
           state.scanIndex = -1;
           saveSettings();
-          speak(`Modul de scanare setat pe ${state.userScanPreference}`);
+          speak(`Pásztázási mód: ${state.userScanPreference === 'cell' ? 'mező' : 'sor'}`);
           renderScanMenu(true);
         }, className: 'muted-blue-btn' },
         
-        { text: `Viteză: ${(currentSpeedIndex + 1)}s`, icon: '⏱️', action: () => {
+        { text: `Sebesség: ${(currentSpeedIndex + 1)} mp`, icon: '⏱️', action: () => {
              let nextIndex = (currentSpeedIndex + 1) % 4;
              if (window.NarbeScanManager) {
                  window.NarbeScanManager.updateSettings({ scanSpeedIndex: nextIndex });
@@ -1365,7 +1365,7 @@ function updateHeaderForCurrentView(){
                  state.scanSpeed = speeds[nextIndex];
              }
              
-             speak(`${nextIndex + 1} secundă`);
+             speak(`${nextIndex + 1} másodperc`);
              if (state.scanning || state.autoScan) { stopScanning(); if (state.autoScan) startAutoScan(); }
              renderScanMenu(true);
         }}
@@ -1377,10 +1377,10 @@ function updateHeaderForCurrentView(){
       
       // Back button logic
       if (state.page === 0) {
-        const backBtn = createButton('Setări', '←', () => navigateBack(), 'back-btn');
+        const backBtn = createButton('Beállítások', '←', () => navigateBack(), 'back-btn');
         el.mainGrid.appendChild(backBtn);
       } else {
-        const backBtn = createButton('Înapoi', '←', () => {
+        const backBtn = createButton('Vissza', '←', () => {
           state.page--;
           renderScanMenu();
         }, 'back-btn');
@@ -1398,7 +1398,7 @@ function updateHeaderForCurrentView(){
       
       // Always add Next button if there are multiple pages (loops back to first page)
       if (totalPages > 1) {
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % totalPages; 
           renderScanMenu(); 
         }, 'next-btn');
@@ -1420,7 +1420,7 @@ function updateHeaderForCurrentView(){
         action: () => {
           state.highlightColor = color;
           const colorName = name.charAt(0).toUpperCase() + name.slice(1);
-          speak(`${colorName} evidențiere selectată`);
+          speak(`Kiemelés színe: ${colorName}`);
           document.documentElement.style.setProperty('--rowHighlight', color);
           document.documentElement.style.setProperty('--columnHighlight', color);
           saveSettings();
@@ -1436,10 +1436,10 @@ function updateHeaderForCurrentView(){
       
       // Back button logic
       if (state.page === 0) {
-        const backBtn = createButton('Setări', '←', () => navigateBack(), 'back-btn');
+        const backBtn = createButton('Beállítások', '←', () => navigateBack(), 'back-btn');
         el.mainGrid.appendChild(backBtn);
       } else {
-        const backBtn = createButton('Înapoi', '←', () => {
+        const backBtn = createButton('Vissza', '←', () => {
           state.page--;
           renderHighlightMenu();
         }, 'back-btn');
@@ -1460,7 +1460,7 @@ function updateHeaderForCurrentView(){
       
       // Always add Next button if there are multiple pages (loops back to first page)
       if (totalPages > 1) {
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % totalPages; 
           renderHighlightMenu(); 
         }, 'next-btn');
@@ -1481,7 +1481,7 @@ function updateHeaderForCurrentView(){
         icon: '🎨',
         action: () => { 
           setTheme(themeKey); 
-          speak(`Tema ${themeName} selectată`);
+          speak(`Téma: ${themeName}`);
           renderThemeMenu(true); 
         },
         className: state.theme === themeKey ? 'active-green' : ''
@@ -1493,10 +1493,10 @@ function updateHeaderForCurrentView(){
       
       // Back button logic
       if (state.page === 0) {
-        const backBtn = createButton('Setări', '←', () => navigateBack(), 'back-btn');
+        const backBtn = createButton('Beállítások', '←', () => navigateBack(), 'back-btn');
         el.mainGrid.appendChild(backBtn);
       } else {
-        const backBtn = createButton('Înapoi', '←', () => {
+        const backBtn = createButton('Vissza', '←', () => {
           state.page--;
           renderThemeMenu();
         }, 'back-btn');
@@ -1514,7 +1514,7 @@ function updateHeaderForCurrentView(){
       
       // Always add Next button if there are multiple pages (loops back to first page)
       if (totalPages > 1) {
-        const nextBtn = createButton('Următorul', '▶', () => { 
+        const nextBtn = createButton('Következő', '▶', () => { 
           state.page = (state.page + 1) % totalPages; 
           renderThemeMenu(); 
         }, 'next-btn');
@@ -1538,7 +1538,7 @@ function updateHeaderForCurrentView(){
       const startIdx = state.page * itemsPerPage;
       const endIdx = Math.min(startIdx + itemsPerPage, cat.items.length);
       const gridPositions = [];
-      gridPositions.push({ type: 'back', button: createButton('Înapoi', '←', () => { if (state.page > 0) { state.page--; renderCategory(); } else { navigateBack(); } }, 'back-btn') });
+      gridPositions.push({ type: 'back', button: createButton('Vissza', '←', () => { if (state.page > 0) { state.page--; renderCategory(); } else { navigateBack(); } }, 'back-btn') });
       for (let i = startIdx; i < endIdx; i++) {
         const item = cat.items[i];
         const btn = createButton(item.display || item.speak || 'Speak', '', () => onTileClick(item));
@@ -1559,7 +1559,7 @@ function updateHeaderForCurrentView(){
       }
       // Add Next button if there are multiple pages (loops back to first page from last page)
       if (totalPages > 1) {
-        gridPositions.push({ type: 'next', button: createButton('Următorul', '▶', () => { state.page = (state.page + 1) % totalPages; renderCategory(); }, 'next-btn') });
+        gridPositions.push({ type: 'next', button: createButton('Következő', '▶', () => { state.page = (state.page + 1) % totalPages; renderCategory(); }, 'next-btn') });
       }
       gridPositions.forEach(pos => { if (pos.button) el.mainGrid.appendChild(pos.button); });
       updateScannable();
@@ -1796,12 +1796,12 @@ function updateHeaderForCurrentView(){
                 if (element === el.sentenceDisplay && state.sentenceMode) {
                   const displayText = el.sentenceDisplay.textContent.trim();
                   if (displayText) { if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak(displayText, false, null, null, true); } // blockInput=true
-                  else { if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Propoziția este goală'); }
+                  else { if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('A mondat üres'); }
                 } else if (element === el.deleteWordBtn && state.sentenceMode) {
-                  selectionText = 'Se șterge';
+                  selectionText = 'Töröl';
                   deleteLastWord();
                 } else if (element === el.clearSentenceBtn && state.sentenceMode) {
-                  selectionText = 'Se șterge tot';
+                  selectionText = 'Mindent töröl';
                   clearSentence();
                 } else if (element !== el.sentenceDisplay && element !== el.deleteWordBtn && element !== el.clearSentenceBtn) {
                   // For phrase buttons (with data-speak-text attribute), onTileClick handles TTS, so don't double-speak
@@ -1841,12 +1841,12 @@ function updateHeaderForCurrentView(){
             if (element === el.sentenceDisplay && state.sentenceMode) {
               const displayText = el.sentenceDisplay.textContent.trim();
               if (displayText) { if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak(displayText, false, null, null, true); } // blockInput=true
-              else { if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Propoziția este goală'); }
+              else { if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('A mondat üres'); }
             } else if (element === el.deleteWordBtn && state.sentenceMode) {
-              selectionText = 'Se șterge';
+              selectionText = 'Töröl';
               deleteLastWord();
             } else if (element === el.clearSentenceBtn && state.sentenceMode) {
-              selectionText = 'Se șterge tot';
+              selectionText = 'Mindent töröl';
               clearSentence();
             } else if (element !== el.sentenceDisplay && element !== el.deleteWordBtn && element !== el.clearSentenceBtn) {
               // For phrase buttons (with data-speak-text attribute), onTileClick handles TTS, so don't double-speak
@@ -1987,7 +1987,7 @@ function updateHeaderForCurrentView(){
                 if (state.sentenceMode && el.sentenceRow.classList.contains('active')) {
                   state.currentRow = 0;
                   highlightCurrentRow();
-                  if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Rândul propoziției');
+                  if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Mondatsor');
                 } else {
                   if (state.currentMenu === 'category' || state.csvLoaded) navigateBack();
                 }
@@ -2125,8 +2125,8 @@ function updateHeaderForCurrentView(){
           }
         } catch (err) {
           console.error('Error saving board to localStorage:', err);
-          el.statusFooter.textContent = 'Eroare în salvarea panoului. Încercați din nou';
-          speak('Eroare în salvarea panoului');
+          el.statusFooter.textContent = 'Hiba a tábla mentésekor. Próbálja újra';
+          speak('Hiba a tábla mentésekor');
         }
       };
       reader.readAsText(file);
@@ -2136,7 +2136,7 @@ function updateHeaderForCurrentView(){
     el.sentenceDisplay.addEventListener('click', () => {
       const text = el.sentenceDisplay.textContent.trim();
       if (text && window.NarbeVoiceManager.getSettings().ttsEnabled) speak(text);
-      else if (!text && window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Propoziția este goală');
+      else if (!text && window.NarbeVoiceManager.getSettings().ttsEnabled) speak('A mondat üres');
     });
 
     el.deleteWordBtn.addEventListener('click', deleteLastWord);
@@ -2273,7 +2273,7 @@ function updateHeaderForCurrentView(){
           if (cleanDisplayText) speak(cleanDisplayText);
         } else {
           // If display text is also a URL or empty, speak generic message
-          speak("Se deschide linkul");
+          speak("A hivatkozás megnyitása");
         }
         openIframe(text); 
         return; 
@@ -2311,10 +2311,10 @@ function updateHeaderForCurrentView(){
         
         // Determine what we're going back to for TTS
         switch (prevState.menu) {
-          case 'main': backMessage = 'Meniu principal'; break;
-          case 'settings': backMessage = 'Meniul setărilor'; break;
-          case 'categories': backMessage = state.currentBoardTitle || 'Categorii'; break;
-          case 'category': backMessage = prevState.category || 'Categorie'; break;
+          case 'main': backMessage = 'Főmenü'; break;
+          case 'settings': backMessage = 'Beállítások menü'; break;
+          case 'categories': backMessage = state.currentBoardTitle || 'Kategóriák'; break;
+          case 'category': backMessage = prevState.category || 'Kategória'; break;
         }
         
         state.currentMenu = prevState.menu;
@@ -2362,31 +2362,31 @@ function updateHeaderForCurrentView(){
           break;
         case 'categories': 
           renderCategoryMenu(); 
-          menuTitle = state.currentBoardTitle || 'Categories';
+          menuTitle = state.currentBoardTitle || 'Kategóriák';
           break;
         case 'settings': 
           renderSettingsMenu(); 
-          menuTitle = 'Setările meniului';
+          menuTitle = 'Menü beállításai';
           break;
         case 'gridsize': 
           renderGridSizeMenu(); 
-          menuTitle = 'Dimensiunea grilei';
+          menuTitle = 'Rács mérete';
           break;
         case 'tts': 
           renderTTSMenu(); 
-          menuTitle = 'Voce și TTS';
+          menuTitle = 'Hang és felolvasás';
           break;
         case 'scan': 
           renderScanMenu(); 
-          menuTitle = 'Setări de scanare';
+          menuTitle = 'Pásztázás beállításai';
           break;
         case 'highlight': 
           renderHighlightMenu(); 
-          menuTitle = 'Culori de evidențiere';
+          menuTitle = 'Kiemelés színei';
           break;
         case 'theme': 
           renderThemeMenu(); 
-          menuTitle = 'Temă';
+          menuTitle = 'Téma';
           break;
       }
       
@@ -2420,13 +2420,13 @@ function updateHeaderForCurrentView(){
       if (state.sentenceMode) {
         el.sentenceRow.classList.add('active');
         el.mainGrid.classList.add('sentence-active'); // Add class for grid sizing
-        speak('Sentence bar on');
+        speak('Mondatsáv bekapcsolva');
       } else { 
         el.sentenceRow.classList.remove('active'); 
         el.mainGrid.classList.remove('sentence-active'); // Remove class for uniform grid
         state.sentence = []; 
         updateSentenceDisplay();
-        speak('Sentence bar off');
+        speak('Mondatsáv kikapcsolva');
       }
       renderCurrentMenu();
     }
@@ -2680,7 +2680,7 @@ function updateHeaderForCurrentView(){
           events: {
             onReady: (e) => {
               try { e.target.mute(); e.target.playVideo(); } catch {}
-              try { el.muteBtn.textContent = (e.target.isMuted && e.target.isMuted()) ? 'Activează sunetul' : 'Dezactivează sunetul'; } catch {}
+              try { el.muteBtn.textContent = (e.target.isMuted && e.target.isMuted()) ? 'Némítás feloldása' : 'Némítás'; } catch {}
             }
           }
         });
@@ -2810,8 +2810,8 @@ function updateHeaderForCurrentView(){
 
     el.muteBtn.addEventListener('click', () => {
       if (!state.ytPlayer) return;
-      if (state.ytPlayer.isMuted && state.ytPlayer.isMuted()) { state.ytPlayer.unMute(); el.muteBtn.textContent = 'Dezactivează sunetul'; }
-      else { state.ytPlayer.mute(); el.muteBtn.textContent = 'Activează sunetul'; }
+      if (state.ytPlayer.isMuted && state.ytPlayer.isMuted()) { state.ytPlayer.unMute(); el.muteBtn.textContent = 'Némítás'; }
+      else { state.ytPlayer.mute(); el.muteBtn.textContent = 'Némítás feloldása'; }
     });
 
     el.prevBtn.addEventListener('click', () => {
@@ -2832,7 +2832,7 @@ function updateHeaderForCurrentView(){
           events: {
             onReady: (e) => {
               try { e.target.mute(); e.target.playVideo(); } catch {}
-              try { el.muteBtn.textContent = (e.target.isMuted && e.target.isMuted()) ? 'Activează sunetul' : 'Dezactivează sunetul'; } catch {}
+              try { el.muteBtn.textContent = (e.target.isMuted && e.target.isMuted()) ? 'Némítás feloldása' : 'Némítás'; } catch {}
             }
           }
         });
