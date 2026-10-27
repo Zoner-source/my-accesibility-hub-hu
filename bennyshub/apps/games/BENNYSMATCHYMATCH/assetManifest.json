@@ -1,7 +1,6 @@
 {
     "packs": [
         "packs/animals.json",
-        "packs/influencers/influencers.json",
         "packs/miscellaneous.json"
     ]
 }

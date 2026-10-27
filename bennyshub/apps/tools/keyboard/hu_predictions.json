@@ -1,0 +1,1704 @@
+{
+ "frequent_words": {
+  "IGEN": {
+   "count": 1000,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEM": {
+   "count": 998,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉN": {
+   "count": 996,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TE": {
+   "count": 994,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "Ő": {
+   "count": 992,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MI": {
+   "count": 990,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TI": {
+   "count": 988,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ŐK": {
+   "count": 986,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉS": {
+   "count": 984,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAGY": {
+   "count": 982,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "DE": {
+   "count": 980,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOGY": {
+   "count": 978,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "IS": {
+   "count": 976,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MÁR": {
+   "count": 974,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MÉG": {
+   "count": 972,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSAK": {
+   "count": 970,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "EZ": {
+   "count": 968,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AZ": {
+   "count": 966,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "EZT": {
+   "count": 964,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AZT": {
+   "count": 962,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ITT": {
+   "count": 960,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "OTT": {
+   "count": 958,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAN": {
+   "count": 956,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NINCS": {
+   "count": 954,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAGYOK": {
+   "count": 952,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAGYUNK": {
+   "count": 948,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VOLT": {
+   "count": 946,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LESZ": {
+   "count": 944,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KELL": {
+   "count": 942,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LEHET": {
+   "count": 940,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TUDOK": {
+   "count": 938,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TUDSZ": {
+   "count": 936,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TUD": {
+   "count": 934,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AKAROK": {
+   "count": 932,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AKARSZ": {
+   "count": 930,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AKAR": {
+   "count": 928,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETNÉK": {
+   "count": 926,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SEGÍTSÉG": {
+   "count": 924,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÉREM": {
+   "count": 922,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÉRLEK": {
+   "count": 920,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÖSZÖNÖM": {
+   "count": 918,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÖSZI": {
+   "count": 916,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZIA": {
+   "count": 914,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZIASZTOK": {
+   "count": 912,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HELLÓ": {
+   "count": 910,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓ": {
+   "count": 908,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ROSSZ": {
+   "count": 906,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAGYON": {
+   "count": 904,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TÖBB": {
+   "count": 902,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KEVÉS": {
+   "count": 900,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MOST": {
+   "count": 898,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MA": {
+   "count": 896,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOLNAP": {
+   "count": 894,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TEGNAP": {
+   "count": 892,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "REGGEL": {
+   "count": 890,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ESTE": {
+   "count": 888,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉJSZAKA": {
+   "count": 886,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAP": {
+   "count": 884,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÓRA": {
+   "count": 882,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "IDŐ": {
+   "count": 880,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MIKOR": {
+   "count": 878,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOL": {
+   "count": 876,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KI": {
+   "count": 874,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MIT": {
+   "count": 870,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOGYAN": {
+   "count": 868,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MIÉRT": {
+   "count": 866,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MENNYI": {
+   "count": 864,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MELYIK": {
+   "count": 862,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BE": {
+   "count": 860,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FEL": {
+   "count": 856,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LE": {
+   "count": 854,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VELED": {
+   "count": 852,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VELEM": {
+   "count": 850,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NÁLAM": {
+   "count": 848,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NÁLAD": {
+   "count": 846,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "OTTHON": {
+   "count": 844,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HAZA": {
+   "count": 842,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ELŐTT": {
+   "count": 840,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "UTÁN": {
+   "count": 838,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ALATT": {
+   "count": 836,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÖLÖTT": {
+   "count": 834,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MELLETT": {
+   "count": 832,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NÉLKÜL": {
+   "count": 830,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA": {
+   "count": 828,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA": {
+   "count": 826,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYUKA": {
+   "count": 824,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APUKA": {
+   "count": 822,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MAMA": {
+   "count": 820,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "PAPA": {
+   "count": 818,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TESÓ": {
+   "count": 816,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TESTVÉR": {
+   "count": 814,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BÁTYÁM": {
+   "count": 812,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NŐVÉREM": {
+   "count": 810,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÖCSÉM": {
+   "count": 808,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÚGOM": {
+   "count": 806,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAGYMAMA": {
+   "count": 804,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAGYAPA": {
+   "count": 802,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSALÁD": {
+   "count": 800,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BARÁT": {
+   "count": 798,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BARÁTOM": {
+   "count": 796,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ORVOS": {
+   "count": 794,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NŐVÉR": {
+   "count": 792,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TANÁR": {
+   "count": 790,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TANÍTÓ": {
+   "count": 788,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÍZ": {
+   "count": 786,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VIZET": {
+   "count": 784,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÜDÍTŐ": {
+   "count": 782,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TEJ": {
+   "count": 780,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TEA": {
+   "count": 778,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÁVÉ": {
+   "count": 776,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KENYÉR": {
+   "count": 774,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉTEL": {
+   "count": 772,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LEVES": {
+   "count": 770,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÚS": {
+   "count": 768,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSIRKE": {
+   "count": 766,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HAL": {
+   "count": 764,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TOJÁS": {
+   "count": 762,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SAJT": {
+   "count": 760,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYÜMÖLCS": {
+   "count": 758,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ALMA": {
+   "count": 756,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BANÁN": {
+   "count": 754,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NARANCS": {
+   "count": 752,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SÜTI": {
+   "count": 750,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SÜTEMÉNY": {
+   "count": 748,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSOKI": {
+   "count": 746,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSOKOLÁDÉ": {
+   "count": 744,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KEKSZ": {
+   "count": 742,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FAGYI": {
+   "count": 740,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FAGYLALT": {
+   "count": 738,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "PIZZA": {
+   "count": 736,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KRUMPLI": {
+   "count": 734,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "RIZS": {
+   "count": 732,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TÉSZTA": {
+   "count": 730,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ZÖLDSÉG": {
+   "count": 728,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SALÁTA": {
+   "count": 726,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ESZEM": {
+   "count": 724,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ISZOM": {
+   "count": 722,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ALSZOM": {
+   "count": 720,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MEGYEK": {
+   "count": 718,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÜLÖK": {
+   "count": 716,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÖVÖK": {
+   "count": 714,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÁTSZOM": {
+   "count": 712,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "OLVASOK": {
+   "count": 710,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÍROK": {
+   "count": 708,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HALLGATOK": {
+   "count": 706,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LÁTOM": {
+   "count": 704,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HALLOM": {
+   "count": 702,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉRZEM": {
+   "count": 700,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TUDOM": {
+   "count": 698,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ENNI": {
+   "count": 696,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "INNI": {
+   "count": 694,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ALUDNI": {
+   "count": 692,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MENNI": {
+   "count": 690,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÁTSZANI": {
+   "count": 688,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NÉZNI": {
+   "count": 686,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSINÁL": {
+   "count": 684,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSINÁLOK": {
+   "count": 682,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MONDOK": {
+   "count": 680,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MOND": {
+   "count": 678,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ADD": {
+   "count": 676,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VEDD": {
+   "count": 674,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TEDD": {
+   "count": 672,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MUTASD": {
+   "count": 670,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KERESEM": {
+   "count": 668,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁJ": {
+   "count": 666,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉHES": {
+   "count": 664,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZOMJAS": {
+   "count": 662,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁZOM": {
+   "count": 660,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MELEGEM": {
+   "count": 658,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÁLMOS": {
+   "count": 656,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÉLEK": {
+   "count": 654,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BETEG": {
+   "count": 652,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁRADT": {
+   "count": 650,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BOLDOG": {
+   "count": 648,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZOMORÚ": {
+   "count": 646,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MÉRGES": {
+   "count": 644,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NYUGODT": {
+   "count": 642,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VIDÁM": {
+   "count": 640,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FEJ": {
+   "count": 638,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FEJEM": {
+   "count": 636,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HAS": {
+   "count": 634,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HASAM": {
+   "count": 632,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÁT": {
+   "count": 630,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÁTAM": {
+   "count": 628,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LÁB": {
+   "count": 626,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LÁBAM": {
+   "count": 624,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÉZ": {
+   "count": 622,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KEZEM": {
+   "count": 620,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZEM": {
+   "count": 618,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÜL": {
+   "count": 616,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TOROK": {
+   "count": 614,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FOG": {
+   "count": 612,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FOGAM": {
+   "count": 610,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ORR": {
+   "count": 608,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÁJ": {
+   "count": 606,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÍV": {
+   "count": 604,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÉCÉ": {
+   "count": 602,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÜRDŐ": {
+   "count": 600,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÜRDŐSZOBA": {
+   "count": 598,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÁGY": {
+   "count": 596,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZOBA": {
+   "count": 594,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KONYHA": {
+   "count": 592,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ASZTAL": {
+   "count": 590,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÉK": {
+   "count": 588,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ABLAK": {
+   "count": 586,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AJTÓ": {
+   "count": 584,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LÁMPA": {
+   "count": 582,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TÉVÉ": {
+   "count": 580,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TV": {
+   "count": 578,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TELEFON": {
+   "count": 576,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TABLET": {
+   "count": 574,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÁMÍTÓGÉP": {
+   "count": 572,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ZENE": {
+   "count": 570,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FILM": {
+   "count": 568,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MESE": {
+   "count": 566,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "RAJZFILM": {
+   "count": 564,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÖNYV": {
+   "count": 562,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÁTÉK": {
+   "count": 560,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LABDA": {
+   "count": 558,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KINT": {
+   "count": 556,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "PARK": {
+   "count": 554,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BOLT": {
+   "count": 552,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ISKOLA": {
+   "count": 550,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÓRHÁZ": {
+   "count": 548,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AUTÓ": {
+   "count": 546,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BUSZ": {
+   "count": 544,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SÉTA": {
+   "count": 542,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NYARALÁS": {
+   "count": 540,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÁZ": {
+   "count": 538,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KERT": {
+   "count": 536,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KUTYA": {
+   "count": 534,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MACSKA": {
+   "count": 532,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETEM": {
+   "count": 530,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETLEK": {
+   "count": 524,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TETSZIK": {
+   "count": 522,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÁRJ": {
+   "count": 516,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÁLLJ": {
+   "count": 514,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÉSZ": {
+   "count": 512,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÚJRA": {
+   "count": 510,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MÁSIK": {
+   "count": 508,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MÁST": {
+   "count": 506,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SEMMI": {
+   "count": 504,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MINDEN": {
+   "count": 502,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MINDENKI": {
+   "count": 500,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SENKI": {
+   "count": 498,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VALAKI": {
+   "count": 496,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VALAMI": {
+   "count": 494,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VALAHOL": {
+   "count": 492,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MINDIG": {
+   "count": 490,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SOHA": {
+   "count": 488,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "EGY": {
+   "count": 486,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KETTŐ": {
+   "count": 484,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÁROM": {
+   "count": 482,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NÉGY": {
+   "count": 480,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÖT": {
+   "count": 478,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HAT": {
+   "count": 476,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HÉT": {
+   "count": 474,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NYOLC": {
+   "count": 472,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KILENC": {
+   "count": 470,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TÍZ": {
+   "count": 468,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "PIROS": {
+   "count": 466,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÉK": {
+   "count": 464,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ZÖLD": {
+   "count": 462,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SÁRGA": {
+   "count": 460,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FEKETE": {
+   "count": 458,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FEHÉR": {
+   "count": 456,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LILA": {
+   "count": 454,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "RÓZSASZÍN": {
+   "count": 452,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NARANCSSÁRGA": {
+   "count": 450,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAGY": {
+   "count": 448,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KICSI": {
+   "count": 446,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÚJ": {
+   "count": 444,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "RÉGI": {
+   "count": 442,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÉP": {
+   "count": 440,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEHÉZ": {
+   "count": 438,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÖNNYŰ": {
+   "count": 436,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYORS": {
+   "count": 434,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYORSAN": {
+   "count": 432,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LASSAN": {
+   "count": 430,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FENT": {
+   "count": 428,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "LENT": {
+   "count": 426,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BAL": {
+   "count": 424,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JOBB": {
+   "count": 422,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BENT": {
+   "count": 420,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÖZEL": {
+   "count": 418,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MESSZE": {
+   "count": 416,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MERT": {
+   "count": 414,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HA": {
+   "count": 412,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AKKOR": {
+   "count": 410,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TALÁN": {
+   "count": 408,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BIZTOS": {
+   "count": 406,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "REGGELT": {
+   "count": 394,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAPOT": {
+   "count": 390,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ESTÉT": {
+   "count": 386,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉJSZAKÁT": {
+   "count": 382,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VISZLÁT": {
+   "count": 380,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MIZU": {
+   "count": 378,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓL": {
+   "count": 372,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BOCSÁNAT": {
+   "count": 368,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SAJNÁLOM": {
+   "count": 366,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GRATULÁLOK": {
+   "count": 364,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÜLETÉSNAPOT": {
+   "count": 360,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉTVÁGYAT": {
+   "count": 356,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "EGÉSZSÉGEDRE": {
+   "count": 354,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KAPCSOLD": {
+   "count": 352,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NYISD": {
+   "count": 350,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSUKD": {
+   "count": 348,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "INDÍTSD": {
+   "count": 346,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÁLLÍTSD": {
+   "count": 344,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ISMÉTELD": {
+   "count": 342,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "PRÓBÁLD": {
+   "count": 340,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYERE": {
+   "count": 338,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYERÜNK": {
+   "count": 336,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MONDD": {
+   "count": 334,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SEGÍTSÉGRE": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÜKSÉGEM": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÉREK": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FILMET": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ZENÉT": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HALLGATNI": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÉCÉRE": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MENNEM": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "A": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZÉPEN": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SEGÍTENÉL": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "IDE": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MEGYÜNK": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "TÉVÉT": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÁLTS": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSATORNÁT": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SEGÍTS": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÁTSSZUNK": {
+   "count": 100,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  }
+ },
+ "bigrams": {
+  "SEGÍTSÉGRE VAN": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAN SZÜKSÉGEM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VIZET KÉREK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "INNI SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ENNI SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ALUDNI SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KI SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETNÉK MENNI": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HAZA SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÁTSZANI SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FILMET SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETNÉK NÉZNI": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ZENÉT SZERETNÉK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETNÉK HALLGATNI": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÉCÉRE KELL": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KELL MENNEM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEM AKAROK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "AKAROK ENNI": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁJ A": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "A FEJEM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "A HASAM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "A HÁTAM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÉHES VAGYOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZOMJAS VAGYOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁRADT VAGYOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BOLDOG VAGYOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓL VAGYOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MELEGEM VAN": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ÁLMOS VAGYOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETLEK ANYA": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SZERETLEK APA": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KÖSZÖNÖM SZÉPEN": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAGYON KÖSZÖNÖM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓ REGGELT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓ NAPOT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓ ESTÉT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓ ÉJSZAKÁT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOGY VAGY": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEM TUDOM": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEM TUDOK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NAGYON TETSZIK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEM TETSZIK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "SEGÍTENÉL KÉRLEK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYERE IDE": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "IDE KÉRLEK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MI EZ": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOL VAN": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAN ANYA": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VAN APA": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MIKOR MEGYÜNK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MEGYÜNK HAZA": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KAPCSOLD BE": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BE A": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "A TÉVÉT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÁLTS CSATORNÁT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "CSATORNÁT KÉRLEK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "JÓ ÉTVÁGYAT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BOLDOG SZÜLETÉSNAPOT": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA GYERE": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA SZERETLEK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA SEGÍTS": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA HOL": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOL VAGY": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA VIZET": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA ÉHES": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA GYERE": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA SZERETLEK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA HOL": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA JÁTSSZUNK": {
+   "count": 200,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  }
+ },
+ "trigrams": {
+  "SEGÍTSÉGRE VAN SZÜKSÉGEM": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KI SZERETNÉK MENNI": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HAZA SZERETNÉK MENNI": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FILMET SZERETNÉK NÉZNI": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ZENÉT SZERETNÉK HALLGATNI": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÉCÉRE KELL MENNEM": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "NEM AKAROK ENNI": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁJ A FEJEM": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁJ A HASAM": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "FÁJ A HÁTAM": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "GYERE IDE KÉRLEK": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOL VAN ANYA": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "HOL VAN APA": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "MIKOR MEGYÜNK HAZA": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "KAPCSOLD BE A": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "BE A TÉVÉT": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "VÁLTS CSATORNÁT KÉRLEK": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA GYERE IDE": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA HOL VAGY": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA VIZET KÉREK": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "ANYA ÉHES VAGYOK": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA GYERE IDE": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  },
+  "APA HOL VAGY": {
+   "count": 300,
+   "last_used": "2025-01-01T00:00:00.000Z"
+  }
+ }
+}

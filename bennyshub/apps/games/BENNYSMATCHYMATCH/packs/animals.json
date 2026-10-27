@@ -22,7 +22,7 @@
                 "image": "fish.svg",
                 "sound": null,
                 "title": "fish",
-                "altTitle": "Hal",
+                "altTitle": "Halacska",
                 "ttsText": "",
                 "_created": 1767982256169
             },
@@ -46,7 +46,7 @@
                 "image": "bird.png",
                 "sound": null,
                 "title": "bird",
-                "altTitle": "Madár",
+                "altTitle": "Madárka",
                 "ttsText": "",
                 "_created": 1767982293761
             },

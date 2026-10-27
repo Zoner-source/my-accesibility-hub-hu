@@ -14,7 +14,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NARBE Benny's Access Hub</title>
-  <meta name="description" content="Hub NARBE pentru navighare prin comutatoare" />
+  <meta name="description" content="NARBE Hub kapcsolóval történő navigáláshoz" />
   <style>
     :root{
       --narbe-orange:#ff5c00;
@@ -340,6 +340,15 @@
 
     #screen-home .card-btn .btn-title {
         font-size: clamp(32px, 5vw, 48px); /* Larger text */
+        margin-bottom: 12px;
+    }
+
+    #screen-home .menu-icon {
+        width: min(60%, 220px);
+        max-height: 60%;
+        object-fit: contain;
+        /* Light outline keeps dark emoji (controller, gear) visible on dark themes */
+        filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 6px rgba(255,255,255,.35));
         margin-bottom: 12px;
     }
 
@@ -728,29 +737,29 @@
       <section id="screen-home" class="screen active" aria-labelledby="home-heading" data-screen="home" tabindex="-1">
         <h2 id="home-heading" class="sr-only">Főmenü</h2>
         <div class="grid" role="group" aria-label="A főmenü gombjai">
-          <button class="card-btn nav" data-target="tools">
-            <div class="btn-title">Eszközök</div>
+          <button class="card-btn nav" data-target="tools" aria-label="Eszközök">
+            <img src="images/menu/instrumente.svg" alt="" class="menu-icon">
             <div class="row">
               <span class="pill">Megnyitás</span>
             </div>
           </button>
 
-          <button class="card-btn nav" data-target="games">
-            <div class="btn-title">Játékok</div>
+          <button class="card-btn nav" data-target="games" aria-label="Játékok">
+            <img src="images/menu/jocuri.svg" alt="" class="menu-icon">
             <div class="row">
               <span class="pill">Megnyitás</span>
             </div>
           </button>
 
-          <button class="card-btn nav" data-target="settings">
-            <div class="btn-title">Beállítások</div>
+          <button class="card-btn nav" data-target="settings" aria-label="Beállítások">
+            <img src="images/menu/setari.svg" alt="" class="menu-icon">
             <div class="row">
               <span class="pill">Megnyitás</span>
             </div>
           </button>
 
-          <button class="card-btn nav" data-target="system">
-            <div class="btn-title">Rendszerbeállítások</div>
+          <button class="card-btn nav" data-target="system" aria-label="Rendszerbeállítások">
+            <img src="images/menu/sistem.svg" alt="" class="menu-icon">
             <div class="row">
               <span class="pill">Beállítás</span>
             </div>
@@ -1015,14 +1024,6 @@
     let appsData = { tools: [], games: [] };
     let currentScreen = 'home';
 
-    // Games are sourced live from bennyshub.com so new/updated games show up
-    // automatically; the local apps/games/ cache (synced on demand from the
-    // same source) is the offline fallback. See README "Games" section.
-    const GAMES_LIVE_BASE = 'https://narbehouse.github.io/bennyshub';
-    const GAMES_LIVE_MANIFEST_URL = `${GAMES_LIVE_BASE}/apps/games/games.json`;
-    const GAMES_LIVE_FETCH_TIMEOUT_MS = 3000;
-    const GAMES_LAUNCH_PROBE_TIMEOUT_MS = 2500;
-
     async function fetchWithTimeout(url, timeoutMs, opts = {}) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1073,30 +1074,13 @@
       return parts.length > 2 ? parts[2] : null;
     }
 
-    // Only games actually present on disk right now (auto-synced or manually
-    // dropped in by hand) are safe to offer as an offline fallback - a path
-    // merely being *listed* somewhere doesn't mean the files are really there.
-    async function getSyncedGameFolders() {
-      if (!(typeof window !== 'undefined' && window.electronAPI && window.electronAPI.games)) {
-        return new Set();
-      }
-      try {
-        const status = await window.electronAPI.games.getSyncStatus();
-        return new Set((status && status.onDisk) || []);
-      } catch (e) {
-        console.log('[Hub] Unable to read games sync status:', e.message);
-        return new Set();
-      }
-    }
-
     // Load JSON data for apps
     async function loadAppsData() {
       try {
         console.log('Loading apps data...');
-        const [toolsResponse, localGamesResponse, syncedFolders] = await Promise.all([
+        const [toolsResponse, localGamesResponse] = await Promise.all([
           fetch('apps/tools/tools.json'),
-          fetch('apps/games/games.json'),
-          getSyncedGameFolders()
+          fetch('apps/games/games.json')
         ]);
 
         if (!toolsResponse.ok) {
@@ -1111,54 +1095,18 @@
 
         appsData.tools = toolsData.tools.sort((a, b) => a.title.localeCompare(b.title));
 
-        // A candidate local path is only offered if that game's folder was
-        // actually synced.
-        function syncedLocalPath(candidatePath) {
-          const folder = gameFolderFromPath(candidatePath);
-          return folder && syncedFolders.has(folder) ? candidatePath : null;
-        }
-
-        // Prefer the live games list from bennyshub.com (picks up new/updated
-        // games automatically, with zero need to keep a local manifest in
-        // sync by hand). The local games.json only matters when the live
-        // manifest can't be reached at all, or for manually-added custom
-        // games - see README "Games".
-        let liveGames = null;
-        try {
-          // Hungarian hub: games come only from the local games.json (no live English manifest).
-          const liveResponse = { ok: false };
-          if (liveResponse.ok) {
-            const liveData = await liveResponse.json();
-            liveGames = liveData.games || [];
-          }
-        } catch (e) {
-          console.log('[Hub] Live games manifest unavailable, using local cache:', e.message);
-        }
-
-        if (liveGames) {
-          const liveIds = new Set(liveGames.map(g => g.id));
-          const fromLive = liveGames.map(g => ({
-            ...g,
-            gameLiveUrl: `${GAMES_LIVE_BASE}/${g.path}`,
-            gameLocalPath: syncedLocalPath(g.path),
-            // Thumbnails ship locally in this repo; fall back to the live
-            // copy (via onerror below) for games synced after this build.
-            image: g.image,
-            imageFallback: `${GAMES_LIVE_BASE}/${g.image}`
-          }));
-          // Games manually added to the local games.json (not on the live
-          // site at all) always show up too, live site reachable or not.
-          const customLocal = (localGamesData.games || [])
-            .filter(g => !liveIds.has(g.id))
-            .map(g => ({ ...g, gameLiveUrl: null, gameLocalPath: syncedLocalPath(g.path) }));
-          appsData.games = [...fromLive, ...customLocal].sort((a, b) => a.title.localeCompare(b.title));
-        } else {
-          appsData.games = (localGamesData.games || []).map(g => ({
-            ...g,
-            gameLiveUrl: null,
-            gameLocalPath: syncedLocalPath(g.path)
-          })).sort((a, b) => a.title.localeCompare(b.title));
-        }
+        // Games always come from the local apps/games/ folder.
+        // Only list games whose files actually exist locally.
+        const localGames = localGamesData.games || [];
+        const present = await Promise.all(localGames.map(async g => {
+          try {
+            const r = await fetchWithTimeout(g.path, 3000, { method: 'HEAD' });
+            return r.ok;
+          } catch (e) { return false; }
+        }));
+        appsData.games = localGames
+          .filter((g, i) => present[i])
+          .sort((a, b) => a.title.localeCompare(b.title));
 
         // Games listed in apps/games/hidden-games.json are removed from the
         // menu, whether they came from the live manifest, the local
@@ -1263,8 +1211,6 @@
       const launchAttr = app.launchUrl ? `data-launch-url="${app.launchUrl}"` : '';
       // Games: prefer the live copy (data-game-live-url), fall back to the
       // locally synced copy (data-game-local-path) if it can't be reached.
-      const gameLiveUrlAttr = app.gameLiveUrl ? `data-game-live-url="${app.gameLiveUrl}"` : '';
-      const gameLocalPathAttr = app.gameLocalPath ? `data-game-local-path="${app.gameLocalPath}"` : '';
       // Support server-based apps (like streaming)
       const serverAppAttr = app.serverApp ? `data-server-app='${JSON.stringify(app.serverApp)}'` : '';
       // Support external URLs (for apps with their own servers)
@@ -1276,12 +1222,12 @@
       
       if (hasImage) {
         return `
-          <button class="card-btn app-btn ${hasImgClass}" ${pathAttr} ${launchAttr} ${gameLiveUrlAttr} ${gameLocalPathAttr} ${serverAppAttr} ${externalUrlAttr} ${launchExternalAttr} ${serverPortAttr} data-title="${app.title}">
+          <button class="card-btn app-btn ${hasImgClass}" ${pathAttr} ${launchAttr} ${serverAppAttr} ${externalUrlAttr} ${launchExternalAttr} ${serverPortAttr} data-title="${app.title}">
             <div class="card-content">
               <div class="btn-title">${app.title}</div>
             </div>
             <div class="card-image-section">
-              <img src="${app.image}" alt="" loading="lazy" ${app.imageFallback ? `onerror="this.onerror=null;this.src='${app.imageFallback}'"` : ''}>
+              <img src="${app.image}" alt="" loading="lazy">
               <div class="card-action-overlay">
                  <div class="play-icon">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -1294,7 +1240,7 @@
 
       // Default card layout (no image)
       return `
-        <button class="card-btn app-btn" ${pathAttr} ${launchAttr} ${gameLiveUrlAttr} ${gameLocalPathAttr} ${serverAppAttr} ${externalUrlAttr} ${launchExternalAttr} ${serverPortAttr} data-title="${app.title}">
+        <button class="card-btn app-btn" ${pathAttr} ${launchAttr} ${serverAppAttr} ${externalUrlAttr} ${launchExternalAttr} ${serverPortAttr} data-title="${app.title}">
           <div class="btn-title">${app.title}</div>
           <div class="row">
             <span class="pill">${actionLabel}</span>
@@ -1353,8 +1299,6 @@
           
           const path = btn.getAttribute('data-path');
           const launchUrl = btn.getAttribute('data-launch-url');
-          const gameLiveUrl = btn.getAttribute('data-game-live-url');
-          const gameLocalPath = btn.getAttribute('data-game-local-path');
           const serverAppData = btn.getAttribute('data-server-app');
           const externalUrl = btn.getAttribute('data-external-url');
           const launchExternal = btn.getAttribute('data-launch-external');
@@ -1363,14 +1307,6 @@
           
           // Check if running in Electron
           const isElectron = typeof window !== 'undefined' && window.electronAPI;
-
-          // Games: try the live copy from bennyshub.com first, fall back to
-          // the locally synced copy if it can't be reached (offline, or a
-          // brand-new game that hasn't been synced yet has no local copy).
-          if (gameLiveUrl || gameLocalPath) {
-            await launchGameWithFallback(gameLiveUrl, gameLocalPath, title);
-            return;
-          }
 
           // Check if this is a server-port app (like ytsearch) - needs localhost for YouTube embed
           if (serverPort && isElectron) {
@@ -1825,29 +1761,6 @@
 
     // Track if current iframe is a server app
     let currentServerApp = null;
-
-    // Launch a game from bennyshub.com, falling back to the locally synced
-    // copy if the live site can't be reached within a short timeout.
-    async function launchGameWithFallback(liveUrl, localPath, title) {
-      if (!liveUrl) {
-        showIframe(localPath, title);
-        return;
-      }
-      try {
-        // mode: 'no-cors' - we only care whether the request completes, not
-        // whether we can read the (cross-origin) response body.
-        await fetchWithTimeout(liveUrl, GAMES_LAUNCH_PROBE_TIMEOUT_MS, { mode: 'no-cors' });
-        showIframe(liveUrl, title);
-      } catch (e) {
-        console.log('[Hub] Live game unreachable, falling back to local copy:', e.message);
-        if (localPath) {
-          showIframe(localPath, title);
-        } else {
-          announce(`A(z) ${title} internetkapcsolatot igényel, és nincs szinkronizálva offline használatra.`);
-          speak(`A(z) ${title} internetkapcsolatot igényel, és nincs szinkronizálva offline használatra.`);
-        }
-      }
-    }
 
     // Show iframe with tool/game
     function showIframe(src, title, isServerApp = false) {
@@ -2328,11 +2241,23 @@
                 window.electronAPI.system.volumeMax();
             }
             
-            // Say "HELP" rapidly 15x
-            // Start after a 5 second delay to ensure volume has fully increased
+            // Say "SEGÍTSÉG" 15x back to back
+            // Start after a 5 second delay to ensure volume has fully increased.
+            // The repeats are queued rather than sent through speak() every 400 ms:
+            // speak() cancels whatever is playing, and the word lasts longer than
+            // 400 ms, so each repeat cut the last one off.
             setTimeout(() => {
+                const voiceSettings = window.NarbeVoiceManager.getSettings();
+                if (!voiceSettings.ttsEnabled || !('speechSynthesis' in window)) return;
+                const voice = window.NarbeVoiceManager.getCurrentVoice();
+                window.speechSynthesis.cancel();
                 for (let i = 0; i < 15; i++) {
-                    setTimeout(() => speak("AJUTOR"), i * 400); // 400ms spacing for rapid iteration
+                    const utterance = new SpeechSynthesisUtterance("SEGÍTSÉG");
+                    if (voice) utterance.voice = voice;
+                    utterance.rate = voiceSettings.rate;
+                    utterance.pitch = voiceSettings.pitch;
+                    utterance.volume = voiceSettings.volume;
+                    window.speechSynthesis.speak(utterance);
                 }
             }, 5000);
             return;

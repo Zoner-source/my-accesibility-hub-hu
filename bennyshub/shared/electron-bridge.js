@@ -24,6 +24,18 @@
     return;
   }
 
+  // In a normal browser the Hub has no electronAPI, so nothing would answer the
+  // bridge calls; apps would then wait, time out and skip their browser storage.
+  // A cross-origin parent can't be inspected, so keep the bridge in that case.
+  let parentHasElectronAPI = true;
+  try {
+    parentHasElectronAPI = !!window.parent.electronAPI;
+  } catch (e) {}
+  if (!parentHasElectronAPI) {
+    console.log('[ElectronBridge] Parent has no electronAPI (browser), no bridge needed');
+    return;
+  }
+
   // Check if parent has electronAPI by sending a test message
   let parentHasElectron = false;
   let pendingCalls = {};

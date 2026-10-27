@@ -3,8 +3,9 @@
     "bennystictactoe",
     "bennysays",
     "bennysbasketball",
-    "bennysdice",
     "bennysmatchymatch"
   ],
-  "hidden": []
+  "hidden": [
+    "bennysdice"
+  ]
 }

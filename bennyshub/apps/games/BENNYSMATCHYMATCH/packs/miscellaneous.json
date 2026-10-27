@@ -14,7 +14,7 @@
                 "image": "dumptruck.png",
                 "sound": null,
                 "title": "dump truck",
-                "altTitle": "Billencs teherautó",
+                "altTitle": "Teherautó",
                 "ttsText": "",
                 "_created": 1768921874515
             },
@@ -22,7 +22,7 @@
                 "image": "car.png",
                 "sound": null,
                 "title": "car",
-                "altTitle": "Autó",
+                "altTitle": "Piros autó",
                 "ttsText": "",
                 "_created": 1768921888491
             },
@@ -54,7 +54,7 @@
                 "image": "minivan.png",
                 "sound": null,
                 "title": "minivan",
-                "altTitle": "Egyterű",
+                "altTitle": "Kék autó",
                 "ttsText": "",
                 "_created": 1768921956052
             },
@@ -62,7 +62,7 @@
                 "image": "sailboat.svg",
                 "sound": null,
                 "title": "sailboat",
-                "altTitle": "Vitorlás",
+                "altTitle": "Hajó",
                 "ttsText": "",
                 "_created": 1768921982937
             },
@@ -70,7 +70,7 @@
                 "image": "f1car.png",
                 "sound": null,
                 "title": "F1 Car",
-                "altTitle": "Formula 1-es autó",
+                "altTitle": "Versenyautó",
                 "ttsText": "",
                 "_created": 1768922004739
             },
@@ -110,7 +110,7 @@
                 "image": "minibus.svg",
                 "sound": null,
                 "title": "minibus",
-                "altTitle": "Kisbusz",
+                "altTitle": "Busz",
                 "ttsText": "",
                 "_created": 1768922087438
             }
@@ -160,7 +160,7 @@
                 "image": "lilies.png",
                 "sound": null,
                 "title": "lilies",
-                "altTitle": "Liliomok",
+                "altTitle": "Liliom",
                 "ttsText": "",
                 "_created": 1768922475711
             },

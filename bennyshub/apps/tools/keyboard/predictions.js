@@ -9,6 +9,12 @@ class PredictionSystem {
     this.letterData = { unigrams: {}, bigrams: {}, trigrams: {} };
     this.dataLoaded = false;
     this.isElectron = typeof window !== 'undefined' && window.electronAPI;
+    // Browser build: words learned while typing are kept in localStorage,
+    // since there is no prediction server on GitHub Pages.
+    // Own key: the Romanian Hub on the same github.io origin uses 'kb_learned_predictions'.
+    this.learnedKey = 'kb_learned_predictions_hu';
+    this.learned = { frequent_words: {}, bigrams: {}, trigrams: {} };
+    this.saveTimer = null;
     this.initializeData();
     this.initializeLetterFrequencies();
   }
@@ -69,16 +75,19 @@ class PredictionSystem {
         this.data = await window.electronAPI.keyboard.getPredictions();
         console.log(`[Electron] Loaded predictions: ${Object.keys(this.data.frequent_words || {}).length} words`);
       } else {
-        // Fallback to HTTP fetch (for testing outside Electron)
-        const response = await fetch('/shared/predictive_ngrams.json');
+        // Browser: Hungarian base vocabulary (relative path, so it works under
+        // any GitHub Pages sub-path), then the words learned on this device.
+        const response = await fetch('hu_predictions.json?v=20261027hu');
         if (response.ok) {
           this.data = await response.json();
-          console.log(`[HTTP] Loaded predictions: ${Object.keys(this.data.frequent_words || {}).length} words`);
         }
+        this.loadLearned();
+        console.log(`[HTTP] Loaded predictions: ${Object.keys(this.data.frequent_words || {}).length} words`);
       }
     } catch (error) {
       console.error('Error loading predictions:', error);
       this.data = { frequent_words: {}, bigrams: {}, trigrams: {} };
+      this.loadLearned();
     }
     this.seedHungarianWords();
   }
@@ -107,6 +116,53 @@ class PredictionSystem {
         this.data.frequent_words[w] = { count: 3, last_used: stamp };
       }
     });
+  }
+
+  loadLearned() {
+    if (this.isElectron) return;
+    try {
+      const saved = JSON.parse(localStorage.getItem(this.learnedKey) || 'null');
+      if (!saved) return;
+      for (const table of ['frequent_words', 'bigrams', 'trigrams']) {
+        this.learned[table] = saved[table] || {};
+        this.data[table] = this.data[table] || {};
+        for (const [key, entry] of Object.entries(this.learned[table])) {
+          const base = this.data[table][key];
+          this.data[table][key] = {
+            count: (base ? base.count : 0) + entry.count,
+            last_used: entry.last_used,
+            learned: true
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error loading learned predictions:', error);
+    }
+  }
+
+  // Count one use of a word/n-gram in memory and, in the browser, in localStorage.
+  bump(table, key, timestamp) {
+    if (!this.data[table]) this.data[table] = {};
+    if (!this.data[table][key]) {
+      this.data[table][key] = { count: 0, last_used: timestamp };
+    }
+    this.data[table][key].count++;
+    this.data[table][key].last_used = timestamp;
+
+    if (this.isElectron) return;
+    this.data[table][key].learned = true;
+    const learned = this.learned[table];
+    if (!learned[key]) learned[key] = { count: 0, last_used: timestamp };
+    learned[key].count++;
+    learned[key].last_used = timestamp;
+    clearTimeout(this.saveTimer);
+    this.saveTimer = setTimeout(() => {
+      try {
+        localStorage.setItem(this.learnedKey, JSON.stringify(this.learned));
+      } catch (error) {
+        console.error('Error saving learned predictions:', error);
+      }
+    }, 300);
   }
 
   calculateScore(data) {
@@ -138,7 +194,10 @@ class PredictionSystem {
       recencyMultiplier = 0.1; // Older = 10x penalty
     }
     
-    return count * recencyMultiplier;
+    // Words/phrases learned on this device always outrank the built-in
+    // vocabulary, even after their recency boost has faded.
+    const learnedBonus = data.learned ? 10000 : 0;
+    return count * recencyMultiplier + learnedBonus;
   }
 
   async getHybridPredictions(buffer) {
@@ -272,6 +331,17 @@ class PredictionSystem {
       }
     }
     
+    // PRIORITY 2b: The current word is already a complete known word (e.g. "MAMA"
+    // with no space yet) - fill the row with what usually comes next instead of
+    // leaving it empty. app.js appends these after a space rather than replacing.
+    if (currentWord && finalPredictions.length < 6 && (this.data.frequent_words || {})[currentWord]) {
+      const nextWords = await this.getHybridPredictions(cleaned + ' ');
+      for (const word of nextWords) {
+        if (finalPredictions.length >= 6) break;
+        if (word && !finalPredictions.includes(word)) finalPredictions.push(word);
+      }
+    }
+
     // PRIORITY 3: Most frequent words (when after a space with no partial word)
     if (hasTrailingSpace && !currentWord && finalPredictions.length < 6) {
       const sortedWords = Object.entries(this.data.frequent_words || {})
@@ -323,7 +393,8 @@ class PredictionSystem {
     console.log(`[LetterPredict] Word predictions received:`, wordPredictions);
     
     // Default letter order (by frequency)
-    const DEFAULT_LETTERS = ['E', 'T', 'A', 'O', 'I', 'N'];
+    // Only letters that exist on the Hungarian keyboard (no Q, W, X).
+    const KEYBOARD_LETTERS = 'AÁBCDEÉFGHIÍJKLMNOÓÖŐPRSTUÚÜŰVYZ'.split('');
     
     if (!currentPartialWord && hasTrailingSpace && words.length > 0) {
       // User has typed words and ended with a space - use bigram/trigram word predictions
@@ -331,7 +402,7 @@ class PredictionSystem {
       console.log(`[LetterPredict] Using word predictions for next word start letters`);
       
       const letterScores = {};
-      const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+      const allLetters = KEYBOARD_LETTERS;
       
       // Initialize all letters with minimal base score
       for (const letter of allLetters) {
@@ -383,6 +454,7 @@ class PredictionSystem {
       
       // Sort by score and return top 6
       const sortedLetters = Object.entries(letterScores)
+        .filter(([letter]) => KEYBOARD_LETTERS.includes(letter))
         .sort((a, b) => b[1] - a[1])
         .map(([letter]) => letter)
         .slice(0, 6);
@@ -394,12 +466,12 @@ class PredictionSystem {
     
     if (!currentPartialWord) {
       // No word started yet and no context - return most common starting letters
-      const startingLetters = ['T', 'A', 'I', 'S', 'W', 'H'];
+      const startingLetters = ['M', 'K', 'E', 'A', 'N', 'H'];
       return startingLetters;
     }
     
     const letterScores = {};
-    const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const allLetters = KEYBOARD_LETTERS;
     
     // Initialize all letters with minimal base score
     for (const letter of allLetters) {
@@ -466,6 +538,7 @@ class PredictionSystem {
     
     // Sort by score and return top 6
     const sortedLetters = Object.entries(letterScores)
+      .filter(([letter]) => KEYBOARD_LETTERS.includes(letter))
       .sort((a, b) => b[1] - a[1])
       .map(([letter]) => letter)
       .slice(0, 6);
@@ -517,16 +590,11 @@ class PredictionSystem {
       const upperWord = word.toUpperCase();
       const timestamp = new Date().toISOString();
       
-      // Update local memory data immediately so we see the change
-      // This does NOT save to file - only updates in-memory for predictions
-      if (!this.data.frequent_words[upperWord]) {
-        this.data.frequent_words[upperWord] = { count: 0, last_used: timestamp };
-      }
-      this.data.frequent_words[upperWord].count++;
-      this.data.frequent_words[upperWord].last_used = timestamp;
-      
-      // NOTE: We do NOT save to server here. Saving only happens via saveWordToFile()
-      // after the user speaks the text 3 times.
+      // Update local memory data immediately so we see the change.
+      // In Electron this does NOT save to file (that only happens via
+      // saveWordToFile() after the text is spoken 3 times); in the browser
+      // bump() also keeps it in localStorage.
+      this.bump('frequent_words', upperWord, timestamp);
     } catch (error) {
       console.error('Error recording word:', error);
     }
@@ -548,23 +616,13 @@ class PredictionSystem {
       
       // Update local memory data
       if (ctxWords.length >= 1) {
-        const bigramKey = `${ctxWords[ctxWords.length - 1]} ${nextUpper}`;
-        if (!this.data.bigrams[bigramKey]) {
-          this.data.bigrams[bigramKey] = { count: 0, last_used: timestamp };
-        }
-        this.data.bigrams[bigramKey].count++;
-        this.data.bigrams[bigramKey].last_used = timestamp;
+        this.bump('bigrams', `${ctxWords[ctxWords.length - 1]} ${nextUpper}`, timestamp);
       }
-      
+
       if (ctxWords.length >= 2) {
-        const trigramKey = `${ctxWords.slice(-2).join(' ')} ${nextUpper}`;
-        if (!this.data.trigrams[trigramKey]) {
-          this.data.trigrams[trigramKey] = { count: 0, last_used: timestamp };
-        }
-        this.data.trigrams[trigramKey].count++;
-        this.data.trigrams[trigramKey].last_used = timestamp;
+        this.bump('trigrams', `${ctxWords.slice(-2).join(' ')} ${nextUpper}`, timestamp);
       }
-      
+
       // NOTE: We do NOT save to server here. Saving only happens via saveNgramToFile()
       // after the user speaks the text 3 times.
     } catch (error) {
@@ -579,12 +637,8 @@ class PredictionSystem {
       const timestamp = new Date().toISOString();
       
       // Ensure local data is updated
-      if (!this.data.frequent_words[upperWord]) {
-        this.data.frequent_words[upperWord] = { count: 0, last_used: timestamp };
-      }
-      this.data.frequent_words[upperWord].count++;
-      this.data.frequent_words[upperWord].last_used = timestamp;
-      
+      this.bump('frequent_words', upperWord, timestamp);
+
       // Actually save to file
       await this.saveToServer(upperWord, timestamp);
       console.log(`[SAVED TO FILE] Word: ${upperWord}`);
@@ -602,23 +656,13 @@ class PredictionSystem {
       
       // Update local memory
       if (ctxWords.length >= 1) {
-        const bigramKey = `${ctxWords[ctxWords.length - 1]} ${nextUpper}`;
-        if (!this.data.bigrams[bigramKey]) {
-          this.data.bigrams[bigramKey] = { count: 0, last_used: timestamp };
-        }
-        this.data.bigrams[bigramKey].count++;
-        this.data.bigrams[bigramKey].last_used = timestamp;
+        this.bump('bigrams', `${ctxWords[ctxWords.length - 1]} ${nextUpper}`, timestamp);
       }
-      
+
       if (ctxWords.length >= 2) {
-        const trigramKey = `${ctxWords.slice(-2).join(' ')} ${nextUpper}`;
-        if (!this.data.trigrams[trigramKey]) {
-          this.data.trigrams[trigramKey] = { count: 0, last_used: timestamp };
-        }
-        this.data.trigrams[trigramKey].count++;
-        this.data.trigrams[trigramKey].last_used = timestamp;
+        this.bump('trigrams', `${ctxWords.slice(-2).join(' ')} ${nextUpper}`, timestamp);
       }
-      
+
       // Actually save to file
       const cleanContext = ctxWords.join(' ');
       if (cleanContext) {
@@ -632,14 +676,9 @@ class PredictionSystem {
 
   async saveToServer(word, timestamp) {
     try {
+      // In the browser, bump() has already stored the word in localStorage.
       if (this.isElectron) {
         await window.electronAPI.keyboard.savePrediction({ word, timestamp });
-      } else {
-        await fetch('/api/save_prediction', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ word, timestamp })
-        });
       }
     } catch (error) {
       console.error('Error saving to server:', error);
@@ -648,14 +687,9 @@ class PredictionSystem {
 
   async saveNgramToServer(context, nextWord, timestamp) {
     try {
+      // In the browser, bump() has already stored the n-gram in localStorage.
       if (this.isElectron) {
         await window.electronAPI.keyboard.saveNgram({ context, next_word: nextWord, timestamp });
-      } else {
-        await fetch('/api/save_ngram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ context, next_word: nextWord, timestamp })
-        });
       }
     } catch (error) {
       console.error('Error saving n-gram to server:', error);

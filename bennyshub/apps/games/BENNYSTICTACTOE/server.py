@@ -14,5 +14,6 @@ def serve_static(path):
 
 if __name__ == '__main__':
     print("Starting Benny's TicTacToe Server...")
-    # Port 8000 to be different from others if needed, or 5000 is default
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    # Local testing only: bound to this computer with the debugger off, since
+    # Flask's debugger on a network-facing host allows remote code execution.
+    app.run(host='127.0.0.1', port=8000)

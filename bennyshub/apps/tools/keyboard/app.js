@@ -67,9 +67,9 @@
   // We keep this structure for manual interaction timeouts (Long Press) which aren't in Manager yet
   // But we will try to scale them relative to the main speed if we can, or just keep fixed defaults for hold durations.
   const scanSpeeds = {
-    slow: { forward: 1500, backward: 3000, longPress: 2000 },
-    medium: { forward: 1000, backward: 2000, longPress: 2000 },
-    fast: { forward: 500, backward: 1000, longPress: 2000 }
+    slow: { forward: 1500, backward: 3000, longPress: 1000 },
+    medium: { forward: 1000, backward: 2000, longPress: 1000 },
+    fast: { forward: 500, backward: 1000, longPress: 1000 }
   };
   
   // Helper to get current interval from Manager
@@ -135,6 +135,8 @@
 
   function setBuffer(txt) {
     buffer = txt;
+    // Keep the written text across reloads/sessions (restored in init()).
+    try { localStorage.setItem("kb_text_hu", buffer); } catch (e) {}
     // Use innerHTML with a wrapper span so text and cursor flow together when wrapping
     // Only convert trailing space to &nbsp; so it's visible, keep other spaces for word wrap
     let escapedText = buffer
@@ -306,7 +308,7 @@
       setTimeout(() => {
         if (spacebarPressed && (Date.now() - spacebarPressTime) >= longPressThreshold) {
           console.log("Long press detected - starting backward scanning at " + managerInterval + "ms");
-          backwardScanInterval = setInterval(() => {
+          const stepBackward = () => {
             if (spacebarPressed) {
               backwardScanningOccurred = true; // Mark that backward scanning is happening
               if (inSettingsMode) {
@@ -315,7 +317,10 @@
                 scanBackward();
               }
             }
-          }, managerInterval); // Use Manager's scan interval
+          };
+          // First step as soon as the hold is recognised, then one per scan interval
+          stepBackward();
+          backwardScanInterval = setInterval(stepBackward, managerInterval); // Use Manager's scan interval
         }
       }, longPressThreshold);
     }
@@ -336,9 +341,10 @@
       const longPressThreshold = scanSpeeds[currentScanSpeed].longPress;
       
       // Forward scan if:
-      // 1. Short press (250ms to longPress threshold), OR
+      // 1. Short press of any length up to the longPress threshold (no minimum
+      //    press length; scan-manager's cooldown already filters switch bounce), OR
       // 2. Long press but no backward scanning actually occurred
-      if ((pressDuration >= 250 && pressDuration <= longPressThreshold) || 
+      if (pressDuration <= longPressThreshold ||
           (pressDuration > longPressThreshold && !backwardScanningOccurred)) {
         console.log("Triggering forward scan - either short press or long press without backward scanning");
         if (inSettingsMode) {
@@ -376,7 +382,7 @@
       const pressDuration = Date.now() - returnPressTime;
       console.log(`Return released after ${pressDuration}ms`);
       
-      if (!longPressTriggered && pressDuration >= 100) {
+      if (!longPressTriggered) {
         console.log("Short press - selecting");
         selectButton();
       }
@@ -523,6 +529,7 @@
         if (text) {
           speak(text);
           ttsUseCount++;
+          learnSpokenWord();
           console.log(`TTS use count: ${ttsUseCount} for text: "${text}"`);
           
           if (ttsUseCount >= 3) {
@@ -589,7 +596,10 @@
           const currentPartialWord = currentWord();
           let newBuffer = buffer;
           
-          if (currentPartialWord && !buffer.endsWith(" ")) {
+          // Completions replace the partial word; next-word suggestions shown after a
+          // finished word (e.g. "Mama" -> "VINO") are appended after a space instead.
+          if (currentPartialWord && !buffer.endsWith(" ") &&
+              word.toUpperCase().startsWith(currentPartialWord.toUpperCase())) {
             newBuffer = buffer.slice(0, -currentPartialWord.length) + word + " ";
           } else {
             if (!buffer.endsWith(" ") && buffer.length) newBuffer += " ";
@@ -677,7 +687,7 @@
         chip.addEventListener("click", () => {
           const partial = currentWord();
           let newBuf = buffer;
-          if (partial && !buffer.endsWith(" ")) {
+          if (partial && !buffer.endsWith(" ") && w.toUpperCase().startsWith(partial.toUpperCase())) {
             newBuf = buffer.slice(0, -partial.length) + w + " ";
           } else {
             if (!buffer.endsWith(" ") && buffer.length) newBuf += " ";
@@ -1370,28 +1380,33 @@
       if (!prev || /\s/.test(prev)) k = k.toUpperCase();
     }
 
-    if (k === " ") {
-      const currentText = buffer.replace('|', '').trim();
-      const words = currentText.split(' ');
-      if (words.length > 0) {
-        const lastWord = words[words.length - 1];
-        if (lastWord && lastWord.length > 0 && window.predictionSystem) {
-          try {
-            window.predictionSystem.recordLocalWord(lastWord);
-            console.log(`Auto-learned word: ${lastWord}`);
-            
-            if (words.length > 1) {
-              const context = words.slice(0, -1).join(' ');
-              window.predictionSystem.recordNgram(context, lastWord);
-            }
-          } catch (e) {
-            console.error('Error recording word:', e);
-          }
-        }
-      }
-    }
-    
+    if (k === " ") learnLastWord();
+
     setBuffer(buffer + k);
+  }
+
+  // Learn the last word in the buffer (and its context) as a finished word.
+  function learnLastWord() {
+    const words = buffer.replace(/\|/g, '').trim().split(' ');
+    const lastWord = words[words.length - 1];
+    if (!lastWord || !window.predictionSystem) return;
+    try {
+      window.predictionSystem.recordLocalWord(lastWord);
+      console.log(`Auto-learned word: ${lastWord}`);
+
+      if (words.length > 1) {
+        const context = words.slice(0, -1).join(' ');
+        window.predictionSystem.recordNgram(context, lastWord);
+      }
+    } catch (e) {
+      console.error('Error recording word:', e);
+    }
+  }
+
+  // Speaking the text finishes its last word even without a Space ("VLAD" -> speak -> clear).
+  // Only once per text: ttsUseCount resets whenever the buffer changes.
+  function learnSpokenWord() {
+    if (ttsUseCount === 1 && !/\s$/.test(buffer)) learnLastWord();
   }
 
   function saveTextToPredictive(text) {
@@ -1440,8 +1455,9 @@
       window.NarbeVoiceManager.speakProcessed(text);
       
       ttsUseCount++;
+      learnSpokenWord();
       console.log(`TTS use count: ${ttsUseCount} for text: "${text}"`);
-      
+
       if (ttsUseCount >= 3) {
         console.log("3x TTS usage detected - recording words with high priority");
         saveTextToPredictive(text);
@@ -1512,7 +1528,9 @@
     renderKeyboard();
     
     console.log('Setting initial buffer...');
-    setBuffer("");
+    let savedText = "";
+    try { savedText = localStorage.getItem("kb_text_hu") || ""; } catch (e) {}
+    setBuffer(savedText);
     
     // Wait for prediction system to initialize
     const initPredictions = () => {

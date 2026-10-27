@@ -685,8 +685,7 @@ function categoryToFolderName(catName) {
         'Aqua Teen Hunger Force': 'athf',
         'Family Guy': 'familyguy',
         'South Park': 'southpark',
-        'Futurama': 'futurama',
-        'Jen Hamilton': 'jenhamilton'
+        'Futurama': 'futurama'
     };
     
     if (mappings[catName]) return mappings[catName];

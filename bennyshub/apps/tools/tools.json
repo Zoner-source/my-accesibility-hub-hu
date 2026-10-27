@@ -2,7 +2,7 @@
   "tools": [
     {
       "id": "phraseboard",
-      "title": "Kifejezés- és médiatábla",
+      "title": "Szavaim",
       "description": "Szerkeszthető kifejezés- és médiacsempék pásztázással és felolvasással.",
       "path": "apps/tools/phraseboard/index.html",
       "image": "images/tools/phraseboard.png",

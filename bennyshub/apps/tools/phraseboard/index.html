@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NARBE Phrase & Media Board</title>
+  <title>Szavaim</title>
   <script src="../../../shared/electron-bridge.js"></script>
   <style>
     :root {
@@ -471,7 +471,7 @@
   <div class="app-container">
     <header>
   <div class="header-inner">
-    <div class="brand">🧡 NARBE Phrase & Media Board</div>
+    <div class="brand">🧡 Szavaim</div>
     <div id="viewTitle" class="header-title">Meniu principal</div>
     <div class="header-right"></div>
   </div>
@@ -691,17 +691,17 @@
 function updateHeaderForCurrentView(){
   const t = document.getElementById('viewTitle');
   if(!t) return;
-  let title = 'Main Menu';
+  let title = 'Főmenü';
   switch(state.currentMenu){
-    case 'main': title = 'Main Menu'; break;
+    case 'main': title = 'Főmenü'; break;
     case 'categories': title = state.currentBoardTitle || 'Kategóriák'; break;
-    case 'settings': title = 'Settings'; break;
-    case 'gridsize': title = 'Grid Size'; break;
-    case 'tts': title = 'Voice & TTS'; break;
-    case 'scan': title = 'Scan Settings'; break;
-    case 'highlight': title = 'Highlight Colors'; break;
-    case 'theme': title = 'Theme'; break;
-    case 'category': title = state.currentCategory || 'Category'; break;
+    case 'settings': title = 'Beállítások'; break;
+    case 'gridsize': title = 'Rácsméret'; break;
+    case 'tts': title = 'Hang és felolvasás'; break;
+    case 'scan': title = 'Pásztázási beállítások'; break;
+    case 'highlight': title = 'Kiemelési színek'; break;
+    case 'theme': title = 'Téma'; break;
+    case 'category': title = state.currentCategory || 'Kategória'; break;
   }
   t.textContent = title;
 }
@@ -961,7 +961,7 @@ function updateHeaderForCurrentView(){
             
             state.currentBoardTitle = localBoard.name;
             buildIndex(parseCSV(localBoard.csv));
-            el.statusFooter.textContent = `Loaded board: ${localBoard.name}`;
+            el.statusFooter.textContent = `Betöltött tábla: ${localBoard.name}`;
           }
         });
       }
@@ -977,7 +977,7 @@ function updateHeaderForCurrentView(){
             if (cleanBoardName) speak(cleanBoardName);
             
             const success = await loadBoard(board.path);
-            el.statusFooter.textContent = success ? `Loaded board: ${board.name}` : `Failed to load board: ${board.name}`;
+            el.statusFooter.textContent = success ? `Betöltött tábla: ${board.name}` : `Nem sikerült betölteni a táblát: ${board.name}`;
           }
         });
       });
@@ -1085,7 +1085,7 @@ function updateHeaderForCurrentView(){
         if (catTotalPages > 1) {
           const indicator = document.createElement('div');
           indicator.className = 'page-indicator';
-          indicator.textContent = `${catTotalPages} pages`;
+          indicator.textContent = `${catTotalPages} oldal`;
           btn.appendChild(indicator);
         }
         gridPositions.push({ type: 'category', button: btn });
@@ -1541,7 +1541,7 @@ function updateHeaderForCurrentView(){
       gridPositions.push({ type: 'back', button: createButton('Vissza', '←', () => { if (state.page > 0) { state.page--; renderCategory(); } else { navigateBack(); } }, 'back-btn') });
       for (let i = startIdx; i < endIdx; i++) {
         const item = cat.items[i];
-        const btn = createButton(item.display || item.speak || 'Speak', '', () => onTileClick(item));
+        const btn = createButton(item.display || item.speak || 'Felolvasás', '', () => onTileClick(item));
         // Store the speak text for scan selection to use
         btn.dataset.speakText = item.speak || item.display || '';
         if (item.image) {
@@ -1646,11 +1646,11 @@ function updateHeaderForCurrentView(){
           if (state.currentMenu === 'tts' && element.classList.contains('voice-btn')) {
             const idx = parseInt(element.dataset.voiceIndex, 10);
             const voice = state.voices[idx];
-            if (voice) { speakWithVoice(`Voice ${idx + 1}`, voice); return; }
+            if (voice) { speakWithVoice(`${idx + 1}. hang`, voice); return; }
           }
           let textToSpeak = '';
-          if (element === el.deleteWordBtn && state.sentenceMode) textToSpeak = 'Delete';
-          else if (element === el.clearSentenceBtn && state.sentenceMode) textToSpeak = 'Clear all';
+          if (element === el.deleteWordBtn && state.sentenceMode) textToSpeak = 'Törlés';
+          else if (element === el.clearSentenceBtn && state.sentenceMode) textToSpeak = 'Mindent töröl';
           else if (element !== el.sentenceDisplay && element !== el.deleteWordBtn && element !== el.clearSentenceBtn) {
             const pageIndicator = element.querySelector('.page-indicator');
             const cleanText = cleanTextForTTS(element.textContent);
@@ -2099,7 +2099,7 @@ function updateHeaderForCurrentView(){
         const parsedRows = parseCSV(csvText);
         
         // Extract board name from CSV data or use filename
-        let boardName = 'My Custom Board';
+        let boardName = 'Saját táblám';
         if (parsedRows.length > 0 && parsedRows[0].boardName) {
           boardName = parsedRows[0].boardName;
         } else {
@@ -2116,8 +2116,8 @@ function updateHeaderForCurrentView(){
           localStorage.setItem('narbe_phrase_builder', JSON.stringify(boardData));
           
           // Show success message and re-render main menu
-          el.statusFooter.textContent = `Board "${boardName}" saved! Navigate to it from the main menu.`;
-          speak(`Board ${cleanTextForTTS(boardName)} saved`);
+          el.statusFooter.textContent = `A(z) "${boardName}" tábla elmentve! A főmenüből érheted el.`;
+          speak(`A(z) ${cleanTextForTTS(boardName)} tábla elmentve`);
           
           // Re-render main menu to show the new board
           if (state.currentMenu === 'main') {
@@ -2228,7 +2228,7 @@ function updateHeaderForCurrentView(){
         if (targetBoard) {
            const success = await loadBoard(targetBoard.path);
            if (success) {
-               el.statusFooter.textContent = `Loaded board: ${targetBoard.name}`;
+               el.statusFooter.textContent = `Betöltött tábla: ${targetBoard.name}`;
                updateScannable();
                state.currentRow = 0; state.scanIndex = 0;
                setTimeout(() => { updateScannable(); }, 100);
@@ -2241,7 +2241,7 @@ function updateHeaderForCurrentView(){
       renderMainMenu();
       
       if (saved && saved.csv) {
-        el.statusFooter.textContent = `You have a saved board: ${saved.name}`;
+        el.statusFooter.textContent = `Van egy mentett táblád: ${saved.name}`;
       }
       
       updateScannable();
@@ -2339,7 +2339,7 @@ function updateHeaderForCurrentView(){
         updateHeaderForCurrentView();
         setTimeout(() => { updateScannable(); }, 50);
       } else {
-        backMessage = 'Main Menu';
+        backMessage = 'Főmenü';
         openMenu('main');
       }
       
@@ -2358,7 +2358,7 @@ function updateHeaderForCurrentView(){
       switch (menuName) {
         case 'main': 
           renderMainMenu(); 
-          menuTitle = 'Main Menu';
+          menuTitle = 'Főmenü';
           break;
         case 'categories': 
           renderCategoryMenu(); 
@@ -2549,7 +2549,7 @@ function updateHeaderForCurrentView(){
       state.categories = cats;
       state.byCat = new Map(cats.map(c => [c.name, c]));
       state.csvLoaded = true;
-      el.statusFooter.textContent = `Loaded ${cats.length} categories with ${rows.length} phrases`;
+      el.statusFooter.textContent = `${cats.length} kategória és ${rows.length} kifejezés betöltve`;
       state.navigationHistory = [];
       openMenu('categories');
     }
@@ -2778,7 +2778,7 @@ function updateHeaderForCurrentView(){
         if (!raw) return null;
         const data = JSON.parse(raw);
         if (!data || !data.csv) return null;
-        return { name: (data.boardName && data.boardName.trim()) || 'My Personal Board', csv: data.csv };
+        return { name: (data.boardName && data.boardName.trim()) || 'Személyes táblám', csv: data.csv };
       } catch (e) { return null; }
     }
 

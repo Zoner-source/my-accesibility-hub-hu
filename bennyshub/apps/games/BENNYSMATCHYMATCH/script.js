@@ -138,6 +138,13 @@ function categoryDisplayName(catName) {
     return categoryNamesHU[catName] || catName;
 }
 
+// Display names for pack files. The underlying values stay English because
+// they are file names.
+const packNamesHU = {
+    'Animals': 'Állatok',
+    'Miscellaneous': 'Vegyes'
+};
+
 const config = {
     scanHighlightPx: 8,
     spaceDebounce: 200,
@@ -227,7 +234,14 @@ async function init() {
     } catch(e) {
         console.error("Failed to load local registry", e);
     }
-    
+
+    // A saved "Local" source with no local packs would start with no
+    // categories or images at all; fall back to every available pack.
+    if (state.gameSource === 'Local' && state.localPacks.length === 0) {
+        state.gameSource = 'ALL';
+        localStorage.setItem('matchy_game_source', 'ALL');
+    }
+
     // 3. Combine based on Source
     refreshPacks(); // Will populate state.packs and load first 
 
@@ -384,8 +398,7 @@ function categoryToFolderName(catName) {
         'Aqua Teen Hunger Force': 'athf',
         'Family Guy': 'familyguy',
         'South Park': 'southpark',
-        'Futurama': 'futurama',
-        'Jen Hamilton': 'jenhamilton'
+        'Futurama': 'futurama'
     };
     
     if (mappings[catName]) return mappings[catName];
@@ -445,7 +458,8 @@ function getPackTitle() {
     // "packs/adult_cartoons.json" -> "Adult Cartoons" (legacy)
     const parts = filename.split('/');
     const base = parts[parts.length - 1].replace('.json', '');
-    return base.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const title = base.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    return packNamesHU[title] || title;
 }
 
 // Get the folder path for the current pack's assets
@@ -928,9 +942,27 @@ function refreshPacks() {
     
     state.packs = newPacks;
     state.currentPackIndex = 0;
-    
-    // Attempt to load the new first pack
-    loadPack(state.packs[0]).catch(console.error);
+
+    // Attempt to load the new first pack. The menu is usable before the
+    // fetches finish (slow on GitHub Pages), so rebuild the setup lists once
+    // the load completes instead of keeping a partial/empty category list.
+    const loadToken = state.packLoadToken = (state.packLoadToken || 0) + 1;
+    loadPack(state.packs[0]).then(() => {
+        if (loadToken !== state.packLoadToken) return; // superseded by a newer refresh
+        rebuildSetupCategories();
+        if (state.mode === 'menu' && state.menuState === 'setup') {
+            updateSetupMenu();
+            renderMenu();
+        }
+    }).catch(console.error);
+}
+
+function rebuildSetupCategories() {
+    const cats = Object.keys(state.assets.categories || {}).filter(c => c !== 'Unassigned');
+    state.setup.categories = ['All', ...cats];
+    if (state.setup.categoryIndex >= state.setup.categories.length) state.setup.categoryIndex = 0;
+    state.category = state.setup.categories[state.setup.categoryIndex];
+    updateBoardSizes();
 }
 
 function showMainMenu() {
@@ -1294,11 +1326,11 @@ function updateSetupMenu() {
         { 
             text: () => {
                 const b = state.setup.boardSizes[state.setup.boardSizeIndex];
-                return `Táblaméret: ${b ? b.label : 'N/A'}`;
+                return `Táblaméret: ${b ? b.label : 'nem elérhető'}`;
             }, 
             tts: () => {
                 const b = state.setup.boardSizes[state.setup.boardSizeIndex];
-                return `Táblaméret: ${b ? (b.tts || b.label) : 'N/A'}`;
+                return `Táblaméret: ${b ? (b.tts || b.label) : 'nem elérhető'}`;
             },
             action: () => cycleBoardSize(1),
             onPrev: () => cycleBoardSize(-1)
