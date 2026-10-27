@@ -10,8 +10,11 @@
 window.NarbeVoiceManager = (function() {
   'use strict';
 
-  // Storage key for voice settings (localStorage fallback)
-  const STORAGE_KEY = 'narbe-voice-settings';
+  // Storage key for voice settings (localStorage fallback). Per language: the
+  // Romanian and Hungarian Hubs share the zoner-source.github.io origin, and one
+  // key let each overwrite the other's voice (Romanian then spoke with an
+  // English voice). The 'narbe-voice-settings-*' postMessage types are unchanged.
+  const STORAGE_KEY = 'narbe-voice-settings-hu';
   
   // Check if running in Electron
   const isElectron = !!(window.electronAPI && window.electronAPI.voice);

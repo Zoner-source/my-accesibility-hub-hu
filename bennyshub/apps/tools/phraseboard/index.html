@@ -100,6 +100,10 @@
       grid-template-columns: repeat(var(--grid-cols, 4), 1fr);
       grid-template-rows: repeat(var(--grid-rows, 4), 1fr); /* Default uniform spacing */
       align-items: stretch;
+      /* Rows of long phrases can outgrow the screen: scroll inside the grid
+         (the page itself never scrolls), and the scan keeps its row in view. */
+      min-height: 0;
+      overflow-y: auto;
     }
     
     /* Only use auto row sizing when sentence mode is active */
@@ -1625,12 +1629,21 @@ function updateHeaderForCurrentView(){
       document.querySelectorAll('.row-highlight').forEach(el => el.classList.remove('row-highlight'));
     }
 
+    // Scroll the grid just enough to show the scanned row or tile in full.
+    // Does nothing when it is already on screen.
+    function scrollScanIntoView(element) {
+      if (!element || !el.mainGrid.contains(element)) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      element.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+    }
+
     function highlightCurrentRow() {
       if (state.userScanPreference === 'cell') return;
       clearScanHighlight();
       // Only highlight if currentRow is valid (not -1)
       if (state.currentRow >= 0 && state.scannableRows[state.currentRow]) {
         state.scannableRows[state.currentRow].forEach(element => element.classList.add('row-highlight'));
+        scrollScanIntoView(state.scannableRows[state.currentRow][0]);
       }
     }
 
@@ -1642,6 +1655,7 @@ function updateHeaderForCurrentView(){
           state.scannableRows[state.currentRow][state.scanIndex]) {
         const element = state.scannableRows[state.currentRow][state.scanIndex];
         element.classList.add('scan-highlight');
+        scrollScanIntoView(element);
         if (state.ttsOnScan) {
           if (state.currentMenu === 'tts' && element.classList.contains('voice-btn')) {
             const idx = parseInt(element.dataset.voiceIndex, 10);

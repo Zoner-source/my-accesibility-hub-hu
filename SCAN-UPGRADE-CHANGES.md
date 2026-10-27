@@ -811,3 +811,21 @@ Owner request: add NARBE Animal Friends to both the Romanian and the Hungarian H
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: real Chrome against local servers for both copies. The Hub lists "Barátságos Állatok" and opens it in its iframe; main menu, ways to play, settings, How to Play, reveal, facts, riddles, right/wrong picks, cheers and row-complete lines all read in the page language; every animal has 8 facts with markup and no riddle contains the animal's own name (scripted check). Keyboard, Matchy Match and the other listed games still load. Missing optional sound-effect files (doors, songs) return 404 and fall back to the synthesised tones, as designed.
+
+## 2026-10-27 — Voice settings stored per Hub language
+
+Owner report: speech stopped working on the Romanian Hub. Cause: the Romanian and Hungarian Hubs are both on zoner-source.github.io, so they shared the localStorage key narbe-voice-settings. Opening the Hungarian Hub saved Microsoft Szabolcs; the Romanian Hub (English/Romanian voices only) could not find it, fell back to index 0 and saved Microsoft David (English), which then read the Romanian text. Speech on/off and rate were shared the same way.
+
+- bennyshub/shared/voice-manager.js — STORAGE_KEY is now narbe-voice-settings-hu. On first load the old shared value is ignored, so the language default voice is picked again (a device already stuck on the English voice repairs itself). The narbe-voice-settings-* postMessage types between the Hub and its iframes are unchanged.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported (Electron stores voice settings in its own file). Validation: real Chrome, both Hubs served from one origin. Starting from the broken state (old key = Microsoft David), the Romanian Hub speaks with Microsoft Andrei; after the Hungarian Hub (Microsoft Szabolcs), the Romanian Hub still speaks with Andrei. A rate or voice previously chosen by hand returns to the default once.
+
+## 2026-10-27 — Phrase board follows the scan when rows do not fit
+
+Owner request: when a board's tiles hold many words, rows lower down can be taller than the screen; the scan must scroll the board to follow the row it moves to.
+
+- bennyshub/apps/tools/phraseboard/index.html — .main-grid gets min-height: 0 and overflow-y: auto, so rows that outgrow the screen scroll inside the grid (the page itself still never scrolls). New scrollScanIntoView(): highlightCurrentRow() and highlightScanIndex() scroll the highlighted row or tile into view with block 'nearest' (no movement when it is already fully visible; instant instead of smooth under prefers-reduced-motion). Scan order, timing, speech and selection are unchanged.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: real Chrome, 1024×640, a 16-phrase board with long multi-word tiles (four rows, the third and fourth below the fold). Each Space press left the highlighted row fully visible: scroll 0 → 70 → 275, and back to the top when the scan wrapped. Boards that fit on screen do not scroll. Tested on the Hungarian copy; the Romanian copy has the identical change.
