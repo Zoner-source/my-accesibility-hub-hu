@@ -110,6 +110,26 @@
     .main-grid.sentence-active {
       grid-template-rows: auto repeat(var(--grid-rows, 4), 1fr); /* auto for sentence bar, rest for buttons */
     }
+
+    /* A category lists every phrase: each row keeps the height the grid size
+       gives it (--row-h, set by sizeListRows) and the rows past the screen
+       scroll. The sentence bar stays pinned above the list. */
+    .main-grid.list-mode {
+      grid-template-rows: none;
+      grid-auto-rows: var(--row-h, 120px);
+    }
+    .main-grid.list-mode.sentence-active {
+      grid-template-rows: auto;
+    }
+    .main-grid.list-mode .sentence-row.active {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--bg);
+      /* Cover the grid's top padding and the row gap, so scrolled rows never
+         peek out above or right below the pinned bar. */
+      box-shadow: 0 -20px 0 0 var(--bg), 0 15px 0 0 var(--bg);
+    }
     
     .sentence-row {
       grid-column: 1 / -1;
@@ -920,7 +940,26 @@ function updateHeaderForCurrentView(){
     function clearGrid() {
       const buttons = el.mainGrid.querySelectorAll('.grid-button:not(#deleteWordBtn):not(#clearSentenceBtn)');
       buttons.forEach(btn => btn.remove());
+      el.mainGrid.classList.remove('list-mode');
+      el.mainGrid.style.scrollPaddingTop = '';
+      el.mainGrid.scrollTop = 0;
     }
+
+    // Row height for the scrolling category list: the same as the grid size
+    // setting gives a page, so the list looks like the board always did.
+    function sizeListRows() {
+      if (!el.mainGrid.classList.contains('list-mode')) return;
+      const cs = getComputedStyle(el.mainGrid);
+      const gap = parseFloat(cs.rowGap) || 0;
+      let free = el.mainGrid.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const sentence = state.sentenceMode && el.sentenceRow.classList.contains('active');
+      if (sentence) free -= el.sentenceRow.offsetHeight + gap;
+      const rows = state.gridSize.rows;
+      el.mainGrid.style.setProperty('--row-h', Math.max(60, Math.floor((free - gap * (rows - 1)) / rows)) + 'px');
+      // Keep a scanned row from scrolling in under the pinned sentence bar.
+      el.mainGrid.style.scrollPaddingTop = sentence ? (el.sentenceRow.offsetHeight + gap) + 'px' : '';
+    }
+    window.addEventListener('resize', sizeListRows);
 
     function createButton(text, icon = '', clickHandler = null, className = '') {
       const btn = document.createElement('button');
@@ -1084,14 +1123,6 @@ function updateHeaderForCurrentView(){
         
         btn.style.background = rgbaFromHex(cat.color, 0.2);
         btn.style.borderColor = cat.color;
-        const itemsPerPage = state.gridSize.rows * state.gridSize.cols - 1;
-        const catTotalPages = Math.ceil(cat.items.length / itemsPerPage);
-        if (catTotalPages > 1) {
-          const indicator = document.createElement('div');
-          indicator.className = 'page-indicator';
-          indicator.textContent = `${catTotalPages} oldal`;
-          btn.appendChild(indicator);
-        }
         gridPositions.push({ type: 'category', button: btn });
       }
       // Add Next button if there are multiple pages (loops back to first page from last page)
@@ -1534,17 +1565,10 @@ function updateHeaderForCurrentView(){
       state.currentMenu = 'category';
       const cat = state.byCat.get(state.currentCategory);
       if (!cat) return;
-      // Don't subtract sentence row space - it's now in its own dedicated row
-      const totalSlots = state.gridSize.rows * state.gridSize.cols;
-      const availableSlots = totalSlots - 1;
-      const itemsPerPage = availableSlots - 1;
-      const totalPages = Math.ceil(cat.items.length / itemsPerPage);
-      const startIdx = state.page * itemsPerPage;
-      const endIdx = Math.min(startIdx + itemsPerPage, cat.items.length);
-      const gridPositions = [];
-      gridPositions.push({ type: 'back', button: createButton('Vissza', '←', () => { if (state.page > 0) { state.page--; renderCategory(); } else { navigateBack(); } }, 'back-btn') });
-      for (let i = startIdx; i < endIdx; i++) {
-        const item = cat.items[i];
+      // Every phrase on one list, no pages: rows past the screen scroll, and
+      // the scan scrolls the list to follow (see scrollScanIntoView).
+      el.mainGrid.appendChild(createButton('Vissza', '←', () => navigateBack(), 'back-btn'));
+      cat.items.forEach(item => {
         const btn = createButton(item.display || item.speak || 'Felolvasás', '', () => onTileClick(item));
         // Store the speak text for scan selection to use
         btn.dataset.speakText = item.speak || item.display || '';
@@ -1559,13 +1583,10 @@ function updateHeaderForCurrentView(){
           btn.style.background = rgbaFromHex(tileColor, 0.2);
           btn.style.borderColor = '#000000';
         }
-        gridPositions.push({ type: 'phrase', button: btn });
-      }
-      // Add Next button if there are multiple pages (loops back to first page from last page)
-      if (totalPages > 1) {
-        gridPositions.push({ type: 'next', button: createButton('Következő', '▶', () => { state.page = (state.page + 1) % totalPages; renderCategory(); }, 'next-btn') });
-      }
-      gridPositions.forEach(pos => { if (pos.button) el.mainGrid.appendChild(pos.button); });
+        el.mainGrid.appendChild(btn);
+      });
+      el.mainGrid.classList.add('list-mode');
+      sizeListRows();
       updateScannable();
     }
 

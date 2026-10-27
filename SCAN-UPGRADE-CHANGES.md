@@ -829,3 +829,11 @@ Owner request: when a board's tiles hold many words, rows lower down can be tall
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: real Chrome, 1024×640, a 16-phrase board with long multi-word tiles (four rows, the third and fourth below the fold). Each Space press left the highlighted row fully visible: scroll 0 → 70 → 275, and back to the top when the scan wrapped. Boards that fit on screen do not scroll. Tested on the Hungarian copy; the Romanian copy has the identical change.
+
+### Follow-up — a category is one scrolling list instead of pages
+
+Owner feedback: it still did not scroll, and paging with a Next tile is not intuitive. Cause: a category never overflowed the screen. It was split into pages of rows × cols tiles (Back + phrases + Next), so there was nothing to scroll to.
+
+- bennyshub/apps/tools/phraseboard/index.html — renderCategory() shows Back then every phrase of the category, with no pages and no Next tile; .main-grid.list-mode gives each row the height the grid size setting gives a page (--row-h from sizeListRows(), recomputed on resize), and the rows past the screen scroll with the existing scrollScanIntoView(). With the sentence bar on, it stays pinned at the top (sticky, background and box-shadow cover the padding and gap) and scroll-padding-top keeps a scanned row from sliding under it. clearGrid() leaves list mode and resets the scroll, so the main menu, category list and settings stay paged exactly as before. Category tiles no longer show a page count, since a category has no pages.
+
+Validation: real Chrome, 1280×720, default 4×4 grid, one category of 30 phrases, both copies. 31 tiles in 8 equal rows (136 px), no Next tile; Space moved the row highlight down and the list scrolled 0 → 130 → 281 → 432 → 583, then back to the top when the scan wrapped; with the sentence bar on the bar stayed pinned and every scanned phrase row stayed fully visible below it; the main menu does not scroll and has no list mode; no page errors.
