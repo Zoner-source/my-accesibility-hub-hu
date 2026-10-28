@@ -28,7 +28,7 @@ NAF.L = (function () {
         'Pause.': 'Pauză.',
         'NARBE Animal Friends': 'Animale prietenoase',
         'Tap Space = next · hold Space = back · Enter = choose':
-            'Space scurt = înainte · Space ținut = înapoi · Enter = alege',
+            'Space scurt = înainte · Space lung = înapoi · Enter = alege',
         'Which way would you like to play?': 'Cum vrei să joci?',
         'Settings': 'Setări',
         'Settings.': 'Setări.',

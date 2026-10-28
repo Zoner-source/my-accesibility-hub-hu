@@ -17,7 +17,7 @@ window.NFL = {
     right: function (cheer, f) { return cheer + ' Este ' + f + '.'; },
     wrong: function (chosen, target) { return 'Acesta este ' + chosen + '. Cine este ' + target + '?'; },
 
-    hint: 'Space scurt = înainte · Space ținut = înapoi · Enter = alege',
+    hint: 'Space scurt = înainte · Space lung = înapoi · Enter = alege',
     menu: {
         greeting: 'Sentimente. Alege Joacă pentru a începe.',
         play: ['Joacă', 'Joacă. Hai să începem!'],
