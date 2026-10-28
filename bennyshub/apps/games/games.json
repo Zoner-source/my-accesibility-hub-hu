@@ -60,6 +60,17 @@
         "Interactive",
         "Educational"
       ]
+    },
+    {
+      "id": "narbefeelings",
+      "title": "Feelings",
+      "description": "Who is sad? Three faces, pick the one that shows the feeling. An endless loop with no score, no timer and no losing.",
+      "path": "apps/games/NARBEFEELINGS/index.html",
+      "image": "images/games/narbefeelings.png",
+      "genres": [
+        "Educational",
+        "Interactive"
+      ]
     }
   ]
 }

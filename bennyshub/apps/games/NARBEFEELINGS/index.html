@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Érzelmek</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../../images/favicon-32.png">
+<link rel="stylesheet" href="../../../shared/scan-status-badge.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="nf">
+  <div id="status" class="nf-status"></div>
+
+  <section id="nf-menu" class="nf-screen">
+    <div class="nf-card">
+      <h1 id="nf-title" class="nf-title"></h1>
+      <div id="nf-menu-list" class="nf-list"></div>
+      <p class="nf-hint"></p>
+    </div>
+  </section>
+
+  <section id="nf-play" class="nf-screen">
+    <h2 id="nf-question" class="nf-question" aria-live="polite"></h2>
+    <div id="nf-faces" class="nf-faces"></div>
+    <div class="nf-play-bar">
+      <button id="nf-pause-btn" type="button" class="nf-btn nf-pause-btn"></button>
+    </div>
+  </section>
+
+  <section id="nf-pause" class="nf-screen">
+    <div class="nf-card">
+      <h2 id="nf-pause-title" class="nf-title"></h2>
+      <div id="nf-pause-list" class="nf-list"></div>
+    </div>
+  </section>
+
+  <section id="nf-settings" class="nf-screen">
+    <div class="nf-card">
+      <h2 id="nf-settings-title" class="nf-title"></h2>
+      <div id="nf-settings-list" class="nf-list"></div>
+    </div>
+  </section>
+
+  <section id="nf-help" class="nf-screen">
+    <div class="nf-card">
+      <button id="nf-help-title" type="button" class="nf-btn nf-title nf-title-btn"></button>
+      <div id="nf-help-body" class="nf-help-body"></div>
+      <div id="nf-help-list" class="nf-list"></div>
+    </div>
+  </section>
+</div>
+
+<!-- Shared hub modules, in the hub's required order, before the game. -->
+<script src="../../../shared/safe-audio.js" onerror="console.warn('safe-audio.js not loaded')"></script>
+<script src="../../../shared/platform.js"></script>
+<script src="../../../shared/scan-status-badge.js"></script>
+<script src="../../../shared/choice-scan.js"></script>
+<script src="../../../shared/choice-scan-adapter.js"></script>
+<script src="../../../shared/voice-manager.js" onerror="console.warn('voice-manager.js not loaded')"></script>
+<script src="../../../shared/scan-manager.js" onerror="console.warn('scan-manager.js not loaded')"></script>
+<script src="../../../shared/ios-audio-fix.js" onerror="console.warn('ios-audio-fix.js not loaded')"></script>
+
+<!-- The language file comes first: game.js reads window.NFL. -->
+<script src="js/lang-hu.js"></script>
+<script src="js/game.js"></script>
+
+</body>
+</html>

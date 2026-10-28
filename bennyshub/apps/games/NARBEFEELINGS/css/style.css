@@ -1,0 +1,138 @@
+/* Feelings - calm, high contrast, big targets. */
+:root {
+  --bg: #fff6e8;
+  --card: #ffffff;
+  --ink: #1f2430;
+  --muted: #5b6475;
+  --brand: #e2725b;
+  --btn: #3d6fb6;
+  --btn-ink: #ffffff;
+  --focus: #ffd400;
+  --right: #2e9e5b;
+  --wrong: #c0392b;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  overflow: hidden;
+}
+
+#nf { position: relative; height: 100%; }
+
+.nf-status { position: absolute; top: 12px; right: 16px; z-index: 5; }
+
+.nf-screen {
+  display: none;
+  position: absolute;
+  inset: 0;
+  padding: 16px;
+  overflow-y: auto;
+}
+.nf-screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.nf-card {
+  width: min(560px, 100%);
+  background: var(--card);
+  border: 4px solid var(--ink);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, .15);
+}
+
+.nf-title {
+  margin: 0 0 20px;
+  text-align: center;
+  font-size: clamp(28px, 5vw, 44px);
+  color: var(--brand);
+}
+
+.nf-list { display: flex; flex-direction: column; gap: 14px; }
+
+.nf-btn {
+  font: inherit;
+  font-size: clamp(20px, 3.2vw, 28px);
+  font-weight: 700;
+  min-height: 64px;
+  padding: 12px 20px;
+  border: 4px solid var(--ink);
+  border-radius: 18px;
+  background: var(--btn);
+  color: var(--btn-ink);
+  cursor: pointer;
+}
+.nf-btn.nf-primary { background: var(--right); }
+
+/* The highlight: colour and thickness, never colour alone. */
+.nf-btn.nf-focus {
+  outline: 8px solid var(--focus);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 14px rgba(0, 0, 0, .55);
+}
+
+.nf-hint { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: 16px; }
+
+/* Settings rows: label left, value right. */
+.nf-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; }
+.nf-row-value { font-weight: 600; opacity: .9; text-align: right; }
+
+/* Help: the title is the button that reads the page aloud. */
+.nf-title-btn { display: block; width: 100%; background: var(--brand); color: #fff; }
+.nf-help-body { margin: 0 0 20px; font-size: clamp(18px, 2.6vw, 22px); line-height: 1.45; }
+.nf-help-body p { margin: 0 0 10px; }
+
+/* --- play --------------------------------------------------------------------- */
+
+.nf-question {
+  margin: 0 0 3vh;
+  font-size: clamp(32px, 6vw, 64px);
+  text-align: center;
+}
+
+.nf-faces {
+  display: flex;
+  gap: clamp(16px, 4vw, 48px);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nf-face {
+  width: min(28vw, 46vh, 320px);
+  aspect-ratio: 1;
+  padding: 8px;
+  background: #fff;
+  border-radius: 28px;
+}
+.nf-face img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; }
+
+.nf-face.nf-right {
+  border-color: var(--right);
+  box-shadow: 0 0 0 10px var(--right);
+  animation: nf-pop .5s ease-out;
+}
+.nf-face.nf-wrong { animation: nf-shake .45s ease-in-out; }
+.nf-face.nf-focus.nf-right { box-shadow: 0 0 0 10px var(--right), 0 0 0 18px rgba(0, 0, 0, .55); }
+
+.nf-play-bar { margin-top: 3vh; }
+.nf-pause-btn { background: #5a6475; min-width: 160px; }
+
+@keyframes nf-pop { 0% { transform: scale(1); } 40% { transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes nf-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-face.nf-right, .nf-face.nf-wrong { animation: none; }
+}
+
+/* Narrow and phone screens: faces stack two and one, still large. */
+@media (max-width: 600px) {
+  .nf-face { width: min(42vw, 30vh); }
+}

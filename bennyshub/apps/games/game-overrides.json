@@ -42,5 +42,13 @@
             "Interaktív",
             "Ismeretterjesztő"
         ]
+    },
+    "narbefeelings": {
+        "title": "Érzelmek",
+        "description": "Ki szomorú? Három arc közül válaszd ki azt, amelyik így érez. Nincs pontszám, nincs időzítő, nem lehet veszíteni.",
+        "genres": [
+            "Ismeretterjesztő",
+            "Érzelmek"
+        ]
     }
 }
