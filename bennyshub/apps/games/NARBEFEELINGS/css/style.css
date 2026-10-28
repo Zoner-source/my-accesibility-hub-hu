@@ -89,26 +89,30 @@ html, body {
 /* --- play --------------------------------------------------------------------- */
 
 .nf-question {
-  margin: 0 0 3vh;
+  margin: 0 0 2vh;
   font-size: clamp(32px, 6vw, 64px);
   text-align: center;
 }
 
 .nf-faces {
   display: flex;
-  gap: clamp(16px, 4vw, 48px);
+  gap: clamp(12px, 2.5vw, 32px);
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .nf-face {
-  width: min(28vw, 46vh, 320px);
+  /* As large as the screen allows: three across, with room for the question
+     and the Pause button. Large faces are easier to tell apart with low vision. */
+  width: min(30vw, 58vh, 520px);
   aspect-ratio: 1;
-  padding: 8px;
+  padding: 0;
+  overflow: hidden;
   background: #fff;
   border-radius: 28px;
 }
-.nf-face img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; }
+/* The pictograms have a wide white margin; zoom in so the face fills the tile. */
+.nf-face img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; transform: scale(1.12); }
 
 .nf-face.nf-right {
   border-color: var(--right);
@@ -118,7 +122,7 @@ html, body {
 .nf-face.nf-wrong { animation: nf-shake .45s ease-in-out; }
 .nf-face.nf-focus.nf-right { box-shadow: 0 0 0 10px var(--right), 0 0 0 18px rgba(0, 0, 0, .55); }
 
-.nf-play-bar { margin-top: 3vh; }
+.nf-play-bar { margin-top: 2vh; }
 .nf-pause-btn { background: #5a6475; min-width: 160px; }
 
 @keyframes nf-pop { 0% { transform: scale(1); } 40% { transform: scale(1.08); } 100% { transform: scale(1); } }
@@ -134,5 +138,5 @@ html, body {
 
 /* Narrow and phone screens: faces stack two and one, still large. */
 @media (max-width: 600px) {
-  .nf-face { width: min(42vw, 30vh); }
+  .nf-face { width: min(46vw, 34vh); }
 }
