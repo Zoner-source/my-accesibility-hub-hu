@@ -294,7 +294,7 @@
       }
 
       utterance.volume = 1.0; // Max volume
-      utterance.rate = 1.0;
+      utterance.rate = (window.NarbeVoiceManager && window.NarbeVoiceManager.getSettings().rate) || 1.0;
       utterance.pitch = 1.0;
       
       utterance.onstart = () => console.log('iOS speech started');

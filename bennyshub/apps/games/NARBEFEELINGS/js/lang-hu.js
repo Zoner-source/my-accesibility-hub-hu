@@ -39,6 +39,8 @@ window.NFL = {
         on: 'Be', off: 'Ki',
         tts: ['Felolvasás', 'Felolvasás bekapcsolva.', 'Felolvasás kikapcsolva.'],
         voice: ['Hang', function (v) { return 'Hang. ' + v + '.'; }],
+        rate: ['Beszéd sebessége', function (r) { return 'Beszéd sebessége: ' + r + '.'; }],
+        rateNames: { '0.5': 'Nagyon lassú', '0.65': 'Lassú', '0.8': 'Kicsit lassabb', '1': 'Normál', '1.2': 'Gyors' },
         auto: ['Automatikus léptetés', 'Be — egy kapcsoló', 'Ki — két kapcsoló',
             'Automatikus léptetés bekapcsolva. Egy kapcsoló. A kiemelés magától lép, az Enter kiválaszt.',
             'Automatikus léptetés kikapcsolva. Két kapcsoló. A Szóköz lépteti a kiemelést, az Enter kiválaszt.'],

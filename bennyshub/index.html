@@ -889,6 +889,15 @@
             </div>
           </button>
 
+          <button class="card-btn" id="voicerate-toggle">
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Beszéd sebessége</div>
+            <div class="row">
+              <p class="desc">Lassabb felolvasás, ha több idő kell a megértéshez</p>
+              <span class="pill" id="voicerate-status">Normál</span>
+            </div>
+          </button>
+
           <button class="card-btn" id="autoscan-toggle">
             <span class="kicker">Beállítás</span>
             <div class="btn-title">Automatikus pásztázás</div>
@@ -1584,6 +1593,14 @@
       const currentVoice = window.NarbeVoiceManager.getCurrentVoice();
       const displayName = window.NarbeVoiceManager.getVoiceDisplayName(currentVoice);
       document.getElementById('voice-status').textContent = displayName;
+      const rateStatus = document.getElementById('voicerate-status');
+      if (rateStatus) rateStatus.textContent = voiceRateName();
+    }
+
+    function voiceRateName() {
+      const rate = window.NarbeVoiceManager.getSettings().rate || 1;
+      const names = { '0.5': 'Nagyon lassú', '0.65': 'Lassú', '0.8': 'Kicsit lassabb', '1': 'Normál', '1.2': 'Gyors' };
+      return names[String(rate)] || Math.round(rate * 100) + '%';
     }
 
     // Update voice display when voice manager settings change
@@ -1659,6 +1676,13 @@
       const currentVoice = window.NarbeVoiceManager.getCurrentVoice();
       const displayName = window.NarbeVoiceManager.getVoiceDisplayName(currentVoice);
       speak(`Hang: ${displayName}`);
+    });
+
+    document.getElementById('voicerate-toggle').addEventListener('click', () => {
+      window.NarbeVoiceManager.cycleRate();
+      updateVoiceDisplay();
+      // Said at the new speed, so the choice can be heard straight away.
+      speak(`Beszéd sebessége: ${voiceRateName()}`);
     });
 
     document.getElementById('autoscan-toggle').addEventListener('click', () => {

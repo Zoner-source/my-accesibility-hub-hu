@@ -53,7 +53,9 @@
     function speechMs(text) {
         if (!ttsOn() || !text) return 0;
         const words = String(text).trim().split(/\s+/).length;
-        return 600 + Math.round(words / 2.6 * 1000);
+        let rate = 1;
+        try { rate = window.NarbeVoiceManager.getSettings().rate || 1; } catch (e) { /* normal speed */ }
+        return 600 + Math.round(words / 2.6 * 1000 / rate);
     }
 
     ['select', 'hover', 'win'].forEach(function (n) { try { window.SafeAudio.preload(n); } catch (e) { /* no sound */ } });
@@ -375,6 +377,9 @@
             { id: 'voice', label: S.voice[0], value: voiceName(),
               speak: function () { return S.voice[1](voiceName()); },
               action: function () { try { window.NarbeVoiceManager.cycleVoice(); } catch (e) { /* no voice */ } } },
+            { id: 'rate', label: S.rate[0], value: rateName(),
+              speak: function () { return S.rate[1](rateName()); },
+              action: function () { try { window.NarbeVoiceManager.cycleRate(); } catch (e) { /* no voice */ } } },
             { id: 'auto', label: S.auto[0], value: auto ? S.auto[1] : S.auto[2],
               speak: function () { return window.NarbeScanManager.getSettings().autoScan ? S.auto[3] : S.auto[4]; },
               action: function () { try { window.NarbeScanManager.toggleAutoScan(); } catch (e) { /* no scan */ } } },
@@ -387,6 +392,12 @@
             { id: 'back', label: S.back[0], value: '', speak: S.back[1],
               action: function () { show(settingsFrom); } }
         ];
+    }
+
+    function rateName() {
+        let rate = 1;
+        try { rate = window.NarbeVoiceManager.getSettings().rate || 1; } catch (e) { /* normal speed */ }
+        return L.settings.rateNames[String(rate)] || Math.round(rate * 100) + '%';
     }
 
     function readHelp() {

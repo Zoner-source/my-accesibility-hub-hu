@@ -39,6 +39,8 @@ window.NFL = {
         on: 'Pornit', off: 'Oprit',
         tts: ['Citire cu voce', 'Citirea cu voce e pornită.', 'Citirea cu voce e oprită.'],
         voice: ['Voce', function (v) { return 'Voce. ' + v + '.'; }],
+        rate: ['Viteza vocii', function (r) { return 'Viteza vocii: ' + r + '.'; }],
+        rateNames: { '0.5': 'Foarte lentă', '0.65': 'Lentă', '0.8': 'Puțin mai lentă', '1': 'Normală', '1.2': 'Rapidă' },
         auto: ['Scanare automată', 'Pornită — un buton', 'Oprită — două butoane',
             'Scanarea automată e pornită. Un buton. Evidențierea se mută singură, iar Enter alege.',
             'Scanarea automată e oprită. Două butoane. Space mută evidențierea, Enter alege.'],

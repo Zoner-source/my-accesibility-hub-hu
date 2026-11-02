@@ -315,6 +315,19 @@ window.NarbeVoiceManager = (function() {
     saveSettings();
   }
 
+  // Speaking speeds offered by cycleRate(), slowest first; 1 is the voice's
+  // normal speed. The slow end is for listeners who need more time to process
+  // speech (for example with cerebral palsy).
+  const RATES = [0.5, 0.65, 0.8, 1, 1.2];
+
+  /** Move to the next speaking speed, wrapping from fastest back to slowest. */
+  function cycleRate() {
+    const at = RATES.findIndex(r => Math.abs(r - settings.rate) < 0.01);
+    const next = RATES[(at + 1) % RATES.length];
+    updateSettings({ rate: next });
+    return next;
+  }
+
   /**
    * Get available English voices
    */
@@ -423,7 +436,9 @@ window.NarbeVoiceManager = (function() {
       const utterance = new SpeechSynthesisUtterance(String(text));
       
       // Apply voice settings
-      utterance.rate = options.rate || settings.rate;
+      // A rate an app asks for is relative to the user's chosen speed, so a
+      // "slightly slower" line still follows a slow setting.
+      utterance.rate = (options.rate || 1) * (settings.rate || 1);
       utterance.pitch = options.pitch || settings.pitch;
       utterance.volume = options.volume || settings.volume;
       // Hungarian build: always tag the utterance with a Hungarian language so
@@ -569,6 +584,8 @@ window.NarbeVoiceManager = (function() {
     getCurrentVoice,
     getVoiceDisplayName,
     cycleVoice,
+    cycleRate,
+    getRates: () => [...RATES],
     
     // TTS functionality
     toggleTTS,

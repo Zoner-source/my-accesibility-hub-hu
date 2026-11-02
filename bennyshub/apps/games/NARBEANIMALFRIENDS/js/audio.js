@@ -600,7 +600,10 @@ NAF.Voice = (function () {
         if (!text) return 0;
         const words = String(text).trim().split(/\s+/).filter(Boolean).length;
         if (!words) return 0;
-        return 600 + Math.round((words / 2.6) * 1000);
+        // Slower speech takes longer; the next queued line must wait for it.
+        let rate = 1;
+        try { rate = window.NarbeVoiceManager.getSettings().rate || 1; } catch (e) { /* normal speed */ }
+        return 600 + Math.round((words / 2.6) * 1000 / rate);
     }
 
     return {

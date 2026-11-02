@@ -866,6 +866,7 @@ function updateHeaderForCurrentView(){
           window.NarbeVoiceManager.cancel();
           const utterance = new SpeechSynthesisUtterance(text); utterance.lang = "hu-HU";
           utterance.voice = voices[specificVoiceIndex];
+          utterance.rate = window.NarbeVoiceManager.getSettings().rate || 1;
           setupInputBlocking(utterance);
           window.speechSynthesis.speak(utterance);
           return;
@@ -877,7 +878,8 @@ function updateHeaderForCurrentView(){
         const utterance = new SpeechSynthesisUtterance(text); utterance.lang = "hu-HU";
         utterance.voice = state.childVoices[gender];
         utterance.pitch = gender === 'girl' ? 1.8 : 1.6;
-        utterance.rate = 1.3;
+        // Child voices speak a little faster, relative to the chosen speed.
+        utterance.rate = 1.3 * (window.NarbeVoiceManager.getSettings().rate || 1);
         setupInputBlocking(utterance);
         window.speechSynthesis.speak(utterance);
       } else {

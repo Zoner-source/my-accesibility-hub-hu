@@ -851,3 +851,17 @@ Owner request: an emotion-recognition game like the tesztokosdoboz "which feelin
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: the owner tested the live build in Chrome (play loop, right/wrong picks, menus) and asked for larger faces. Automated browser testing was not available in this session; JS syntax checks only.
+
+## 2026-11-02 — Speech speed setting (Beszéd sebessége)
+
+Owner request: a setting that makes the text-to-speech voice slower, for listeners who need more time to process speech (for example with cerebral palsy). The voice manager already stored a rate (default 1) but nothing could change it.
+
+- bennyshub/shared/voice-manager.js — RATES [0.5, 0.65, 0.8, 1, 1.2] and cycleRate() (slowest first, wraps), exported with getRates(). speak() now applies an app's options.rate relative to the saved rate (rate x saved rate), so per-line tweaks such as the keyboard's 0.9 instructions still follow a slow setting. The rate travels with the existing voice-settings sync to iframes and tabs.
+- bennyshub/index.html — Hub Settings: new "Beszéd sebessége" button after Voice, showing the current speed and saying the new one at that speed.
+- bennyshub/apps/tools/phraseboard/index.html — the per-voice and child-voice paths, which built their own utterances, now follow the saved rate (child voices keep their 1.3x relative to it).
+- bennyshub/apps/games/BENNYSAYS/index.html — the iOS speech path uses the saved rate instead of a fixed 1.0.
+- bennyshub/apps/games/NARBEANIMALFRIENDS/js/audio.js and NARBEFEELINGS/js/game.js — speech-length estimates divide by the rate, so queued lines, the read-aloud help and the next-round delay wait for slower speech instead of cutting it off.
+- bennyshub/apps/games/NARBEFEELINGS/js/game.js, lang-hu.js, lang-ro.js — the same speed row in the game's own Settings, after Voice.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: syntax checks of every changed script, including inline page scripts. Not browser-tested (no test tool in this session). Other catalog games that build their own utterances (hidden in this Hub) were not changed.
