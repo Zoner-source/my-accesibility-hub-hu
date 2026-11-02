@@ -865,3 +865,12 @@ Owner request: a setting that makes the text-to-speech voice slower, for listene
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: syntax checks of every changed script, including inline page scripts. Not browser-tested (no test tool in this session). Other catalog games that build their own utterances (hidden in this Hub) were not changed.
+
+## 2026-11-02 — Voice chosen by name (silent speech inside games)
+
+Owner report: Animale prietenoase spoke nothing while every other sound worked and the Hub spoke with Andrei. The Hub tells apps the voice by its index in Chrome's voice list; an app frame can list the same voices in another order (Chrome adds its online Google voices at different times), so the game could use a different, possibly silent, voice. Reproduced in headless Chrome: a fresh profile gave the game "Google US English" instead of the Hub's choice.
+
+- bennyshub/shared/voice-manager.js — getCurrentVoice() resolves the saved voiceName first and only falls back to the index.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: headless Chrome with the installed voices, Hub opened in a harness page, game opened through the Hub's showIframe and scanned with Space: every line started with Andrei (Romanian Hub) or Szabolcs (Hungarian Hub), including from a fresh profile. The exact silent case on the owner's device was not reproduced on this PC.

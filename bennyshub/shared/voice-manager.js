@@ -339,6 +339,17 @@ window.NarbeVoiceManager = (function() {
    * Get the current voice object
    */
   function getCurrentVoice() {
+    // The chosen voice by NAME first. Indexes differ between frames: an app
+    // inside the Hub can list the same voices in another order (Chrome adds
+    // its online Google voices at different times), so the Hub's index could
+    // point at a different, possibly silent, voice in the app.
+    if (settings.voiceName && englishVoices.length > 0) {
+      const byName = englishVoices.findIndex(voice => voice.name === settings.voiceName);
+      if (byName >= 0) {
+        settings.voiceIndex = byName;
+        return englishVoices[byName];
+      }
+    }
     if (englishVoices.length > 0) {
       // Validate voice index is within bounds
       if (settings.voiceIndex >= 0 && settings.voiceIndex < englishVoices.length) {
