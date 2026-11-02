@@ -874,3 +874,12 @@ Owner report: Animale prietenoase spoke nothing while every other sound worked a
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: headless Chrome with the installed voices, Hub opened in a harness page, game opened through the Hub's showIframe and scanned with Space: every line started with Andrei (Romanian Hub) or Szabolcs (Hungarian Hub), including from a fresh profile. The exact silent case on the owner's device was not reproduced on this PC.
+
+## 2026-11-02 — Press-Space instruction only at Hub launch
+
+Owner request: say the press-Space instruction only when the Hub starts, not every time the player returns to a menu.
+
+- bennyshub/index.html — returning from an app and switching screens now say only the screen's name; the "Nyomd meg a Szóközt a kezdéshez" instruction stays at launch. The reply to Enter with nothing highlighted is unchanged.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: inline script syntax check; not run in a browser.

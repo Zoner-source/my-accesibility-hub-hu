@@ -1847,7 +1847,7 @@
       }
       
       announce('Vissza a menübe');
-      speak('Vissza a menübe, nyomd meg a Szóközt a fókusz mozgatásához');
+      speak('Vissza a menübe');
     }
 
     iframeBack.addEventListener('click', () => {
@@ -1903,7 +1903,7 @@
        
         const spokenName = screenNamesHU[name] || name;
         announce(`${spokenName}`);
-        speak(`${spokenName}. Nyomd meg a Szóközt a fókusz mozgatásához`);
+        speak(spokenName);
         
         // Re-enable pointer events after transition
         document.body.style.pointerEvents = '';
@@ -2456,6 +2456,7 @@
         document.getElementById('main').focus();
       }
       
+      // Said once, when the Hub starts; returning to a menu only names the screen.
       speak('Nyomd meg a Szóközt a kezdéshez');
       
       // Start navigation signal handling (Electron IPC or HTTP polling)
