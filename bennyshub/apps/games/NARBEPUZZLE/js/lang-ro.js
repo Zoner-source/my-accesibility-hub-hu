@@ -16,7 +16,7 @@ window.PZL = {
     chooseSlot: 'Alege locul piesei',
     right: ['Bravo! Piesa e la locul ei.', 'Foarte bine!', 'Super! Se potrivește.', 'Corect!'],
     wrong: 'Nu se potrivește. Piesa se întoarce în stânga.',
-    done: 'Gata! Ai făcut tot puzzle-ul! Bravo!',
+    done: 'Felicitări! Ai terminat puzzle-ul!',
     hint: 'Space scurt = înainte · Space lung = înapoi · Enter = alege',
     menu: {
         greeting: 'Puzzle. Alege un tip de puzzle.',

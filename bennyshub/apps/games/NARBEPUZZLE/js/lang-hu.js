@@ -16,7 +16,7 @@ window.PZL = {
     chooseSlot: 'Válaszd ki a darab helyét',
     right: ['Ügyes! A darab a helyén van.', 'Nagyon jó!', 'Szuper! Ide illik.', 'Helyes!'],
     wrong: 'Ez nem ide illik. A darab visszakerül balra.',
-    done: 'Kész! Kiraktad az egész képet! Ügyes vagy!',
+    done: 'Gratulálok! Befejezted a puzzle-t!',
     hint: 'Szóköz röviden = tovább · Szóköz hosszan = vissza · Enter = kiválaszt',
     menu: {
         greeting: 'Puzzle. Válassz kirakót.',

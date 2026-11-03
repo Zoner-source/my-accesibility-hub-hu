@@ -924,3 +924,13 @@ Owner request: add four photos to the Puzzle game.
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: files load as JPEG; list is valid JSON.
+
+## 2026-11-03 — Puzzle: warmer finish message
+
+Owner request: the finished-puzzle line sounded mechanical.
+
+- bennyshub/apps/games/NARBEPUZZLE/js/lang-ro.js — "Felicitări! Ai terminat puzzle-ul!" (owner wording).
+- bennyshub/apps/games/NARBEPUZZLE/js/lang-hu.js — "Gratulálok! Befejezted a puzzle-t!"
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: syntax checks.
