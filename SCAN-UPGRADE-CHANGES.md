@@ -893,3 +893,12 @@ Owner request: a phrase-board mode scanned top to bottom, the screen split in th
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: syntax checks of vertical-mode.js and every inline script; Node test of the phrase-saving logic with the board's own parseCSV (new board, same category, new category, commas and quotes, older header, other board on screen: 6/6). Not yet run in a browser.
+
+## 2026-11-03 — Phrase board: Hungarian title on first load
+
+Owner report: opening Szavaim showed the Romanian "Meniu principal" in the header for a moment before it changed to "Főmenü". The header's built-in text was left over from the Romanian copy; the script only replaced it after loading.
+
+- bennyshub/apps/tools/phraseboard/index.html — header text is "Főmenü" from the start. A scan of the page found no other Romanian text.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: text change only.
