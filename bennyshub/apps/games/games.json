@@ -71,6 +71,17 @@
         "Educational",
         "Interactive"
       ]
+    },
+    {
+      "id": "narbepuzzle",
+      "title": "Puzzle",
+      "description": "Pick a piece, then its numbered spot: 5 strips, 4 squares or a 10-piece jigsaw. Endless, no score, no losing.",
+      "path": "apps/games/NARBEPUZZLE/index.html",
+      "image": "images/games/narbepuzzle.jpg",
+      "genres": [
+        "Puzzle",
+        "Educational"
+      ]
     }
   ]
 }

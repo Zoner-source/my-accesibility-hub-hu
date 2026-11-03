@@ -50,5 +50,13 @@
             "Ismeretterjesztő",
             "Érzelmek"
         ]
+    },
+    "narbepuzzle": {
+        "title": "Puzzle",
+        "description": "Válassz egy darabot, aztán a számozott helyét: 5 csík, 4 négyzet vagy 10 darabos kirakó. Nincs pontszám, nem lehet veszíteni.",
+        "genres": [
+            "Kirakó",
+            "Ismeretterjesztő"
+        ]
     }
 }

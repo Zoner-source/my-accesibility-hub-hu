@@ -1,0 +1,161 @@
+/* Puzzle - same look and controls as Feelings; the play screen is split in two. */
+:root {
+  --bg: #eef6ff;
+  --card: #ffffff;
+  --ink: #1f2430;
+  --muted: #5b6475;
+  --brand: #3d6fb6;
+  --btn: #3d6fb6;
+  --btn-ink: #ffffff;
+  --focus: #ffd400;
+  --right: #2e9e5b;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  overflow: hidden;
+}
+
+#pz { position: relative; height: 100%; }
+.nf-status { position: absolute; top: 12px; right: 16px; z-index: 5; }
+
+.nf-screen {
+  display: none;
+  position: absolute;
+  inset: 0;
+  padding: 16px;
+  overflow-y: auto;
+}
+.nf-screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.nf-card {
+  width: min(560px, 100%);
+  background: var(--card);
+  border: 4px solid var(--ink);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, .15);
+}
+.pz-menu-card { width: min(760px, 100%); }
+
+.nf-title { margin: 0 0 20px; text-align: center; font-size: clamp(28px, 5vw, 44px); color: var(--brand); }
+.nf-list { display: flex; flex-direction: column; gap: 14px; }
+
+.nf-btn {
+  font: inherit;
+  font-size: clamp(20px, 3.2vw, 28px);
+  font-weight: 700;
+  min-height: 64px;
+  padding: 12px 20px;
+  border: 4px solid var(--ink);
+  border-radius: 18px;
+  background: var(--btn);
+  color: var(--btn-ink);
+  cursor: pointer;
+}
+.nf-btn.nf-primary { background: var(--right); }
+
+/* The highlight: colour and thickness, never colour alone. */
+.nf-btn.nf-focus {
+  outline: 8px solid var(--focus);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 14px rgba(0, 0, 0, .55);
+}
+
+.nf-hint { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: 16px; }
+.nf-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; }
+.nf-row-value { font-weight: 600; opacity: .9; text-align: right; }
+.nf-title-btn { display: block; width: 100%; background: var(--brand); color: #fff; }
+.nf-help-body { margin: 0 0 20px; font-size: clamp(18px, 2.6vw, 22px); line-height: 1.45; }
+.nf-help-body p { margin: 0 0 10px; }
+
+/* Menu: the three puzzle types, each with a picture of its shape. */
+.pz-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.pz-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  color: var(--ink);
+  padding: 16px 10px;
+}
+.pz-type svg { width: 100%; max-width: 140px; height: 90px; }
+
+/* --- play --------------------------------------------------------------------- */
+
+.nf-screen.pz-play.active { justify-content: flex-start; padding: 12px 16px; }
+.pz-top { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.pz-instruction { margin: 0; font-size: clamp(24px, 3.6vw, 44px); }
+.pz-pause-btn { background: #5a6475; min-width: 140px; }
+
+/* Split down the middle: pieces left, spots right. */
+.pz-split {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.pz-pieces {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 1fr);
+  grid-template-rows: repeat(var(--rows, 2), 1fr);
+  gap: 12px;
+  min-height: 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, .6);
+  border: 3px dashed #9aa8bd;
+  border-radius: 18px;
+}
+.pz-piece {
+  min-height: 0;
+  min-width: 0;
+  padding: 6px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pz-piece svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.pz-piece.pz-picked { border-color: var(--right); box-shadow: 0 0 0 8px var(--right); }
+.pz-piece.pz-picked.nf-focus { box-shadow: 0 0 0 8px var(--right), 0 0 0 16px rgba(0, 0, 0, .55); }
+
+.pz-outline { fill: none; stroke: #1f2430; stroke-width: 4; }
+
+.pz-board {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 18px;
+  padding: 10px;
+}
+.pz-board-svg { width: 100%; height: 100%; display: block; }
+.pz-slot { cursor: pointer; }
+.pz-slot-fill { fill: rgba(255, 255, 255, .55); stroke: #5b6475; stroke-width: 5; stroke-dasharray: 18 12; }
+.pz-slot text { fill: #1f2430; font-weight: 800; paint-order: stroke; stroke: #fff; stroke-width: 8; }
+/* A highlighted spot: thick yellow edge with a dark rim, like the buttons. */
+.pz-slot.nf-focus .pz-slot-fill {
+  fill: rgba(255, 212, 0, .35);
+  stroke: var(--focus);
+  stroke-width: 16;
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, .7));
+}
+
+/* Narrow screens: pieces above the picture. */
+@media (max-width: 700px) {
+  .pz-split { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+}

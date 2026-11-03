@@ -902,3 +902,15 @@ Owner report: opening Szavaim showed the Romanian "Meniu principal" in the heade
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: text change only.
+
+## 2026-11-03 — New game: Puzzle (NARBEPUZZLE)
+
+Owner request: a puzzle game with the screen split down the middle, scrambled pieces on the left and the picture's gaps on the right; the player picks a piece, then moves to a gap; a wrong gap gives a message and the piece goes back to the left. Three types chosen from the menu (menu buttons show each shape): 5 vertical strips with gaps numbered 1–5 left to right; 4 squares (2x2); a 10-piece jigsaw (5x2). All gaps are numbered (owner choice). Name "Puzzle" in both languages. Test picture supplied by the owner.
+
+- bennyshub/apps/games/NARBEPUZZLE/index.html, css/style.css, js/game.js, js/lang-hu.js, js/lang-ro.js — new; identical in both repos except index.html, which loads js/lang-hu.js. Pieces and gaps are SVGs showing the picture through clip paths (jigsaw tabs generated per round; neighbours share edges), the picture centre-cropped to each type. Every screen is a stationary CHOICE through NarbeChoiceScanAdapter; choosing a piece enters the open gaps as a group with wrap and a Back stop (enterGroup) that returns to the same piece; a wrong gap returns to that piece (back with restore) and speaks the message; a right gap refreshes the piece list at -1. Pieces are spoken "Piesa N" / "N. darab", gaps "Locul N" / "N. hely". A finished picture is cheered and the next one starts (endless; no score, timer or losing). Menu (3 types with shape icons, How to Play, Settings, Exit), Pause as the last play item, Settings (speech, voice, speech speed, helper picture on/off — faint picture behind the gaps, default on — Auto Scan, Scan Speed, sound effects; game settings in localStorage narbe-puzzle-settings), read-aloud help. Held Space scans backwards after 1000 ms; narbe-input-cancelled and blur clear held state.
+- bennyshub/apps/games/NARBEPUZZLE/images/pig.jpg (owner photo resized from 5838 px to 1600 px with Windows System.Drawing), thumb.jpg, pictures.json (the picture list), README.md (how to add pictures).
+- bennyshub/images/games/narbepuzzle.jpg — Hub thumbnail.
+- bennyshub/apps/games/games.json, game-overrides.json, hidden-games.json — registered, translated and listed.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: JS syntax checks; Node check of the cutting (200 random cuts per type: no invalid paths, neighbouring jigsaw pieces share their tab points). Not yet run in a browser.
