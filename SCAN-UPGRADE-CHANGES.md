@@ -914,3 +914,13 @@ Owner request: a puzzle game with the screen split down the middle, scrambled pi
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: JS syntax checks; Node check of the cutting (200 random cuts per type: no invalid paths, neighbouring jigsaw pieces share their tab points). Not yet run in a browser.
+
+## 2026-11-03 — Puzzle: four more pictures
+
+Owner request: add four photos to the Puzzle game.
+
+- bennyshub/apps/games/NARBEPUZZLE/images/horse.jpg, ducklings.jpg, cormorant.jpg, zebra.jpg — owner photos resized to 1600 px wide (Windows System.Drawing, JPEG quality 85).
+- bennyshub/apps/games/NARBEPUZZLE/images/pictures.json, README.md — listed and credited.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: files load as JPEG; list is valid JSON.

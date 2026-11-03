@@ -5,3 +5,7 @@ Add a picture: put a JPG or PNG here (about 1600 px wide is plenty) and add its 
 | File | Source |
 |---|---|
 | pig.jpg | Photo supplied by the owner (2026-11-03), resized to 1600 px. |
+| horse.jpg | Photo supplied by the owner (2026-11-03), resized to 1600 px. |
+| ducklings.jpg | Photo supplied by the owner (2026-11-03), resized to 1600 px. |
+| cormorant.jpg | Photo supplied by the owner (2026-11-03), resized to 1600 px. |
+| zebra.jpg | Photo supplied by the owner (2026-11-03), resized to 1600 px. |
