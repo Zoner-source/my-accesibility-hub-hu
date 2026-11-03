@@ -1,7 +1,7 @@
 [
-  "pig.jpg",
-  "horse.jpg",
-  "ducklings.jpg",
-  "cormorant.jpg",
-  "zebra.jpg"
+  { "file": "pig.jpg", "sound": "pig" },
+  { "file": "horse.jpg", "sound": "horse" },
+  { "file": "ducklings.jpg", "sound": "duck" },
+  { "file": "cormorant.jpg", "sound": "flamingo" },
+  { "file": "zebra.jpg", "sound": "zebra" }
 ]

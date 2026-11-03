@@ -416,7 +416,10 @@
 
     // --- pieces -------------------------------------------------------------------
 
-    let pictures = ['pig.jpg'];
+    // images/pictures.json: { file, sound } per picture; sound names an Animal
+    // Friends recording (sounds/animals/<sound>.wav) played when it is finished.
+    const ANIMAL_SOUNDS = '../NARBEANIMALFRIENDS/sounds/animals/';
+    let pictures = [{ file: 'pig.jpg', sound: 'pig' }];
     let pictureAt = 0;
     let round = null;
     let picked = null;
@@ -501,7 +504,7 @@
                 pieceImage(p, c, round.src) + '</svg>';
         });
 
-        let board = '<svg class="pz-board-svg" viewBox="-10 -10 ' + (c.w + 20) + ' ' + (c.h + 20) + '">';
+        let board = '<svg class="pz-board-svg' + (round.done ? ' pz-done' : '') + '" viewBox="-10 -10 ' + (c.w + 20) + ' ' + (c.h + 20) + '">';
         if (prefs.ghost && !round.done) {
             board += '<image href="' + round.src + '" x="0" y="0" width="' + c.w + '" height="' + c.h + '" ' +
                 'preserveAspectRatio="xMidYMid slice" opacity="0.22"/>';
@@ -517,6 +520,8 @@
                 '<text x="' + p.cx + '" y="' + p.cy + '" font-size="' + fontSize + '" text-anchor="middle" dominant-baseline="central">' +
                 (i + 1) + '</text></g>';
         });
+        // Finished: one highlighted outline around the whole picture.
+        if (round.done) board += '<rect class="pz-done-frame" x="0" y="0" width="' + c.w + '" height="' + c.h + '"/>';
         board += '</svg>';
         $('pz-board').innerHTML = board;
 
@@ -587,27 +592,58 @@
         }
     }
 
+    /**
+     * The finished picture glows and jumps toward the player, its animal is
+     * heard, then the congratulation is spoken and the next picture follows.
+     */
     function finish() {
         round.done = true;
         renderPlay();
         items = providers.play();
         wireClicks();
         sync(true);
-        speak(L.done);
-        nextTimer = setTimeout(function () {
-            nextTimer = null;
-            if (screen === 'play') newRound(round.type);
-        }, Math.max(3500, speechMs(L.done) + 1500));
+        const board = $('pz-board');
+        board.classList.remove('pz-celebrate');
+        void board.offsetWidth;                 // restart the animation
+        board.classList.add('pz-celebrate');
+        const finished = round;
+        const congratulate = function () {
+            if (screen !== 'play' || round !== finished) return;   // paused or left meanwhile
+            speak(L.done);
+            nextTimer = setTimeout(function () {
+                nextTimer = null;
+                if (screen === 'play' && round === finished) newRound(round.type);
+            }, Math.max(3500, speechMs(L.done) + 1500));
+        };
+        if (prefs.sounds && round.sound) playAnimal(round.sound, congratulate);
+        else congratulate();
+    }
+
+    /** Play an Animal Friends recording, then continue (also on error or after 4 s). */
+    function playAnimal(name, then) {
+        let called = false;
+        const go = function () { if (!called) { called = true; then(); } };
+        try {
+            const audio = new Audio(ANIMAL_SOUNDS + name + '.wav');
+            audio.addEventListener('ended', go);
+            audio.addEventListener('error', go);
+            const playing = audio.play();
+            if (playing && playing.catch) playing.catch(go);
+            setTimeout(go, 4000);
+        } catch (e) { go(); }
     }
 
     function newRound(type) {
-        const src = 'images/' + pictures[pictureAt % pictures.length];
+        const entry = pictures[pictureAt % pictures.length];
+        const pic = typeof entry === 'string' ? { file: entry } : entry;
+        const src = 'images/' + pic.file;
         pictureAt++;
         const c = cut(type);
         let order;
         do { order = shuffle(c.pieces.map(function (p, i) { return i; })); }
         while (order.length > 1 && order.every(function (v, i) { return v === i; }));   // never already solved
-        round = { n: round ? round.n + 1 : 1, version: 0, type: type, src: src, cut: c,
+        $('pz-board').classList.remove('pz-celebrate');
+        round = { n: round ? round.n + 1 : 1, version: 0, type: type, src: src, sound: pic.sound || null, cut: c,
                   left: order, placed: c.pieces.map(function () { return false; }), done: false };
         picked = null;
         show('play');

@@ -934,3 +934,14 @@ Owner request: the finished-puzzle line sounded mechanical.
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: syntax checks.
+
+## 2026-11-03 — Puzzle: celebration with the animal's sound
+
+Owner request: when a puzzle is finished, highlight the outline, make the picture jump slightly toward the screen and play the matching animal sound from Animal Friends; for the cormorant, any bird.
+
+- bennyshub/apps/games/NARBEPUZZLE/js/game.js — finish(): piece seams hidden, one green frame around the picture, the board glows and plays a short jump animation (none with reduced motion), then the picture's Animal Friends recording (HTML Audio, only with sound effects on; continues on end, error or after 4 s), then the spoken congratulation and the next picture. Pausing or leaving during the sound cancels the rest. pictures.json entries may be { file, sound } (plain file names still work).
+- bennyshub/apps/games/NARBEPUZZLE/css/style.css — finished frame, glow and jump.
+- bennyshub/apps/games/NARBEPUZZLE/images/pictures.json — pig→pig, horse→horse, ducklings→duck, cormorant→flamingo (no cormorant recording; closest water bird), zebra→zebra. README.md documents the field.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: syntax check; all five recordings exist in both repos. Not run in a browser.
