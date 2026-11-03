@@ -1,0 +1,126 @@
+/* Phrase board - vertical list mode (see vertical-mode.js). */
+
+/* The board area holds the list and, in vertical mode, the magnifier beside it. */
+.board-area {
+  display: flex;
+  min-height: 0;
+}
+.board-area > .main-grid {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.vm-magnifier { display: none; }
+
+/* Left half: one item per row, scrolling, the scan follows (scrollScanIntoView). */
+body.vertical-layout .main-grid.vm-list {
+  grid-template-columns: 1fr;
+  grid-template-rows: none;
+  grid-auto-rows: var(--vm-row, 96px);
+}
+body.vertical-layout .main-grid.vm-list.sentence-active {
+  grid-template-rows: auto;
+}
+
+.grid-button.vm-item {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 8px 16px;
+  min-height: 64px;
+  text-align: left;
+  font-size: clamp(18px, 2.2vw, 26px);
+}
+.grid-button.vm-item img {
+  height: 85%;
+  width: auto;
+  max-width: 30%;
+  aspect-ratio: 1;
+  margin: 0;
+  flex: 0 0 auto;
+}
+.grid-button.vm-item .vm-icon { font-size: clamp(28px, 4vh, 44px); flex: 0 0 auto; }
+.grid-button.vm-item .vm-text { overflow: hidden; text-overflow: ellipsis; }
+
+/* Right half: the highlighted item, as large as the space allows. */
+body.vertical-layout .vm-magnifier {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3vh;
+  padding: 24px;
+  border-left: 6px solid var(--brand, #2b6cb0);
+  background: var(--card, #fff);
+  overflow: hidden;
+}
+.vm-magnifier img {
+  max-width: 92%;
+  max-height: 62%;
+  object-fit: contain;
+}
+.vm-magnifier .vm-mag-icon { font-size: clamp(96px, 20vh, 220px); line-height: 1; }
+.vm-magnifier .vm-mag-text {
+  font-size: clamp(36px, 5.5vw, 96px);
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  color: #000;
+}
+
+/* Narrow screens: the magnifier sits above the list instead of beside it. */
+@media (max-width: 700px) {
+  body.vertical-layout .board-area { flex-direction: column-reverse; }
+  body.vertical-layout .vm-magnifier { flex: 0 0 38%; border-left: 0; border-bottom: 6px solid var(--brand, #2b6cb0); }
+}
+
+/* Add-phrase form: for a helper with mouse and keyboard. */
+.vm-form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, .6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.vm-form {
+  width: min(620px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  background: #fff;
+  color: #000;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 18px;
+}
+.vm-form h2 { margin: 0 0 4px; }
+.vm-field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+.vm-field[hidden] { display: none; }
+.vm-field input, .vm-field select {
+  font: inherit;
+  font-weight: 400;
+  padding: 10px 12px;
+  border: 2px solid #555;
+  border-radius: 10px;
+}
+.vm-preview { max-height: 160px; max-width: 100%; object-fit: contain; align-self: center; }
+.vm-error { margin: 0; min-height: 1.2em; color: #b00020; font-weight: 600; }
+.vm-form-buttons { display: flex; gap: 12px; justify-content: flex-end; }
+.vm-form-buttons button {
+  font: inherit;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: 2px solid #000;
+  background: #e2e8f0;
+  cursor: pointer;
+}
+.vm-form-buttons .vm-save { background: #38a169; color: #fff; }

@@ -490,6 +490,7 @@
       transform: scale(1.05);
     }
   </style>
+  <link rel="stylesheet" href="vertical-mode.css" />
 </head>
 <body>
   <div class="app-container">
@@ -501,6 +502,7 @@
   </div>
 </header>
 
+    <div class="board-area">
     <main class="main-grid" id="mainGrid">
       <div class="sentence-row" id="sentenceRow">
         <div class="sentence-display" id="sentenceDisplay"></div>
@@ -514,6 +516,7 @@
         </button>
       </div>
     </main>
+    </div>
 
     <footer id="statusFooter">Kész – a kezdéshez töltsön be egy CSV-t</footer>
   </div>
@@ -635,7 +638,8 @@
           userScanPreference: state.userScanPreference,
           highlightColor: state.highlightColor,
           theme: state.theme,
-          ttsOnScan: state.ttsOnScan
+          ttsOnScan: state.ttsOnScan,
+          layout: state.layout
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
         console.log('Phraseboard settings saved:', settings);
@@ -657,6 +661,7 @@
             state.userScanPreference = settings.userScanPreference;
             state.scanMode = settings.userScanPreference === 'cell' ? 'cell' : 'row';
           }
+          if (settings.layout) state.layout = settings.layout;
           if (settings.highlightColor) {
             state.highlightColor = settings.highlightColor;
           }
@@ -774,6 +779,7 @@ function updateHeaderForCurrentView(){
       state.modalActive = false;
       el.createBoardWarning.classList.remove('active');
       el.loadBoardWarning.classList.remove('active');
+      document.querySelectorAll('.warning-modal.active').forEach(m => m.classList.remove('active'));
       state.modalButtons.forEach(btn => btn.classList.remove('modal-highlight'));
       state.modalButtons = [];
       state.pendingAction = null;
@@ -809,7 +815,7 @@ function updateHeaderForCurrentView(){
       if (!state.modalActive || state.modalScanIndex < 0 || !state.modalButtons[state.modalScanIndex]) return;
       const selectedButton = state.modalButtons[state.modalScanIndex];
       if (selectedButton.textContent === 'VISSZA') { hideWarningModal(); if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak('Vissza a menübe'); }
-      else if (selectedButton.textContent === 'TOVÁBB') { hideWarningModal(); if (state.pendingAction) state.pendingAction(); }
+      else if (selectedButton.textContent === 'TOVÁBB') { const action = state.pendingAction; hideWarningModal(); if (action) action(); }
     }
 
     // TTS using unified voice manager
@@ -943,6 +949,7 @@ function updateHeaderForCurrentView(){
       const buttons = el.mainGrid.querySelectorAll('.grid-button:not(#deleteWordBtn):not(#clearSentenceBtn)');
       buttons.forEach(btn => btn.remove());
       el.mainGrid.classList.remove('list-mode');
+      if (window.VerticalMode) VerticalMode.leave();
       el.mainGrid.style.scrollPaddingTop = '';
       el.mainGrid.scrollTop = 0;
     }
@@ -1096,6 +1103,7 @@ function updateHeaderForCurrentView(){
     }
 
     function renderCategoryMenu() {
+      if (window.VerticalMode && VerticalMode.isOn()) return VerticalMode.renderCategories();
       clearGrid();
       state.currentMenu = 'categories';
       // Don't subtract sentence row space - it's now in its own dedicated row
@@ -1148,6 +1156,7 @@ function updateHeaderForCurrentView(){
         { text: 'Pásztázás beállításai', icon: '🎯', action: () => navigateTo('scan') },
         { text: 'Kiemelés színe', icon: '🎨', action: () => navigateTo('highlight') },
         { text: 'Téma', icon: '🌈', action: () => navigateTo('theme') },
+        { text: window.VerticalMode ? VerticalMode.settingLabel() : '', icon: '📋', action: () => { speak(VerticalMode.toggle()); renderSettingsMenu(true); } },
         { text: 'Mondatsáv ki/be', icon: '💬', action: () => { toggleSentenceMode(); renderSettingsMenu(true); }, className: state.sentenceMode ? 'active-green' : '' },
         { text: 'Hangerő fel', icon: '🔈', action: async () => { 
           const isElectron = typeof window !== 'undefined' && window.electronAPI;
@@ -1563,6 +1572,7 @@ function updateHeaderForCurrentView(){
 
     function renderCategory() {
       if (!state.currentCategory) return;
+      if (window.VerticalMode && VerticalMode.isOn()) return VerticalMode.renderPhrases();
       clearGrid();
       state.currentMenu = 'category';
       const cat = state.byCat.get(state.currentCategory);
@@ -1599,11 +1609,16 @@ function updateHeaderForCurrentView(){
       return cs.display !== 'none' && cs.visibility !== 'hidden' && el.offsetParent !== null;
     }
 
+    // Item-by-item scanning: the user's Cell preference, or always in the vertical list.
+    function cellScan() {
+      return state.userScanPreference === 'cell' || !!(window.VerticalMode && VerticalMode.active());
+    }
+
     function updateScannable(preservePosition = false) {
       // Save current position for cell mode preservation
       const savedRow = state.currentRow;
       const savedIndex = state.scanIndex;
-      const isCellMode = state.userScanPreference === 'cell';
+      const isCellMode = cellScan();
       
       // If video modal is open, only scan its visible control buttons
       if (state.videoModalActive) {
@@ -1618,7 +1633,7 @@ function updateHeaderForCurrentView(){
 
       const buttons = Array.from(el.mainGrid.querySelectorAll('.grid-button:not(#deleteWordBtn):not(#clearSentenceBtn)'));
       const rows = [];
-      const cols = state.gridSize.cols;
+      const cols = (window.VerticalMode && VerticalMode.active()) ? 1 : state.gridSize.cols;
       if (state.sentenceMode && el.sentenceRow.classList.contains('active')) {
         rows.push([el.sentenceDisplay, el.deleteWordBtn, el.clearSentenceBtn]);
       }
@@ -1661,7 +1676,7 @@ function updateHeaderForCurrentView(){
     }
 
     function highlightCurrentRow() {
-      if (state.userScanPreference === 'cell') return;
+      if (cellScan()) return;
       clearScanHighlight();
       // Only highlight if currentRow is valid (not -1)
       if (state.currentRow >= 0 && state.scannableRows[state.currentRow]) {
@@ -1679,6 +1694,7 @@ function updateHeaderForCurrentView(){
         const element = state.scannableRows[state.currentRow][state.scanIndex];
         element.classList.add('scan-highlight');
         scrollScanIntoView(element);
+        if (window.VerticalMode) VerticalMode.onHighlight(element);
         if (state.ttsOnScan) {
           if (state.currentMenu === 'tts' && element.classList.contains('voice-btn')) {
             const idx = parseInt(element.dataset.voiceIndex, 10);
@@ -1705,7 +1721,7 @@ function updateHeaderForCurrentView(){
     function scanForward() {
       if (!state.scannableRows || state.scannableRows.length === 0) return;
 
-      if (state.userScanPreference === 'cell') {
+      if (cellScan()) {
         if (state.currentRow === -1) {
           state.currentRow = 0;
           state.scanIndex = 0;
@@ -1749,7 +1765,7 @@ function updateHeaderForCurrentView(){
     function scanBackward() {
       if (!state.scannableRows || state.scannableRows.length === 0) return;
 
-      if (state.userScanPreference === 'cell') {
+      if (cellScan()) {
         if (state.currentRow === -1) {
           state.currentRow = state.scannableRows.length - 1;
           state.scanIndex = state.scannableRows[state.currentRow].length - 1;
@@ -1821,7 +1837,7 @@ function updateHeaderForCurrentView(){
         return;
       }
 
-      if (state.userScanPreference === 'cell') {
+      if (cellScan()) {
         if (state.currentRow >= 0 && state.scanIndex >= 0 && 
             state.scannableRows[state.currentRow] && 
             state.scannableRows[state.currentRow][state.scanIndex]) {
@@ -2904,6 +2920,8 @@ function updateHeaderForCurrentView(){
       }
     }
   </script>
+  <script src="vertical-mode.js"></script>
+  <script>VerticalMode.init();</script>
 
   <style>
     .grid-button.row-highlight {
