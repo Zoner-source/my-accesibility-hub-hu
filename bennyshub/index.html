@@ -2253,6 +2253,19 @@
       }
     });
 
+    // Safety net: a release that never arrives (cancelled by the input guard,
+    // or lost when the window loses focus) must not leave Space "held" - that
+    // ran the backward scan forever from the last item and ignored Enter.
+    function resetHeldKeys() {
+      spacePressed = false;
+      enterPressed = false;
+      suppressEnterClick = false;
+      if (spaceHoldTimeout) { clearTimeout(spaceHoldTimeout); spaceHoldTimeout = null; }
+      if (backwardsScanInterval) { clearInterval(backwardsScanInterval); backwardsScanInterval = null; }
+    }
+    document.addEventListener('narbe-input-cancelled', resetHeldKeys);
+    window.addEventListener('blur', resetHeldKeys);
+
     // System Call Helper - Uses Electron IPC for system controls
     window.sysCall = async function(path) {
         const isElectron = typeof window !== 'undefined' && window.electronAPI;

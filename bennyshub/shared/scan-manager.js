@@ -357,38 +357,13 @@ window.NarbeScanManager = (function() {
         return false;
       }
 
-      // 4. Minimum Duration Check (Anti-Tremor)
-      // If the press was too short, block the release AND dispatch a cancel event
-      // so the app resets its state (e.g. spacePressed = false)
-      if (keyPressStartTimes[id]) {
-        const holdDuration = now - keyPressStartTimes[id];
-        const sensitivity = getInputSensitivity(); // Get current configurable threshold
-
-        if (holdDuration < sensitivity) {
-          console.log(`Input blocked: Hold duration ${holdDuration}ms < ${sensitivity}ms threshold`);
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          e.stopPropagation();
-
-          // Clear the start time since the sequence is ending
-          if (isFinalEvent) {
-            delete keyPressStartTimes[id];
-
-            // Dispatch a custom event so apps can reset their state
-            // This is a "cancelled" press - apps should treat it as if nothing happened
-            const cancelEvent = new CustomEvent('narbe-input-cancelled', {
-              bubbles: true,
-              detail: { key: e.key, code: e.code, reason: 'too-short' }
-            });
-            document.dispatchEvent(cancelEvent);
-          }
-          return false;
-        }
-
-        // Clear the start time since the sequence is ending
-        if (isFinalEvent) {
-          delete keyPressStartTimes[id];
-        }
+      // No minimum press length (ACCESSIBILITY.md §4 and §11): a short release
+      // is a valid press. Swallowing the keyup of a keydown that already reached
+      // the page left the Hub and apps believing Space was still held, so they
+      // scanned backwards forever and ignored Enter (virtual keyboards and quick
+      // switch taps release within a few milliseconds).
+      if (isFinalEvent) {
+        delete keyPressStartTimes[id];
       }
 
       // Valid release: Update the cooldown timer

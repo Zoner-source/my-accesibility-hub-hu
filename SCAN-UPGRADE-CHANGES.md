@@ -945,3 +945,13 @@ Owner request: when a puzzle is finished, highlight the outline, make the pictur
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: syntax check; all five recordings exist in both repos. Not run in a browser.
+
+## 2026-11-10 — Fix: one Space press, then an endless backward scan with Enter dead
+
+Owner report (both Hubs): the Hub took one Space press, then cycled on its own from System settings onwards and Enter did nothing; also with a physical keyboard and the Windows on-screen keyboard. Cause: the shared scan-manager still had the minimum-press check that ACCESSIBILITY.md §4/§11 forbids. A press shorter than the input sensitivity (50 ms by default) let the keydown through but swallowed its keyup; the Hub had no narbe-input-cancelled or blur handler, so Space stayed "held", the backward scan started after the hold threshold and never stopped (from the last item, System settings), and Enter was ignored. Virtual keyboards release within a few milliseconds, so they always hit it; quick switch or key taps sometimes did.
+
+- bennyshub/shared/scan-manager.js — minimum-press check removed: a short release is a valid press and is never swallowed. The cooldown and anti-rapid filters (keydown and its keyup consumed together) are unchanged, so bounces are still filtered. The 'too-short' narbe-input-cancelled event is no longer sent; apps that acted on it fall back to their normal keyup path, so each press still acts once.
+- bennyshub/index.html — safety net: resetHeldKeys() clears Space/Enter held state, the hold timer and the backward scan on narbe-input-cancelled and on window blur.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: Node test of the real guard with timed events — before: a 3 ms virtual-keyboard tap and a 20 ms switch tap passed keydown but had keyup blocked (the stuck state); after: both pass, a normal 120 ms press passes, a bounce 10 ms after a release is still blocked. Hub inline scripts syntax-checked. Not run in a browser.
