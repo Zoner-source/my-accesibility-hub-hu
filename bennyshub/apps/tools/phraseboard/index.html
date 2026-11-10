@@ -1955,6 +1955,24 @@ function updateHeaderForCurrentView(){
     let modalBackwardScanTimer = null;
     let modalBackwardScanInterval = null;
     
+    // Space and Enter by code, key name or key number (switch boxes and on-screen
+    // keyboards do not always report the same name on press and release).
+    function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+    function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+    function clearHeldKeys() {
+      state.spacePressed = false;
+      state.returnPressed = false;
+      state.modalSpacePressed = false;
+      state.modalEnterPressed = false;
+      if (backwardScanTimer) { clearTimeout(backwardScanTimer); backwardScanTimer = null; }
+      if (backwardScanInterval) { clearInterval(backwardScanInterval); backwardScanInterval = null; }
+      if (returnActionTimer) { clearTimeout(returnActionTimer); returnActionTimer = null; }
+      if (modalBackwardScanTimer) { clearTimeout(modalBackwardScanTimer); modalBackwardScanTimer = null; }
+      if (modalBackwardScanInterval) { clearInterval(modalBackwardScanInterval); modalBackwardScanInterval = null; }
+    }
+    // A release lost to a focus change must not leave a key "held".
+    window.addEventListener('blur', clearHeldKeys);
+
     window.addEventListener('keydown', (e) => {
       // Allow F12/DevTools
       if (e.key === 'F12') return;
@@ -1970,8 +1988,10 @@ function updateHeaderForCurrentView(){
 
       // Modal handling - track state on keydown, action on keyup (same pattern as main scan)
       if (state.modalActive) {
-        if (e.code === 'Space' && !state.modalSpacePressed) {
+        if (isSpaceKey(e) && !(state.modalSpacePressed && e.repeat)) {
           e.preventDefault();
+          if (modalBackwardScanTimer) { clearTimeout(modalBackwardScanTimer); modalBackwardScanTimer = null; }
+          if (modalBackwardScanInterval) { clearInterval(modalBackwardScanInterval); modalBackwardScanInterval = null; }
           state.modalSpacePressed = true;
           state.modalSpaceStartTime = Date.now();
           // Set timeout for backwards scanning (same as main scan)
@@ -1985,15 +2005,15 @@ function updateHeaderForCurrentView(){
             }
           }, 3000);
           return;
-        } else if (e.code === 'Space' && state.modalSpacePressed) {
+        } else if (isSpaceKey(e) && state.modalSpacePressed) {
           // Already pressed, ignore repeats
           e.preventDefault();
           return;
-        } else if (e.code === 'Enter' && !state.modalEnterPressed) {
+        } else if (isEnterKey(e) && !(state.modalEnterPressed && e.repeat)) {
           e.preventDefault();
           state.modalEnterPressed = true;
           return;
-        } else if (e.code === 'Enter' && state.modalEnterPressed) {
+        } else if (isEnterKey(e) && state.modalEnterPressed) {
           e.preventDefault(); // ignore key-repeat
           return;
         }
@@ -2001,7 +2021,7 @@ function updateHeaderForCurrentView(){
 
       // Auto Scan Logic
       if (state.autoScan) {
-        if ((e.code === 'Space' || e.code === 'Enter') && !state.spacePressed && !state.returnPressed) {
+        if ((isSpaceKey(e) || isEnterKey(e)) && !e.repeat) {
             e.preventDefault();
             // In auto scan, any switch selects
             selectCurrent();
@@ -2011,8 +2031,11 @@ function updateHeaderForCurrentView(){
       }
 
       // Manual Scan Logic
-      if (e.code === 'Space' && !state.spacePressed) {
+      if (isSpaceKey(e) && !(state.spacePressed && e.repeat)) {
         e.preventDefault();
+        // A new press while Space still counts as held: its release was lost.
+        if (backwardScanTimer) { clearTimeout(backwardScanTimer); backwardScanTimer = null; }
+        if (backwardScanInterval) { clearInterval(backwardScanInterval); backwardScanInterval = null; }
         state.spacePressed = true;
         state.spaceStartTime = Date.now();
         backwardScanTimer = setTimeout(() => {
@@ -2024,8 +2047,9 @@ function updateHeaderForCurrentView(){
             }, state.scanSpeed);
           }
         }, 3000);
-      } else if (e.code === 'Enter' && !state.returnPressed) {
+      } else if (isEnterKey(e) && !(state.returnPressed && e.repeat)) {
         e.preventDefault();
+        if (returnActionTimer) { clearTimeout(returnActionTimer); returnActionTimer = null; }
         state.returnPressed = true;
         state.returnStartTime = Date.now();
         state.returnActionExecuted = false;
@@ -2054,7 +2078,7 @@ function updateHeaderForCurrentView(){
     window.addEventListener('keyup', (e) => {
       // Handle modal spacebar release - scan forward on keyup (same pattern as main scan)
       if (state.modalActive) {
-        if (e.code === 'Space' && state.modalSpacePressed) {
+        if (isSpaceKey(e) && state.modalSpacePressed) {
           e.preventDefault();
           const duration = Date.now() - state.modalSpaceStartTime;
           state.modalSpacePressed = false;
@@ -2066,17 +2090,20 @@ function updateHeaderForCurrentView(){
           if (duration < 3000) {
             scanModalForward();
           }
-        } else if (e.code === 'Enter' && state.modalEnterPressed) {
+        } else if (isEnterKey(e) && state.modalEnterPressed) {
           e.preventDefault();
           state.modalEnterPressed = false;
           selectModalButton();
         }
         return;
       }
-      if (state.autoScan) return; // Auto scan handles action on keydown
+      if (state.autoScan) { // Auto scan handles action on keydown
+        if (state.spacePressed || state.returnPressed) clearHeldKeys();
+        return;
+      }
 
       const now = Date.now();
-      if (e.code === 'Space' && state.spacePressed) {
+      if (isSpaceKey(e) && state.spacePressed) {
         e.preventDefault();
         const duration = Date.now() - state.spaceStartTime;
         state.spacePressed = false;
@@ -2086,7 +2113,7 @@ function updateHeaderForCurrentView(){
           scanForward();
           state.lastKeyPressTime = now;
         }
-      } else if (e.code === 'Enter' && state.returnPressed) {
+      } else if (isEnterKey(e) && state.returnPressed) {
         e.preventDefault();
         const duration = Date.now() - state.returnStartTime;
         state.returnPressed = false;

@@ -2147,10 +2147,19 @@
       }
     }
 
+    // Space and Enter by code, key name or key number: switch boxes and
+    // on-screen keyboards do not always report the same name on press and release.
+    function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+    function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+    function clearSpaceTimers() {
+      if (spaceHoldTimeout) { clearTimeout(spaceHoldTimeout); spaceHoldTimeout = null; }
+      if (backwardsScanInterval) { clearInterval(backwardsScanInterval); backwardsScanInterval = null; }
+    }
+
     // Keyboard event handlers
     document.addEventListener('keydown', (e) => {
       if (isTransitioning) {
-        if (e.key === ' ' || e.key === 'Enter' || e.keyCode === 13) {
+        if (isSpaceKey(e) || isEnterKey(e)) {
           e.preventDefault();
         }
         return;
@@ -2161,8 +2170,11 @@
         return;
       }
 
-      if(e.key === ' ' && !spacePressed){
+      if(isSpaceKey(e) && !(spacePressed && e.repeat)){
         e.preventDefault();
+        // A new press while Space still counts as held: its release was lost.
+        // Start over rather than ignoring every press from now on.
+        clearSpaceTimers();
         spacePressed = true;
         spaceHoldStartTime = Date.now();
         
@@ -2184,7 +2196,7 @@
           }
         }, BACKWARDS_SCAN_THRESHOLD);
         
-      } else if((e.key === 'Enter' || e.keyCode === 13) && !enterPressed){
+      } else if(isEnterKey(e) && !(enterPressed && e.repeat)){
         e.preventDefault();
         enterPressed = true;
         suppressEnterClick = true;
@@ -2201,7 +2213,7 @@
 
     document.addEventListener('keyup', (e) => {
       if (isTransitioning) {
-        if (e.key === ' ') {
+        if (isSpaceKey(e)) {
           spacePressed = false;
           // Clear timers
           if (spaceHoldTimeout) {
@@ -2213,19 +2225,20 @@
             backwardsScanInterval = null;
           }
         }
-        if (e.key === 'Enter' || e.keyCode === 13) {
+        if (isEnterKey(e)) {
           enterPressed = false;
           suppressEnterClick = false;
         }
         return;
       }
 
+      // A held key is always released, even if focus moved into a text field.
       const tag = document.activeElement?.tagName;
-      if(tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable){
+      if((tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable) && !spacePressed && !enterPressed){
         return;
       }
 
-      if(e.key === ' ' && spacePressed){
+      if(isSpaceKey(e) && spacePressed){
         e.preventDefault();
         spacePressed = false;
         
@@ -2245,7 +2258,7 @@
           focusNext();
         }
         
-      } else if((e.key === 'Enter' || e.keyCode === 13) && enterPressed){
+      } else if(isEnterKey(e) && enterPressed){
         e.preventDefault();
         enterPressed = false;
         suppressEnterClick = false;
@@ -2260,8 +2273,7 @@
       spacePressed = false;
       enterPressed = false;
       suppressEnterClick = false;
-      if (spaceHoldTimeout) { clearTimeout(spaceHoldTimeout); spaceHoldTimeout = null; }
-      if (backwardsScanInterval) { clearInterval(backwardsScanInterval); backwardsScanInterval = null; }
+      clearSpaceTimers();
     }
     document.addEventListener('narbe-input-cancelled', resetHeldKeys);
     window.addEventListener('blur', resetHeldKeys);

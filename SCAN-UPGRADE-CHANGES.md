@@ -955,3 +955,13 @@ Owner report (both Hubs): the Hub took one Space press, then cycled on its own f
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: Node test of the real guard with timed events — before: a 3 ms virtual-keyboard tap and a 20 ms switch tap passed keydown but had keyup blocked (the stuck state); after: both pass, a normal 120 ms press passes, a bounce 10 ms after a release is still blocked. Hub inline scripts syntax-checked. Not run in a browser.
+
+## 2026-11-10 — Fix (2): Space stuck "held" — the spacePressed condition
+
+Owner report: the 2026-11-10 fix did not solve it; one Space press still led to an endless backward scan from System settings with Enter dead. The owner's colleague identified the cause: the keydown condition `if (e.key === ' ' && !spacePressed)` ignores every new press once spacePressed is true, and the only way back to false was a keyup with e.key === ' '. A release reported differently (switch boxes and on-screen keyboards may send key "Unidentified"/"Spacebar" with code "Space" or keyCode 32), or any lost release, left Space held for good: every later press was ignored, the backward scan never stopped, and enterPressed could stick the same way (its capture listener then cancelled every click). The phrase board had the same trap (state.spacePressed, returnPressed, modalSpacePressed, modalEnterPressed), plus an early return in auto scan that never cleared a stale held flag, so every auto-scan press was then ignored.
+
+- bennyshub/index.html — isSpaceKey()/isEnterKey() recognise the key by code, key name or keyCode on press and release. Only the browser's auto-repeat (e.repeat) of a held key is ignored; a new press while a key still counts as held restarts it (clearSpaceTimers) instead of being dropped. A held key is released even if focus is in a text field.
+- bennyshub/apps/tools/phraseboard/index.html — same helpers and rule for the main scan and the warning dialogs; auto scan selects on any non-repeat press; a stale held flag is cleared in auto scan; clearHeldKeys() on window blur.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: Node replay of the Hub's real handlers with fake keys and timers. Before: a release reported as "Unidentified" left Space held and the backward scan stepping forever. After (both Hubs): released normally; a lost release followed by a new press recovers and moves one step forward; holding a key still scans backwards and stops on release; Enter with a differently reported release still activates. Inline scripts syntax-checked. Not run in a browser.
