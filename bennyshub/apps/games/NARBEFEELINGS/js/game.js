@@ -144,15 +144,27 @@
         spaceHeld = false;
     }
 
+    // Space / Enter by code, key name or keyCode: switch boxes and on-screen
+    // keyboards do not always report the same name on press and release.
+    function switchKey(e) {
+        const code = (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32) ? 'Space'
+            : (e.code === 'NumpadEnter') ? 'NumpadEnter'
+            : (e.code === 'Enter' || e.key === 'Enter' || e.keyCode === 13) ? 'Enter' : e.code;
+        return { code: code, repeat: e.repeat, target: e.target, preventDefault: function () { e.preventDefault(); } };
+    }
+
     function isSwitchKey(code) { return code === 'Space' || code === 'Enter' || code === 'NumpadEnter'; }
 
     function onKeyDown(e) {
+        e = switchKey(e);
         if (!isSwitchKey(e.code)) return;
         e.preventDefault();
         if (e.repeat || !choice) return;
         if (e.code !== 'Space') { enterHeld = true; choice.setInputHeld(true); return; }
         if (choice.brakePress()) { braking = true; return; }
-        if (spaceHeld) return;
+        // Auto-repeat returned above, so this is a new press: a hold whose
+        // release was lost starts over instead of blocking every press.
+        if (spaceHeld) clearSpace();
         spaceHeld = true;
         choice.setInputHeld(true);
         backTimer = setTimeout(function () {
@@ -165,6 +177,7 @@
     }
 
     function onKeyUp(e) {
+        e = switchKey(e);
         if (!isSwitchKey(e.code)) return;
         e.preventDefault();
         if (!choice) return;

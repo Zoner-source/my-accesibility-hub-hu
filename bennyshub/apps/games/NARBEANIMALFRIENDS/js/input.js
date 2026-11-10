@@ -242,6 +242,15 @@ NAF.Input = (function () {
     // only arms the backwards-scan timer. Neither key ever moves the highlight or
     // selects on press.
 
+    // Space / Enter by code, key name or keyCode: switch boxes and on-screen
+    // keyboards do not always report the same name on press and release.
+    function switchKey(e) {
+        const code = (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32) ? 'Space'
+            : (e.code === 'NumpadEnter') ? 'NumpadEnter'
+            : (e.code === 'Enter' || e.key === 'Enter' || e.keyCode === 13) ? 'Enter' : e.code;
+        return { code: code, repeat: e.repeat, target: e.target, preventDefault: function () { e.preventDefault(); } };
+    }
+
     function isSwitchKey(code) {
         return code === 'Space' || code === 'Enter' || code === 'NumpadEnter';
     }
@@ -259,12 +268,16 @@ NAF.Input = (function () {
     }
 
     function onKeyDown(e) {
+        e = switchKey(e);
         if (!enabled || !isSwitchKey(e.code) || inTextField(e)) return;
         e.preventDefault();
         if (e.repeat) return;
         if(e.code!=='Space'){enterHeld=true;choice?.setInputHeld(true);}
         if(e.code==='Space'&&choice?.brakePress()){braking=true;return;}
 
+        // Auto-repeat returned above, so this is a new press: a hold whose
+        // release was lost starts over instead of blocking every press.
+        if (e.code === 'Space' && (spaceHeld || backRepeat)) clearSpaceState();
         if (e.code === 'Space' && !spaceHeld && !backRepeat) {
             spaceHeld = true;
             restartAutoScan();
@@ -276,6 +289,7 @@ NAF.Input = (function () {
     }
 
     function onKeyUp(e) {
+        e = switchKey(e);
         if (!enabled || !isSwitchKey(e.code) || inTextField(e)) return;
         e.preventDefault();
 

@@ -691,18 +691,24 @@ function clearInputTimers() {
 }
 
 function setupInput() {
+    function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+    function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+
     document.addEventListener('keydown', e => {
-        if (e.code === 'Space') {
+        if (isSpaceKey(e)) {
             e.preventDefault();                       // also on key-repeat, so the page never scrolls by itself
-            if (!state.input.spaceHeld) {
+            // Only auto-repeat is ignored: a new press while "held" (lost release) starts over.
+            if (!state.input.spaceHeld || !e.repeat) {
+                clearTimeout(state.timers.space); clearInterval(state.timers.spaceRepeat);
                 state.input.spaceHeld = true;
                 state.input.spaceTime = Date.now();
                 resetAutoScan();
                 state.timers.space = setTimeout(startBackwardsScan, config.longPress);
             }
-        } else if (e.code === 'Enter') {
+        } else if (isEnterKey(e)) {
             e.preventDefault();
-            if (!state.input.enterHeld) {
+            if (!state.input.enterHeld || !e.repeat) {
+                clearTimeout(state.timers.enter); clearInterval(state.timers.enterRepeat);
                 state.input.enterHeld = true;
                 state.input.enterTime = Date.now();
                 resetAutoScan();
@@ -714,7 +720,7 @@ function setupInput() {
     });
 
     document.addEventListener('keyup', e => {
-        if (e.code === 'Space') {
+        if (isSpaceKey(e)) {
             if (!state.input.spaceHeld) return;
             clearTimeout(state.timers.space);
             clearInterval(state.timers.spaceRepeat);
@@ -722,7 +728,7 @@ function setupInput() {
             state.input.spaceHeld = false;
             if (duration < config.longPress) scan(1);
             resetAutoScan();
-        } else if (e.code === 'Enter') {
+        } else if (isEnterKey(e)) {
             if (!state.input.enterHeld) return;
             clearTimeout(state.timers.enter);
             clearInterval(state.timers.enterRepeat);

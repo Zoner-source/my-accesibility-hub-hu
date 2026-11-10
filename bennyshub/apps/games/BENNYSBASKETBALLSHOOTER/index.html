@@ -1342,6 +1342,8 @@
 
                 window.addEventListener('keydown', (e) => this.handleKeyDown(e));
                 window.addEventListener('keyup', (e) => this.handleKeyUp(e));
+                // A release lost to a focus change must not leave a key "held".
+                window.addEventListener('blur', () => this.releaseHeldKeys());
                 
                 // Mouse Logic
                 window.addEventListener('mousemove', (e) => this.handleMouseMove(e));
@@ -1453,6 +1455,15 @@
                 lastChargeBeep = 0;
             }
 
+            releaseHeldKeys() {
+                this.spacePressed = false;
+                this.enterPressed = false;
+                clearTimeout(this.spaceLongPressTimer);
+                clearTimeout(this.enterLongPressTimer);
+                this.stopBackwardScan();
+                aimActive = false;
+            }
+
             handleKeyDown(e) {
                 if (e.repeat) return;
                 
@@ -1460,7 +1471,10 @@
                 if (audio.ctx && audio.ctx.state === 'suspended') audio.ctx.resume();
                 if (!audio.ctx) audio.init();
 
-                if (e.code === 'Space') {
+                // Space / Enter by code, key name or keyCode (switch boxes differ).
+                if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32) {
+                    // A new press: drop a hold timer a lost release left behind.
+                    clearTimeout(this.spaceLongPressTimer);
                     this.spacePressed = true;
                     this.spacePressTime = Date.now();
                     
@@ -1474,7 +1488,8 @@
                     } 
                 }
 
-                if (e.code === 'Enter') {
+                if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13) {
+                    clearTimeout(this.enterLongPressTimer);
                     this.enterPressed = true;
                     this.enterPressTime = Date.now();
                     this.longPressTriggered = false; // Reset trigger
@@ -1517,7 +1532,7 @@
             }
 
             handleKeyUp(e) {
-                if (e.code === 'Space') {
+                if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32) {
                     this.spacePressed = false;
                     clearTimeout(this.spaceLongPressTimer);
                     this.stopBackwardScan();
@@ -1535,7 +1550,7 @@
                     }
                 }
 
-                if (e.code === 'Enter') {
+                if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13) {
                     this.enterPressed = false;
                     clearTimeout(this.enterLongPressTimer); // Cancel pause timer
                     

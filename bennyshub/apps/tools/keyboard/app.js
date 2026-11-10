@@ -237,21 +237,42 @@
     highlightTextBox();
   }
 
+  function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+  function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+  function releaseHeldSpace() {
+    spacebarPressed = false;
+    spacebarPressTime = null;
+    backwardScanningOccurred = false;
+    if (backwardScanInterval) { clearInterval(backwardScanInterval); backwardScanInterval = null; }
+  }
+  // A release lost to a focus change must not leave a key "held".
+  window.addEventListener('blur', () => {
+    releaseHeldSpace();
+    returnPressed = false;
+    returnPressTime = null;
+    longPressTriggered = false;
+  });
+
   document.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
+    if (isSpaceKey(e)) {
       e.preventDefault();
+      // Only auto-repeat is ignored: a new press while "held" (lost release) starts over.
+      if (e.repeat && spacebarPressed) return;
+      if (spacebarPressed) releaseHeldSpace();
       startScanning();
-    } else if (e.code === "Enter") {
+    } else if (isEnterKey(e)) {
       e.preventDefault();
+      if (e.repeat && returnPressed) return;
+      if (returnPressed) { returnPressed = false; longPressTriggered = false; }
       startSelecting();
     }
   });
 
   document.addEventListener("keyup", (e) => {
-    if (e.code === "Space") {
+    if (isSpaceKey(e)) {
       e.preventDefault();
       stopScanning();
-    } else if (e.code === "Enter") {
+    } else if (isEnterKey(e)) {
       e.preventDefault();
       stopSelecting();
     }

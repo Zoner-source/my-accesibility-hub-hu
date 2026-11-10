@@ -477,8 +477,18 @@
     }
   }
 
+  function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+  function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+  // A release lost to a focus change must not leave Space "held".
+  window.addEventListener('blur', () => {
+    spaceIsDown = false;
+    spaceDownAt = 0;
+    if (backScanTimer) { clearTimeout(backScanTimer); backScanTimer = null; }
+    cancelBackScanIfAny();
+  });
+
   window.addEventListener('keydown', async (e) => {
-    if (e.code === 'Space') e.preventDefault();
+    if (isSpaceKey(e)) e.preventDefault();
     if (e.repeat) return;
     
     // Stop auto-scan on user input
@@ -487,9 +497,11 @@
     // Initialize and resume audio on first user interaction
     await unlockAudio();
     
-    if (e.code === 'Space') {
+    if (isSpaceKey(e)) {
       if (!(phase === Phase.PLAYER || phase === Phase.MAIN || phase === Phase.DIFFICULTY || phase === Phase.SETTINGS)) return;
-      if (!spaceIsDown) {
+      // Auto-repeat returned above, so this is a new press: start the hold over,
+      // even if a lost release left Space "down".
+      {
         spaceIsDown = true;
         spaceDownAt = performance.now();
         cancelBackScanIfAny();
@@ -506,7 +518,7 @@
   });
 
   window.addEventListener('keyup', (e) => {
-    if (e.code === 'Space') {
+    if (isSpaceKey(e)) {
       e.preventDefault();
       if (!(phase === Phase.PLAYER || phase === Phase.MAIN || phase === Phase.DIFFICULTY || phase === Phase.SETTINGS)) { cancelBackScanIfAny(); return; }
       if (isBackScanActive) {
@@ -522,7 +534,7 @@
       spaceDownAt = 0;
     }
 
-    if (e.code === 'Enter') {
+    if (isEnterKey(e)) {
       const now = performance.now();
       if (now - lastReturnAt < RETURN_DEBOUNCE) return;
       lastReturnAt = now;

@@ -965,3 +965,20 @@ Owner report: the 2026-11-10 fix did not solve it; one Space press still led to 
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: Node replay of the Hub's real handlers with fake keys and timers. Before: a release reported as "Unidentified" left Space held and the backward scan stepping forever. After (both Hubs): released normally; a lost release followed by a new press recovers and moves one step forward; holding a key still scans backwards and stops on release; Enter with a differently reported release still activates. Inline scripts syntax-checked. Not run in a browser.
+
+## 2026-11-10 — Fix (3): the same held-key trap in every listed app
+
+Owner request: check every app for the stuck-Space pattern fixed in the Hub and phrase board. Every app the Hubs list had a variant: a "held" flag that ignored any new press while set and was cleared only by a release recognised by e.code; most had no reset on focus loss.
+
+Rule applied everywhere: only the browser's auto-repeat (e.repeat) of a held key is ignored; a new press while a key still counts as held means its release was lost, so the hold (timers, backward scan) starts over. Space / Enter are recognised by code, key name or keyCode. Window blur releases held keys where the app did not already.
+
+- bennyshub/apps/games/BENNYSMATCHYMATCH/script.js — helpers, restart on a new press, blur release.
+- bennyshub/apps/games/BENNYSTICTACTOE/script.js — helpers, restart on a new press, blur and narbe-input-cancelled release (it had neither).
+- bennyshub/apps/tools/youtube/script.js — helpers, restart on a new press (blur release already present).
+- bennyshub/apps/tools/keyboard/app.js — helpers; a new Space/Enter press while still marked held releases it first (releaseHeldSpace); blur release.
+- bennyshub/apps/games/BENNYSAYS/index.html — helpers; a new (non-repeat) Space press always restarts the hold; blur release.
+- bennyshub/apps/games/BENNYSBASKETBALLSHOOTER/index.html — key recognition; a new press clears a hold timer a lost release left behind (it could start a backward scan after release); blur release (releaseHeldKeys). Aiming/charging mechanics unchanged.
+- bennyshub/apps/games/NARBEANIMALFRIENDS/js/input.js, NARBEFEELINGS/js/game.js, NARBEPUZZLE/js/game.js — switchKey() normalises the event; a new Space press while held clears the old hold instead of being dropped (blur and cancel releases were already present).
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: syntax checks of every changed script and inline page script in both repos; every variable and function the new code uses confirmed present. Behaviour replay was run for the Hub (fix 2); the apps follow the same rule. Not run in a browser.

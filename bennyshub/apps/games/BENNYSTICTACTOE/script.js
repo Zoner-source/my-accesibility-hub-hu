@@ -875,17 +875,31 @@ function announceCell(index) {
 // --- Input Handling ---
 
 function setupInput() {
+    function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+    function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+    function releaseHeldKeys() {
+        clearTimeout(state.timers.space); clearInterval(state.timers.spaceRepeat);
+        clearTimeout(state.timers.enter); clearInterval(state.timers.enterRepeat);
+        state.input.spaceHeld = false; state.input.enterHeld = false; state.input.pauseTriggered = false;
+    }
+    // A release lost to a focus change or cancelled by the input guard must not leave a key "held".
+    window.addEventListener('blur', releaseHeldKeys);
+    document.addEventListener('narbe-input-cancelled', releaseHeldKeys);
+
     document.addEventListener('keydown', e => {
-        if (e.code === 'Space') {
-            if (!state.input.spaceHeld) {
+        if (isSpaceKey(e)) {
+            // Only auto-repeat is ignored: a new press while "held" (lost release) starts over.
+            if (!state.input.spaceHeld || !e.repeat) {
+                clearTimeout(state.timers.space); clearInterval(state.timers.spaceRepeat);
                 state.input.spaceHeld = true;
                 state.input.spaceTime = Date.now();
                 resetAutoScan(); // Pause/Reset scan on user interaction
                 e.preventDefault();
                 state.timers.space = setTimeout(startBackwardsScan, config.longPress);
             }
-        } else if (e.code === 'Enter') {
-            if (!state.input.enterHeld) {
+        } else if (isEnterKey(e)) {
+            if (!state.input.enterHeld || !e.repeat) {
+                clearTimeout(state.timers.enter); clearInterval(state.timers.enterRepeat);
                 state.input.enterHeld = true;
                 state.input.enterTime = Date.now();
                 resetAutoScan();
@@ -905,7 +919,7 @@ function setupInput() {
     });
 
     document.addEventListener('keyup', e => {
-        if (e.code === 'Space') {
+        if (isSpaceKey(e)) {
             if (state.input.spaceHeld) {
                 clearTimeout(state.timers.space);
                 clearInterval(state.timers.spaceRepeat);
@@ -919,7 +933,7 @@ function setupInput() {
                 // Restart auto scan after interaction gap
                 resetAutoScan();
             }
-        } else if (e.code === 'Enter') {
+        } else if (isEnterKey(e)) {
             if (state.input.enterHeld) {
                 clearTimeout(state.timers.enter);
                 clearInterval(state.timers.enterRepeat);

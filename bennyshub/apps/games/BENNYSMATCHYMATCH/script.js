@@ -503,17 +503,31 @@ async function cyclePack(dir) {
 
 // --- Input Handling ---
 function setupInput() {
+    function isSpaceKey(e) { return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32; }
+    function isEnterKey(e) { return e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || e.keyCode === 13; }
+    function releaseHeldKeys() {
+        clearTimeout(state.timers.space); clearInterval(state.timers.spaceRepeat);
+        clearTimeout(state.timers.enter); clearInterval(state.timers.enterRepeat);
+        state.input.spaceHeld = false; state.input.spaceLongPressFired = false;
+        state.input.enterHeld = false; state.input.enterLongPressFired = false;
+    }
+    // A release lost to a focus change must not leave a key "held".
+    window.addEventListener('blur', releaseHeldKeys);
+
     document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') {
-            if (!state.input.spaceHeld) {
+        if (isSpaceKey(e)) {
+            // Only auto-repeat is ignored: a new press while "held" (lost release) starts over.
+            if (!state.input.spaceHeld || !e.repeat) {
+                clearTimeout(state.timers.space); clearInterval(state.timers.spaceRepeat);
                 state.input.spaceHeld = true;
                 state.input.spaceTime = Date.now();
                 state.input.spaceLongPressFired = false;
                 state.timers.space = setTimeout(onSpaceLongPress, config.longPress);
             }
             e.preventDefault();
-        } else if (e.code === 'Enter') {
-            if (!state.input.enterHeld) {
+        } else if (isEnterKey(e)) {
+            if (!state.input.enterHeld || !e.repeat) {
+                clearTimeout(state.timers.enter); clearInterval(state.timers.enterRepeat);
                 state.input.enterHeld = true;
                 state.input.enterTime = Date.now();
                 state.input.enterLongPressFired = false;
@@ -524,7 +538,7 @@ function setupInput() {
     });
 
     document.addEventListener('keyup', (e) => {
-        if (e.code === 'Space') {
+        if (isSpaceKey(e)) {
             clearTimeout(state.timers.space);
             clearInterval(state.timers.spaceRepeat);
             state.input.spaceHeld = false;
@@ -533,7 +547,7 @@ function setupInput() {
                 onSpaceShortPress();
             }
             state.input.spaceLongPressFired = false;
-        } else if (e.code === 'Enter') {
+        } else if (isEnterKey(e)) {
             clearTimeout(state.timers.enter);
             clearInterval(state.timers.enterRepeat);
             state.input.enterHeld = false;
