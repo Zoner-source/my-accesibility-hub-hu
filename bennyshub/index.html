@@ -366,6 +366,14 @@
       #screen-home .card-btn { height: 160px; }
     }
 
+    /* Door card (first item of every menu): big picture, centred */
+    .card-btn.door-btn { justify-content: center; align-items: center; text-align: center; min-height: 180px; }
+    .card-btn.door-btn .menu-icon {
+      width: min(55%, 150px); max-height: 150px; object-fit: contain;
+      filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 6px rgba(255,255,255,.35));
+    }
+    .card-btn.door-btn .btn-title { font-size: clamp(24px, 3vw, 34px); }
+
     /* Settings screen layout */
     #screen-settings .grid{
       grid-template-columns: repeat(3, 1fr);
@@ -769,20 +777,13 @@
 
       <!-- TOOLS SCREEN -->
       <section id="screen-tools" class="screen" aria-labelledby="tools-heading" data-screen="tools" tabindex="-1">
-        <div class="controls-bar">
-          <div class="controls-left">
-            <button class="backbtn" data-target="home" aria-label="Vissza a főmenübe">← Vissza</button>
-            <button class="nav-btn" id="tools-genre-toggle">Szűrő: Mind</button>
-            <button class="nav-btn" id="tools-genre-reset">Visszaállítás</button>
-          </div>
-          <div class="controls-right">
-            <span class="page-info" id="tools-page-info">1. oldal / 1</span>
-            <button class="nav-btn" id="tools-prev" disabled aria-label="Előző oldal">← Előző</button>
-            <button class="nav-btn" id="tools-next" disabled aria-label="Következő oldal">Következő →</button>
-          </div>
-        </div>
         <h2 id="tools-heading" class="sr-only">Eszközök</h2>
         <div class="grid" role="group" aria-label="Az eszközök listája" id="tools-grid">
+          <button class="card-btn door-btn" data-target="home" aria-label="Vissza">
+            <img src="images/menu/usa.svg" alt="" class="menu-icon">
+            <div class="btn-title">Vissza</div>
+          </button>
+
           <!-- Tools will be populated by JavaScript -->
         </div>
         <p class="footer-note">Nyomd meg a <span class="kbd">Szóköz</span> billentyűt a fókusz mozgatásához. Nyomd meg az <span class="kbd">Enter</span> billentyűt a kiválasztáshoz. A visszalépéshez használd a Vissza gombot.</p>
@@ -790,20 +791,13 @@
 
       <!-- GAMES SCREEN -->
       <section id="screen-games" class="screen" aria-labelledby="games-heading" data-screen="games" tabindex="-1">
-        <div class="controls-bar">
-          <div class="controls-left">
-            <button class="backbtn" data-target="home" aria-label="Vissza a főmenübe">← Vissza</button>
-            <button class="nav-btn" id="games-genre-toggle">Szűrő: Mind</button>
-            <button class="nav-btn" id="games-genre-reset">Visszaállítás</button>
-          </div>
-          <div class="controls-right">
-            <span class="page-info" id="games-page-info">1. oldal / 1</span>
-            <button class="nav-btn" id="games-prev" disabled aria-label="Előző oldal">← Előző</button>
-            <button class="nav-btn" id="games-next" disabled aria-label="Következő oldal">Következő →</button>
-          </div>
-        </div>
         <h2 id="games-heading" class="sr-only">Játékok</h2>
         <div class="grid" role="group" aria-label="A játékok listája" id="games-grid">
+          <button class="card-btn door-btn" data-target="home" aria-label="Vissza">
+            <img src="images/menu/usa.svg" alt="" class="menu-icon">
+            <div class="btn-title">Vissza</div>
+          </button>
+
           <!-- Games will be populated by JavaScript -->
         </div>
         <p class="footer-note">Nyomd meg a <span class="kbd">Szóköz</span> billentyűt a fókusz mozgatásához. Nyomd meg az <span class="kbd">Enter</span> billentyűt a játék megnyitásához. A visszalépéshez használd a Vissza gombot.</p>
@@ -828,13 +822,13 @@
 
       <!-- SETTINGS SCREEN -->
       <section id="screen-settings" class="screen" aria-labelledby="settings-heading" data-screen="settings" tabindex="-1">
-        <div class="controls-bar">
-          <div class="controls-left">
-            <button class="backbtn" data-target="home" aria-label="Vissza a főmenübe">← Vissza</button>
-          </div>
-        </div>
         <h2 id="settings-heading" class="sr-only">Beállítások</h2>
         <div class="grid" role="group" aria-label="A beállítások listája">
+          <button class="card-btn door-btn" data-target="home" aria-label="Vissza">
+            <img src="images/menu/usa.svg" alt="" class="menu-icon">
+            <div class="btn-title">Vissza</div>
+          </button>
+
           <button class="card-btn" id="highlight-toggle">
             <span class="kicker">Beállítás</span>
             <div class="btn-title">Kiemelés színe</div>
@@ -948,14 +942,14 @@
 
       <!-- SYSTEM SETTINGS SCREEN -->
       <section id="screen-system" class="screen" aria-labelledby="system-heading" data-screen="system" tabindex="-1">
-        <div class="controls-bar">
-          <div class="controls-left">
-            <button class="backbtn" data-target="home">← Vissza</button>
-          </div>
-          <h2 id="system-heading" class="title">Rendszerműveletek</h2>
-        </div>
-        
+        <h2 id="system-heading" class="sr-only">Rendszerműveletek</h2>
+
         <div class="grid">
+          <button class="card-btn door-btn" data-target="home" aria-label="Vissza">
+            <img src="images/menu/usa.svg" alt="" class="menu-icon">
+            <div class="btn-title">Vissza</div>
+          </button>
+
           <button class="card-btn" onclick="sysCall('volume/up')">
             <div class="btn-title">Hangerő növelése</div>
             <div class="row"><span class="pill">Hangosabb</span></div>
@@ -1055,7 +1049,14 @@
       tools: { genre: 'all', page: 0 },
       games: { genre: 'all', page: 0 }
     };
-    const ITEMS_PER_PAGE = 9;
+    // One page: the page arrows were removed with the top bar; the page scrolls.
+    const ITEMS_PER_PAGE = 1000;
+    // First item of every menu: a big door that returns to the main menu.
+    const DOOR_CARD = `
+          <button class="card-btn door-btn" data-target="home" aria-label="Vissza">
+            <img src="images/menu/usa.svg" alt="" class="menu-icon">
+            <div class="btn-title">Vissza</div>
+          </button>`;
 
     // Settings state
     let settings = {
@@ -1292,18 +1293,18 @@
       
       // Update grid
       const gridHTML = paginatedData.items.map(app => createAppCard(app, category)).join('');
-      grid.innerHTML = gridHTML;
+      grid.innerHTML = DOOR_CARD + gridHTML; // the door stays the first item
       
       // Update page info
       if (paginatedData.totalPages > 0) {
-        pageInfo.textContent = `${paginatedData.currentPage}. oldal / ${paginatedData.totalPages}`;
+        if (pageInfo) pageInfo.textContent = `${paginatedData.currentPage}. oldal / ${paginatedData.totalPages}`;
       } else {
-        pageInfo.textContent = 'Nem található elem';
+        if (pageInfo) pageInfo.textContent = 'Nem található elem';
       }
       
       // Update navigation buttons
-      prevBtn.disabled = !paginatedData.hasPrevious;
-      nextBtn.disabled = !paginatedData.hasNext;
+      if (prevBtn) prevBtn.disabled = !paginatedData.hasPrevious;
+      if (nextBtn) nextBtn.disabled = !paginatedData.hasNext;
       
       // Add event listeners to app buttons
       grid.querySelectorAll('.app-btn').forEach(btn => {
@@ -2021,9 +2022,19 @@
       });
     });
 
+    // Door card: the first item of every menu returns to the main menu.
+    // One listener for all doors: the Tools and Games grids are redrawn.
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest && e.target.closest('.door-btn');
+      if (!btn) return;
+      if (isTransitioning) { e.preventDefault(); e.stopPropagation(); return; }
+      speak('Vissza');
+      showScreen(btn.getAttribute('data-target') || 'home');
+    });
+
     // Pagination event listeners
     ['tools', 'games'].forEach(category => {
-      document.getElementById(`${category}-prev`).addEventListener('click', () => {
+      document.getElementById(`${category}-prev`)?.addEventListener('click', () => {
         if (filterState[category].page > 0) {
           filterState[category].page--;
           renderAppsGrid(category);
@@ -2031,7 +2042,7 @@
         }
       });
 
-      document.getElementById(`${category}-next`).addEventListener('click', () => {
+      document.getElementById(`${category}-next`)?.addEventListener('click', () => {
         const filteredItems = filterItemsByGenre(category, filterState[category].genre);
         const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
         if (filterState[category].page < totalPages - 1) {
@@ -2084,19 +2095,19 @@
     }
 
     // Filter button event listeners
-    document.getElementById('games-genre-toggle').addEventListener('click', () => {
+    document.getElementById('games-genre-toggle')?.addEventListener('click', () => {
       toggleGenre('games');
     });
     
-    document.getElementById('games-genre-reset').addEventListener('click', () => {
+    document.getElementById('games-genre-reset')?.addEventListener('click', () => {
       resetGenre('games');
     });
 
-    document.getElementById('tools-genre-toggle').addEventListener('click', () => {
+    document.getElementById('tools-genre-toggle')?.addEventListener('click', () => {
       toggleGenre('tools');
     });
 
-    document.getElementById('tools-genre-reset').addEventListener('click', () => {
+    document.getElementById('tools-genre-reset')?.addEventListener('click', () => {
       resetGenre('tools');
     });
 

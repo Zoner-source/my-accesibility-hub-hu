@@ -8,3 +8,4 @@ Emoji graphics from [Twemoji](https://github.com/twitter/twemoji), © Twitter, I
 | jocuri.svg | 🎮 video game | 1f3ae |
 | setari.svg | ⚙️ gear | 2699 |
 | sistem.svg | 🖥️ desktop computer | 1f5a5 |
+| usa.svg | door (drawn for Benny's Hub, not Twemoji) | — |

@@ -997,3 +997,14 @@ Owner report: with Ben's Trinkey, holding the switch no longer scanned backwards
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Auto Scan direction unchanged. Electron flag: not ported. Validation: syntax check of every changed script and inline page script in both repos; Node test of the guard (Trinkey-style unmarked repeats become repeats, release and lost-release cases stay new presses, Unidentified release recognised) and of the setting. Node replay of the real guard and the Hub's real Space/Enter handlers, 16 cases (taps, fast taps, Trinkey-style and keyboard holds, Unidentified/keyCode-only releases, lost releases, Space held with Enter, slow sensitivity, Backward direction): 16/16 in both Hubs. Not run in a browser or with the Trinkey.
+
+## 2026-11-24 — Hub menus: door card instead of the top bar
+
+Owner request: remove the small top bar (Back, Filter, Reset) from the Hub menus and make the first item of every menu a big door picture that returns to the previous page.
+
+- bennyshub/index.html — Tools, Games, Settings and System: the controls bar (Back, Filter, Reset, page info, previous/next page) is removed; the first card of each grid is a big door card ("Vissza" / "Înapoi") that returns to the main menu. Tools and Games keep the door first when their grid is redrawn (DOOR_CARD); one delegated click listener handles every door. All items are on one page (ITEMS_PER_PAGE 1000; the page scrolls), since the page arrows lived in the removed bar. Filters already reset to All when a menu is opened from home; the genre filter screen is now unreachable but left in place. JS that used the removed elements is null-safe. The System title stays as a screen-reader heading. The main menu has no door (it is the top level).
+- bennyshub/images/menu/usa.svg — door picture, drawn for the Hub in the flat style of the other menu pictures (not downloaded).
+- bennyshub/images/menu/ATTRIBUTION.md — notes the door picture.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: inline scripts parse in both Hubs; every reference to the removed elements guarded. Not viewed in a browser.
