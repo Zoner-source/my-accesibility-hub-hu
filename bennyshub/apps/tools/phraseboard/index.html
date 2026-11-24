@@ -333,20 +333,20 @@
       margin-bottom: 8px;
     }
 
-    /* Navigation buttons (Main menu, Back, Next): bigger, bolder icons and
-       labels for players with low vision. Each button measures its own tile
+    /* Menu and navigation buttons (every board button with an icon: Settings,
+       Exit, Create/Load board, Main menu, Back, Next, settings items): bigger,
+       bolder icons and labels for players with low vision. Phrase tiles with
+       pictures and the sentence bar are not affected. Each button measures its own tile
        (container query), so the icon grows with fewer, bigger tiles and shrinks
        with more, smaller ones when the grid size is changed. The label follows
        the grid's rows and columns the same way. */
-    .grid-button.back-btn:not(.vm-item),
-    .grid-button.next-btn:not(.vm-item) {
+    .main-grid > .grid-button:not(.vm-item):has(> .icon) {
       container-type: size;
       padding: 6px;
       font-size: clamp(14px, calc(min(70vh / var(--grid-rows, 4), 90vw / var(--grid-cols, 4)) * 0.15), 34px);
       font-weight: 800;
     }
-    .grid-button.back-btn:not(.vm-item) .icon,
-    .grid-button.next-btn:not(.vm-item) .icon {
+    .main-grid > .grid-button:not(.vm-item):has(> .icon) > .icon {
       /* As wide as 80% of the tile and as tall as the tile minus the label line. */
       font-size: clamp(28px, min(80cqw, 100cqh - 44px), 260px);
       line-height: 1;

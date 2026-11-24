@@ -1032,3 +1032,12 @@ Owner request: improve performance on Android and make it easier for the site to
 Considered and not done: skipping the Hub's per-game HEAD check on GitHub Pages (the Romanian games.json lists 17 games whose folders are not deployed; showOnly hides them today, but the check is the safety net), and bundling the phrase board's CDN PapaParse locally (needs a download; not approved).
 
 Electron flag: not ported. Validation: Node test of the real voice manager with fake voice lists (English only, standard, Android 3-letter and underscore codes, user-chosen English voice, no voices): 6/6 in both Hubs; inline scripts parse. Not run on an Android device.
+
+## 2026-11-24 — Phrase board: every menu icon fills its tile
+
+Owner report (screenshot): the phrase board's main menu icons (Settings, Exit, Create board, Load board) were still small on big tiles; only Main menu / Back / Next had been enlarged.
+
+- bennyshub/apps/tools/phraseboard/index.html — the tile-filling icon and bold scaled label now apply to every board button that has an icon (`.main-grid > .grid-button:has(> .icon)`, not vertical-list items): main menu, settings items and navigation. Phrase tiles with pictures, text-only tiles and the sentence bar are unchanged.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Electron flag: not ported. Validation: CSS only; not viewed in a browser before pushing (owner asked to push).
