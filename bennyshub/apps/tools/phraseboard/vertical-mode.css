@@ -40,6 +40,8 @@ body.vertical-layout .main-grid.vm-list.sentence-active {
   flex: 0 0 auto;
 }
 .grid-button.vm-item .vm-icon { font-size: clamp(28px, 4vh, 44px); flex: 0 0 auto; }
+/* Navigation items (Main menu, Back): bigger icon for low vision. */
+.grid-button.vm-item.back-btn .vm-icon { font-size: clamp(40px, 6vh, 64px); font-weight: 900; line-height: 1; }
 .grid-button.vm-item .vm-text { overflow: hidden; text-overflow: ellipsis; }
 
 /* Right half: the highlighted item, as large as the space allows. */

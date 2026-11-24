@@ -332,6 +332,24 @@
       font-size: 64px;
       margin-bottom: 8px;
     }
+
+    /* Navigation buttons (Main menu, Back, Next): bigger, bolder icons and
+       labels for players with low vision. Each button measures its own tile
+       (container query), so the icon grows with fewer, bigger tiles and shrinks
+       with more, smaller ones when the grid size is changed. The label follows
+       the grid's rows and columns the same way. */
+    .grid-button.back-btn:not(.vm-item),
+    .grid-button.next-btn:not(.vm-item) {
+      container-type: size;
+      font-size: clamp(14px, calc(min(70vh / var(--grid-rows, 4), 90vw / var(--grid-cols, 4)) * 0.15), 34px);
+      font-weight: 800;
+    }
+    .grid-button.back-btn:not(.vm-item) .icon,
+    .grid-button.next-btn:not(.vm-item) .icon {
+      font-size: clamp(28px, 60cqmin, 210px);
+      line-height: 1;
+      font-weight: 900;
+    }
     
     .page-indicator {
       position: absolute;
