@@ -1013,8 +1013,8 @@ Electron flag: not ported. Validation: inline scripts parse in both Hubs; every 
 
 Owner request: make the phrase board's navigation icons a little larger for visually impaired players.
 
-- bennyshub/apps/tools/phraseboard/index.html — Main menu / Back / Next buttons (back-btn, next-btn, grid only): the icon follows the size of its own tile (container query: 60% of the tile's smaller side, 28–210px), so it grows and shrinks with the Grid size setting; bold label sized from the grid's rows and columns (14–34px). Other tiles unchanged.
-- bennyshub/apps/tools/phraseboard/vertical-mode.css — vertical list Main menu / Back items: icon clamp(40px, 6vh, 64px), bold (was 28–44px).
+- bennyshub/apps/tools/phraseboard/index.html — Main menu / Back / Next buttons (back-btn, next-btn, grid only): the icon follows the size of its own tile (container query: up to 80% of the tile's width and the tile's height minus the label line, 28–260px; 6px padding), so it grows and shrinks with the Grid size setting; bold label sized from the grid's rows and columns (14–34px). Other tiles unchanged.
+- bennyshub/apps/tools/phraseboard/vertical-mode.css — vertical list Main menu / Back items: icon clamp(56px, 9vh, 96px), bold (was 28–44px).
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: CSS only; not viewed in a browser yet.

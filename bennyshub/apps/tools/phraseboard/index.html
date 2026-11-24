@@ -341,14 +341,17 @@
     .grid-button.back-btn:not(.vm-item),
     .grid-button.next-btn:not(.vm-item) {
       container-type: size;
+      padding: 6px;
       font-size: clamp(14px, calc(min(70vh / var(--grid-rows, 4), 90vw / var(--grid-cols, 4)) * 0.15), 34px);
       font-weight: 800;
     }
     .grid-button.back-btn:not(.vm-item) .icon,
     .grid-button.next-btn:not(.vm-item) .icon {
-      font-size: clamp(28px, 60cqmin, 210px);
+      /* As wide as 80% of the tile and as tall as the tile minus the label line. */
+      font-size: clamp(28px, min(80cqw, 100cqh - 44px), 260px);
       line-height: 1;
       font-weight: 900;
+      margin-bottom: 2px;
     }
     
     .page-indicator {
