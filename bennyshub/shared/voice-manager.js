@@ -126,6 +126,20 @@ window.NarbeVoiceManager = (function() {
   /**
    * Load available voices from the speech synthesis API
    */
+  // Is this a Hungarian voice? Engines label voices differently: "hu-HU",
+  // "hu_HU", "hun" (some Android engines), or only by name.
+  let noVoiceList = false; // the browser listed no voice within 2 s (see speak)
+  const HUB_LANG = 'hu-HU';
+  function isHubVoice(voice) {
+    if (!voice) return false;
+    const lang = String(voice.lang || '').replace('_', '-').toLowerCase();
+    const name = String(voice.name || '').toLowerCase();
+    const uri = String(voice.voiceURI || '').toLowerCase();
+    return lang.startsWith('hu') ||
+      /hungar|magyar|szabolcs|noémi|noemi|tamás/.test(name) ||
+      /hu[-_]hu|hun/.test(uri);
+  }
+
   function loadVoices() {
     if (!('speechSynthesis' in window)) {
       console.warn('NarbeVoiceManager: Speech synthesis not supported');
@@ -136,14 +150,7 @@ window.NarbeVoiceManager = (function() {
     
     if (availableVoices.length > 0) {
       // Keep only Hungarian voices (same voice objects as before, just filtered)
-      englishVoices = availableVoices.filter(voice =>
-        voice.lang.replace('_', '-').toLowerCase().startsWith('hu') ||
-        voice.name.toLowerCase().includes('hungarian') ||
-        voice.name.toLowerCase().includes('hungary') ||
-        voice.name.toLowerCase().includes('magyar') ||
-        voice.name.toLowerCase().includes('szabolcs') ||
-        String(voice.voiceURI || '').toLowerCase().includes('hu-hu')
-      );
+      englishVoices = availableVoices.filter(isHubVoice);
       console.log('NarbeVoiceManager: all voices the browser exposes:',
                   availableVoices.map(v => v.name + ' | ' + v.lang));
 
@@ -292,6 +299,12 @@ window.NarbeVoiceManager = (function() {
     if (!voicesLoaded) {
       retryLoadVoices();
     }
+
+    // A voice pack installed while the page was in the background (Android:
+    // Settings > Text-to-speech) shows up when the page is visible again.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') loadVoices();
+    });
   }
 
   /**
@@ -397,6 +410,8 @@ window.NarbeVoiceManager = (function() {
     if (englishVoices.length === 0) return false;
     
     settings.voiceIndex = (settings.voiceIndex + 1) % englishVoices.length;
+    // Picked by the user: used even if it is not a Hungarian voice.
+    settings.voiceChosen = true;
     
     // Update voice name to match new index
     if (englishVoices[settings.voiceIndex]) {
@@ -422,11 +437,16 @@ window.NarbeVoiceManager = (function() {
   function speak(text, options = {}) {
     if (!settings.ttsEnabled || !text || !('speechSynthesis' in window)) return;
     
-    // If voices aren't loaded yet, wait for them
-    if (!voicesLoaded || englishVoices.length === 0) {
-      // Wait for voices to load, then try again
+    // If voices aren't loaded yet, wait for them - but not forever: some
+    // Android phones never list any voice, and waiting forever kept the whole
+    // Hub silent. After 2 s speak anyway; the device picks a voice for HUB_LANG.
+    if ((!voicesLoaded || englishVoices.length === 0) && !noVoiceList) {
+      let tries = 0;
       const waitForVoices = () => {
         if (voicesLoaded && englishVoices.length > 0) {
+          speak(text, options);
+        } else if (++tries >= 20) {
+          noVoiceList = true;
           speak(text, options);
         } else {
           setTimeout(waitForVoices, 100);
@@ -454,17 +474,17 @@ window.NarbeVoiceManager = (function() {
       utterance.volume = options.volume || settings.volume;
       // Hungarian build: always tag the utterance with a Hungarian language so
       // the engine pronounces text correctly even if no Hungarian voice is picked.
-      utterance.lang = 'hu-HU';
+      utterance.lang = HUB_LANG;
       
-      // Set voice - should be available now
+      // Set the voice only when it speaks the Hub's language, or when the user
+      // picked it. Otherwise leave it to the device: with the language set,
+      // Android uses its installed language pack even when Chrome does not
+      // list that voice, instead of reading the text with an English voice.
       const currentVoice = getCurrentVoice();
-      if (currentVoice) {
+      if (currentVoice && (isHubVoice(currentVoice) || settings.voiceChosen)) {
         utterance.voice = currentVoice;
-        if (currentVoice.lang && currentVoice.lang.toLowerCase().startsWith('hu')) {
-          utterance.lang = currentVoice.lang;
-        }
       } else {
-        console.warn('NarbeVoiceManager: No voice available, using default');
+        console.warn('NarbeVoiceManager: No ' + HUB_LANG + ' voice listed; the device picks one for ' + HUB_LANG);
       }
       
       window.speechSynthesis.speak(utterance);
@@ -585,7 +605,18 @@ window.NarbeVoiceManager = (function() {
   init();
 
   // Public API
+  // The voice to give an utterance: the current voice when it speaks the
+  // Hub's language or the user picked it, otherwise null (let the device
+  // choose for getLang()). For code that builds its own utterances.
+  function getSpeakVoice() {
+    const voice = getCurrentVoice();
+    return voice && (isHubVoice(voice) || settings.voiceChosen) ? voice : null;
+  }
+
   return {
+    getSpeakVoice,
+    getLang: () => HUB_LANG,
+    isHubVoice,
     // Settings management
     getSettings,
     updateSettings,

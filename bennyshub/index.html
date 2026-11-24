@@ -2333,10 +2333,11 @@
             setTimeout(() => {
                 const voiceSettings = window.NarbeVoiceManager.getSettings();
                 if (!voiceSettings.ttsEnabled || !('speechSynthesis' in window)) return;
-                const voice = window.NarbeVoiceManager.getCurrentVoice();
+                const voice = window.NarbeVoiceManager.getSpeakVoice();
                 window.speechSynthesis.cancel();
                 for (let i = 0; i < 15; i++) {
                     const utterance = new SpeechSynthesisUtterance("SEGÍTSÉG");
+                    utterance.lang = window.NarbeVoiceManager.getLang();
                     if (voice) utterance.voice = voice;
                     utterance.rate = voiceSettings.rate;
                     utterance.pitch = voiceSettings.pitch;

@@ -1018,3 +1018,17 @@ Owner request: make the phrase board's navigation icons a little larger for visu
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: CSS only; not viewed in a browser yet.
+
+## 2026-11-24 — Android: smaller Hub logo; Romanian / Hungarian voices found more reliably
+
+Owner request: improve performance on Android and make it easier for the site to recognise Romanian and Hungarian voice packs.
+
+- bennyshub/images/BeaminBenny.png — resized from 6346×6346 (about 2.4 MB, ~160 MB decoded) to 320×320 (65 KB); it is shown at 80×80 px. Resized locally with Windows' own image tools; the original stays in git history.
+- bennyshub/shared/voice-manager.js — isHubVoice() recognises the Hub's language by code ("ro-RO"/"hu-HU", underscores, Android 3-letter "ron"/"rum"/"hun", "mo-MD"), name ("Română", "Magyar", …) or voiceURI. Every utterance is tagged with the Hub's language (ro-RO / hu-HU; Romanian did not set it before). A voice is forced only when it is in the Hub's language or the user picked it (voiceChosen; the Hungarian voice picker now sets it too); otherwise the device chooses a voice for the language, so an installed Android language pack is used even when Chrome does not list it, instead of an English voice reading the text. speak() waits at most 2 s for a voice list (some Android phones never provide one; before, it waited forever and the Hub stayed silent). Voices are looked up again when the page becomes visible (a pack installed in the background). New getSpeakVoice(), getLang(), isHubVoice().
+- bennyshub/index.html — emergency help speech uses getSpeakVoice() and the Hub's language.
+- bennyshub/apps/tools/phraseboard/index.html (Romanian) — its own utterances (specific / child voices) are tagged ro-RO like the Hungarian board's.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Considered and not done: skipping the Hub's per-game HEAD check on GitHub Pages (the Romanian games.json lists 17 games whose folders are not deployed; showOnly hides them today, but the check is the safety net), and bundling the phrase board's CDN PapaParse locally (needs a download; not approved).
+
+Electron flag: not ported. Validation: Node test of the real voice manager with fake voice lists (English only, standard, Android 3-letter and underscore codes, user-chosen English voice, no voices): 6/6 in both Hubs; inline scripts parse. Not run on an Android device.
