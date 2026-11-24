@@ -1541,7 +1541,8 @@
                     
                     if (gameState === 'MENU' || gameState === 'PAUSED') {
                         if (duration < 3000) {
-                            MenuManager.scanNext();
+                            // Scan direction (Hub Settings): Backward makes a tap step back.
+                            if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) MenuManager.scanNext(); else MenuManager.scanPrev();
                         }
                     } else if (gameState === 'AIMING' || gameState === 'CHARGING') {
                         aimActive = false;
@@ -1570,13 +1571,18 @@
                 }
             }
 
+            // Held Space steps opposite to a tap (Scan direction, Hub Settings).
+            holdStep() {
+                if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) MenuManager.scanPrev(); else MenuManager.scanNext();
+            }
+
             startBackwardScan() {
                 // Initial backward step
-                MenuManager.scanPrev();
+                this.holdStep();
                 // Repeat based on shared Scan Manager setting
                 const interval = window.NarbeScanManager ? window.NarbeScanManager.getScanInterval() : 2000;
                 this.spaceRepeatTimer = setInterval(() => {
-                    MenuManager.scanPrev();
+                    this.holdStep();
                 }, interval);
             }
 

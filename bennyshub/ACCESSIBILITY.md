@@ -252,6 +252,8 @@ NarbeVoiceManager.speak returns started, finished and cancel. Completion resolve
 
 Ordinary choices act on release. Step Space advances; held Space scans backward at the saved interval. Preserve each surface's existing Space/Enter hold thresholds and native pause feedback. Do not promise a universal hold duration in player hints.
 
+**Scan direction** (Hub Settings, `reverseScan` in the shared scan settings, default Forward) mirrors this for switches that cannot hold: with Backward, a Space tap steps back and held Space steps forward. Surfaces read it with `narbeTapDir()` (1 or -1, from `shared/scan-manager.js`): tap steps use it, held-Space steps use its opposite. Auto Scan direction is unchanged. The shared input guard counts a Space/Enter press that arrives while the key is still down, within 1.2 s of its previous press, as a repeat (some switch boxes send held keys without the repeat flag); a press after a longer silence is a new press (lost release).
+
 NarbeScanManager owns Auto, interval (1/2/3/4/5 seconds), sensitivity (50/100/200/300 ms), parking, loops, brake and speech wait. It does not own native hold thresholds.
 
 Sensitivity is a cooldown and anti-rapid-press filter, **not a minimum press length**. A valid short press counts. Rejected keydown and matching keyup are consumed together. Do not add a second debounce, a 500 ms activation gate or desktop's old minimum-hold filter. Mouse and touch remain direct navigation.

@@ -170,9 +170,9 @@
         backTimer = setTimeout(function () {
             backTimer = null;
             if (!spaceHeld) return;
-            choice.step(-1);
+            choice.step(-(window.narbeTapDir ? narbeTapDir() : 1));
             const interval = (window.NarbeScanManager && window.NarbeScanManager.getScanInterval()) || 2000;
-            backRepeat = setInterval(function () { choice.step(-1); }, interval);
+            backRepeat = setInterval(function () { choice.step(-(window.narbeTapDir ? narbeTapDir() : 1)); }, interval);
         }, HOLD);
     }
 
@@ -188,7 +188,7 @@
             clearSpace();
             choice.setInputHeld(enterHeld);
             // A short press steps forward on release; a hold that scanned backwards does not.
-            if (wasHeld && !wasBack) choice.step(1);
+            if (wasHeld && !wasBack) choice.step((window.narbeTapDir ? narbeTapDir() : 1));
         } else {
             if (!enterHeld) return;
             enterHeld = false;

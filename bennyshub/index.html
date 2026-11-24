@@ -916,6 +916,15 @@
             </div>
           </button>
 
+          <button class="card-btn" id="scandir-toggle">
+            <span class="kicker">Beállítás</span>
+            <div class="btn-title">Pásztázás iránya</div>
+            <div class="row">
+              <p class="desc">Előre: koppintás = következő, nyomva tartott Szóköz = vissza. Visszafelé: fordítva.</p>
+              <span class="pill" id="scandir-status">Előre</span>
+            </div>
+          </button>
+
           <button class="card-btn" id="uisize-toggle">
             <span class="kicker">Beállítás</span>
             <div class="btn-title">Méret</div>
@@ -1520,6 +1529,8 @@
       }
 
       document.getElementById('scanspeed-status').textContent = scanSpeedName;
+      document.getElementById('scandir-status').textContent =
+        (window.NarbeScanManager && window.NarbeScanManager.isReverseScan()) ? 'Visszafelé' : 'Előre';
 
       // Apply auto scan setting
       document.getElementById('autoscan-status').textContent = autoScan ? 'Be' : 'Ki';
@@ -1583,6 +1594,11 @@
       
       focusAt(focusIndex - 1);
     }
+
+    // Scan direction (Hub Settings): a tap steps forward and holding Space
+    // steps backward, or the other way round when Scan direction is Backward.
+    function tapStep() { if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) focusNext(); else focusPrevious(); }
+    function holdStep() { if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) focusPrevious(); else focusNext(); }
 
     // TTS functionality using unified voice manager
     function speak(text) {
@@ -1702,6 +1718,14 @@
           applySettings();
           speak(`A pásztázás sebessége: ${name}`);
       }
+    });
+
+    document.getElementById('scandir-toggle').addEventListener('click', () => {
+      if (!window.NarbeScanManager) return;
+      const reverse = !window.NarbeScanManager.isReverseScan();
+      window.NarbeScanManager.setReverseScan(reverse);
+      applySettings();
+      speak(`Pásztázás iránya: ${reverse ? 'Visszafelé' : 'Előre'}`);
     });
 
     document.getElementById('uisize-toggle').addEventListener('click', () => {
@@ -2181,13 +2205,13 @@
         // Set timeout for backwards scanning
         spaceHoldTimeout = setTimeout(() => {
           if (spacePressed && !iframeContainer.classList.contains('active')) {
-            speak('Visszafelé pásztázás');
-            focusPrevious();
+            speak((window.narbeTapDir ? narbeTapDir() : 1) > 0 ? 'Visszafelé pásztázás' : 'Előre pásztázás');
+            holdStep();
             
             // Start backwards auto-scan
             backwardsScanInterval = setInterval(() => {
               if (spacePressed && !iframeContainer.classList.contains('active')) {
-                focusPrevious();
+                holdStep();
               } else {
                 clearInterval(backwardsScanInterval);
                 backwardsScanInterval = null;
@@ -2255,7 +2279,7 @@
         // Check if this was a short press (normal forward scanning)
         const holdDuration = Date.now() - spaceHoldStartTime;
         if (holdDuration < BACKWARDS_SCAN_THRESHOLD) {
-          focusNext();
+          tapStep();
         }
         
       } else if(isEnterKey(e) && enterPressed){

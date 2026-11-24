@@ -544,7 +544,8 @@ function setupInput() {
             state.input.spaceHeld = false;
             // Only perform short press if long press hasn't fired
             if (!state.input.spaceLongPressFired) {
-                onSpaceShortPress();
+                // Scan direction (Hub Settings): Backward makes a tap step back.
+                if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) onSpaceShortPress(); else performBackwardScan();
             }
             state.input.spaceLongPressFired = false;
         } else if (isEnterKey(e)) {
@@ -624,10 +625,10 @@ function onSpaceShortPress() {
 
 function onSpaceLongPress() {
     state.input.spaceLongPressFired = true;
-    performBackwardScan();
-    state.timers.spaceRepeat = setInterval(() => {
-        performBackwardScan();
-    }, config.repeatInterval);
+    // Held Space steps opposite to a tap (Scan direction, Hub Settings).
+    const holdStep = () => { if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) performBackwardScan(); else onSpaceShortPress(); };
+    holdStep();
+    state.timers.spaceRepeat = setInterval(holdStep, config.repeatInterval);
 }
 
 function performBackwardScan() {

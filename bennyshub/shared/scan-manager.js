@@ -20,7 +20,11 @@ window.NarbeScanManager = (function() {
   const DEFAULT_SETTINGS = {
     autoScan: false,   // Default per agents.md (Off for Ben games)
     scanSpeedIndex: 1,  // Default to 2000ms (index 1)
-    inputSensitivityIndex: 0  // Default to 50ms (index 0) - most responsive
+    inputSensitivityIndex: 0,  // Default to 50ms (index 0) - most responsive
+    // Scan direction. Off = a tap steps forward, holding Space steps backward.
+    // On = mirrored: a tap steps backward, holding Space steps forward. For
+    // switches that cannot hold, so backward scanning stays reachable.
+    reverseScan: false
   };
 
   // Internal state
@@ -139,6 +143,7 @@ window.NarbeScanManager = (function() {
       scanInterval: SCAN_SPEEDS[settings.scanSpeedIndex],
       inputSensitivityIndex: settings.inputSensitivityIndex,
       inputSensitivity: INPUT_SENSITIVITIES[settings.inputSensitivityIndex],
+      reverseScan: !!settings.reverseScan,
       // Read by choice-scan.js. This Hub has no Parking/Brake/Wait settings
       // yet, so they stay at the shared defaults: parking off, Space brake on,
       // no waiting for speech.
@@ -191,6 +196,9 @@ window.NarbeScanManager = (function() {
           if (typeof newSettings.inputSensitivityIndex === 'number') {
             settings.inputSensitivityIndex = newSettings.inputSensitivityIndex;
           }
+          if (typeof newSettings.reverseScan === 'boolean') {
+            settings.reverseScan = newSettings.reverseScan;
+          }
           // Save to localStorage (won't broadcast back since we received it)
           localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
           notifyObservers();
@@ -239,6 +247,10 @@ window.NarbeScanManager = (function() {
   const lastKeyUpTimes = {}; // Track when each key was last released (per-key, for cooldown after release)
   const blockedInteractions = new Set(); // Set of IDs currently in a blocked sequence
   const keyPressStartTimes = {}; // Track when keys were pressed down (for hold duration check)
+  const keyHeldSince = {}; // Last keydown of each key not yet released (held-switch repeats)
+  // Longest gap between a press and its first repeat: Windows' slowest key
+  // repeat delay is 1 s.
+  const HOLD_REPEAT_GAP_MS = 1200;
 
   /**
    * Reset all input tracking state
@@ -251,6 +263,7 @@ window.NarbeScanManager = (function() {
     for (const key in lastKeyDownTimes) delete lastKeyDownTimes[key];
     for (const key in lastKeyUpTimes) delete lastKeyUpTimes[key];
     for (const key in keyPressStartTimes) delete keyPressStartTimes[key];
+    for (const key in keyHeldSince) delete keyHeldSince[key];
     blockedInteractions.clear();
     console.log('NarbeScanManager: Input state reset');
   }
@@ -269,9 +282,13 @@ window.NarbeScanManager = (function() {
 
     // 1. Identify Source
     if (e.type.startsWith('key')) {
-      // Only target Space and Enter for cooldown logic as requested
-      if (e.code === 'Space' || e.code === 'Enter' || e.code === 'NumpadEnter') {
-        id = e.code;
+      // Only target Space and Enter for cooldown logic as requested.
+      // By code, key name or key number: switch boxes do not always report a code.
+      if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar' || (!e.code && e.keyCode === 32)) {
+        id = 'Space';
+        isTargetEvent = true;
+      } else if (e.code === 'Enter' || e.code === 'NumpadEnter' || e.key === 'Enter' || (!e.code && e.keyCode === 13)) {
+        id = e.code === 'NumpadEnter' ? 'NumpadEnter' : 'Enter';
         isTargetEvent = true;
       }
     } else {
@@ -293,8 +310,24 @@ window.NarbeScanManager = (function() {
       const now = Date.now();
       const sensitivity = getInputSensitivity(); // Get current configurable threshold
 
-      // Strict global cooldown check from last VALID release
-      if (now - lastValidReleaseTime < sensitivity) {
+      // A held switch: some switch boxes (e.g. a Trinkey) send the key again
+      // while it is held without marking it as a repeat, so every app saw a
+      // string of new presses and holding Space never scanned backwards. A
+      // press that arrives while the key is still down, soon after its last
+      // press, is a repeat of the hold. A long silence means the release was
+      // lost, so that press stays a new press.
+      const lastHeldDown = keyHeldSince[id];
+      keyHeldSince[id] = now;
+      if (lastHeldDown && !e.repeat && now - lastHeldDown < HOLD_REPEAT_GAP_MS) {
+        try { Object.defineProperty(e, 'repeat', { value: true, configurable: true }); } catch (err) {}
+      }
+
+      // Strict global cooldown check from last VALID release. Only a new press
+      // is blocked: blocking a repeat of a press that already got through (e.g.
+      // Space held while Enter is tapped) also swallowed that key's release, so
+      // Space stayed "held" and the backward scan never stopped. Repeats of a
+      // blocked press are still blocked below.
+      if (!e.repeat && now - lastValidReleaseTime < sensitivity) {
         blockedInteractions.add(id);
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -340,6 +373,7 @@ window.NarbeScanManager = (function() {
       // ALWAYS record keyup time for this key (for rapid-press detection on next keydown)
       if (isFinalEvent) {
         lastKeyUpTimes[id] = now;
+        delete keyHeldSince[id];
       }
 
       // If this sequence was blocked, consume the release event and clear the flag
@@ -376,6 +410,10 @@ window.NarbeScanManager = (function() {
   // Register capturing listeners to intercept events before they reach apps
   ['keydown', 'keyup', 'mousedown', 'mouseup', 'click', 'touchstart', 'touchend'].forEach(type => {
     window.addEventListener(type, handleGlobalInput, true);
+  });
+  // A release lost with the focus must not turn the next press into a "repeat".
+  window.addEventListener('blur', () => {
+    for (const key in keyHeldSince) delete keyHeldSince[key];
   });
 
   // Public API
@@ -432,9 +470,35 @@ window.NarbeScanManager = (function() {
         changed = true;
       }
 
+      if (typeof newSettings.reverseScan === 'boolean') {
+        settings.reverseScan = newSettings.reverseScan;
+        changed = true;
+      }
+
       if (changed) {
         saveSettings();
       }
+    },
+
+    /**
+     * Scan direction (Hub Settings). True = a tap steps backward and holding
+     * Space steps forward, in the Hub and every app.
+     */
+    isReverseScan: function() {
+      return !!settings.reverseScan;
+    },
+
+    setReverseScan: function(enabled) {
+      settings.reverseScan = !!enabled;
+      saveSettings();
+    },
+
+    /**
+     * Direction of a tap step: 1 (forward) or -1 (reverse). Multiply a step
+     * by this; the held-Space step is the opposite (-tapDirection()).
+     */
+    tapDirection: function() {
+      return settings.reverseScan ? -1 : 1;
     },
 
     /**
@@ -555,3 +619,9 @@ window.NarbeScanManager = (function() {
     }
   };
 })();
+
+// Direction of a tap step for the Hub and every app: 1 = forward, -1 = backward
+// (Scan direction in Hub Settings). Holding Space steps the opposite way.
+window.narbeTapDir = function() {
+  try { return window.NarbeScanManager.tapDirection(); } catch (e) { return 1; }
+};

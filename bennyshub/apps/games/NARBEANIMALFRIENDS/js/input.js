@@ -218,10 +218,11 @@ NAF.Input = (function () {
     // --- backwards scan ----------------------------------------------------------
 
     function startBackwardsScan() {
-        step(-1);
+        // Held Space steps opposite to a tap (Scan direction, Hub Settings).
+        step(-(window.narbeTapDir ? narbeTapDir() : 1));
         if (backRepeat) clearInterval(backRepeat);
         // Repeats at the player's own scan speed, not a rate this game picked.
-        backRepeat = setInterval(function () { step(-1); }, scanInterval());
+        backRepeat = setInterval(function () { step(-(window.narbeTapDir ? narbeTapDir() : 1)); }, scanInterval());
     }
 
     function stopBackwardsScan() {
@@ -301,7 +302,7 @@ NAF.Input = (function () {
             clearSpaceState();
             // A short press steps forward on release. A press long enough to have
             // started scanning backwards does not also step forward.
-            if (wasHeld && !wasScanningBack && !discardRelease) tryStep(1);
+            if (wasHeld && !wasScanningBack && !discardRelease) tryStep((window.narbeTapDir ? narbeTapDir() : 1));
             restartAutoScan();
         } else {
             if(!enterHeld)return;enterHeld=false;choice?.setInputHeld(spaceHeld);

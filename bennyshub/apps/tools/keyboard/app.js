@@ -315,6 +315,13 @@
     }
   });
 
+  // Scan direction (Hub Settings): sign 1 = a tap, -1 = held Space.
+  function keyboardStep(sign) {
+    const forward = sign * (window.narbeTapDir ? narbeTapDir() : 1) > 0;
+    if (inSettingsMode) { if (forward) scanSettingsForward(); else scanSettingsBackward(); }
+    else { if (forward) scanForward(); else scanBackward(); }
+  }
+
   function startScanning() {
     if (!spacebarPressed) {
       spacebarPressed = true;
@@ -332,11 +339,7 @@
           const stepBackward = () => {
             if (spacebarPressed) {
               backwardScanningOccurred = true; // Mark that backward scanning is happening
-              if (inSettingsMode) {
-                scanSettingsBackward();
-              } else {
-                scanBackward();
-              }
+              keyboardStep(-1);
             }
           };
           // First step as soon as the hold is recognised, then one per scan interval
@@ -368,11 +371,7 @@
       if (pressDuration <= longPressThreshold ||
           (pressDuration > longPressThreshold && !backwardScanningOccurred)) {
         console.log("Triggering forward scan - either short press or long press without backward scanning");
-        if (inSettingsMode) {
-          scanSettingsForward();
-        } else {
-          scanForward();
-        }
+        keyboardStep(1);
       } else if (backwardScanningOccurred) {
         console.log("Long press with backward scanning - no forward scan on release");
       }

@@ -1949,6 +1949,9 @@ function updateHeaderForCurrentView(){
     }
 
     // Keyboard Handling with Debounce
+    // Scan direction (Hub Settings): sign 1 = a tap, -1 = held Space.
+    function boardStep(sign) { if (sign * (window.narbeTapDir ? narbeTapDir() : 1) > 0) scanForward(); else scanBackward(); }
+    function modalStep(sign) { if (sign * (window.narbeTapDir ? narbeTapDir() : 1) > 0) scanModalForward(); else scanModalBackward(); }
     let backwardScanTimer = null;
     let backwardScanInterval = null;
     let returnActionTimer = null;
@@ -1997,9 +2000,9 @@ function updateHeaderForCurrentView(){
           // Set timeout for backwards scanning (same as main scan)
           modalBackwardScanTimer = setTimeout(() => {
             if (state.modalSpacePressed && state.modalActive) {
-              scanModalBackward();
+              modalStep(-1);
               modalBackwardScanInterval = setInterval(() => {
-                if (state.modalSpacePressed && state.modalActive) scanModalBackward();
+                if (state.modalSpacePressed && state.modalActive) modalStep(-1);
                 else { clearInterval(modalBackwardScanInterval); modalBackwardScanInterval = null; }
               }, state.scanSpeed);
             }
@@ -2040,9 +2043,9 @@ function updateHeaderForCurrentView(){
         state.spaceStartTime = Date.now();
         backwardScanTimer = setTimeout(() => {
           if (state.spacePressed) {
-            scanBackward();
+            boardStep(-1);
             backwardScanInterval = setInterval(() => {
-              if (state.spacePressed) scanBackward();
+              if (state.spacePressed) boardStep(-1);
               else { clearInterval(backwardScanInterval); backwardScanInterval = null; }
             }, state.scanSpeed);
           }
@@ -2056,6 +2059,12 @@ function updateHeaderForCurrentView(){
         returnActionTimer = setTimeout(() => {
           if (state.returnPressed) {
             state.returnActionExecuted = true;
+            // Hold Enter with words in the sentence bar: say the sentence.
+            const sentenceText = state.sentenceMode ? el.sentenceDisplay.textContent.trim() : '';
+            if (sentenceText && !state.videoModalActive) {
+              if (window.NarbeVoiceManager.getSettings().ttsEnabled) speak(sentenceText, false, null, null, true);
+              return;
+            }
             if (state.scanMode === 'column') {
               state.scanMode = 'row';
               highlightCurrentRow();
@@ -2088,7 +2097,7 @@ function updateHeaderForCurrentView(){
           if (modalBackwardScanInterval) { clearInterval(modalBackwardScanInterval); modalBackwardScanInterval = null; }
           // Short press = scan forward (only if not already backward scanning)
           if (duration < 3000) {
-            scanModalForward();
+            modalStep(1);
           }
         } else if (isEnterKey(e) && state.modalEnterPressed) {
           e.preventDefault();
@@ -2110,7 +2119,7 @@ function updateHeaderForCurrentView(){
         if (backwardScanTimer) { clearTimeout(backwardScanTimer); backwardScanTimer = null; }
         if (backwardScanInterval) { clearInterval(backwardScanInterval); backwardScanInterval = null; }
         if (duration < 3000 && now - state.lastKeyPressTime >= state.debounceDelay) {
-          scanForward();
+          boardStep(1);
           state.lastKeyPressTime = now;
         }
       } else if (isEnterKey(e) && state.returnPressed) {

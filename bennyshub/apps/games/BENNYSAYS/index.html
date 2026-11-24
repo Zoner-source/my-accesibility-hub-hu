@@ -510,7 +510,7 @@
           if (spaceIsDown && (performance.now() - spaceDownAt >= BACK_HOLD_THRESHOLD)) {
             isBackScanActive = true;
             const interval = window.NarbeScanManager ? window.NarbeScanManager.getScanInterval() : 1500;
-            backScanInterval = setInterval(() => { stepBackward(); }, interval);
+            backScanInterval = setInterval(() => { if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) stepBackward(); else stepForward(); }, interval);
           }
         }, BACK_HOLD_THRESHOLD);
       }
@@ -526,7 +526,8 @@
       } else {
         const now = performance.now();
         if (now - lastForwardStepAt >= FORWARD_DEBOUNCE) {
-          stepForward();
+          // Scan direction (Hub Settings): Backward makes a tap step back.
+          if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) stepForward(); else stepBackward();
           lastForwardStepAt = now;
         }
       }

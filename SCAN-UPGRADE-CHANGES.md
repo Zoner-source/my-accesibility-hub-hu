@@ -982,3 +982,18 @@ Rule applied everywhere: only the browser's auto-repeat (e.repeat) of a held key
 - SCAN-UPGRADE-CHANGES.md — this record.
 
 Electron flag: not ported. Validation: syntax checks of every changed script and inline page script in both repos; every variable and function the new code uses confirmed present. Behaviour replay was run for the Hub (fix 2); the apps follow the same rule. Not run in a browser.
+
+## 2026-11-24 — Scan direction setting, held-switch repeats, hold Enter says the sentence
+
+Owner report: with Ben's Trinkey, holding the switch no longer scanned backwards anywhere. The Trinkey's firmware is not available, so both possible causes are covered: (1) a held switch whose repeated key presses are not marked as repeats (since the 2026-11-10 fixes every app treats an unmarked press as a new press, restarting the hold so it never reached its threshold); (2) a switch that cannot hold at all. Owner chose both fixes. Owner also asked that a long Enter press on the phrase board says the sentence in the sentence bar.
+
+- bennyshub/shared/scan-manager.js — input guard: Space/Enter identified by code, key name or keyCode; a press that arrives while the key is still down, within 1.2 s (HOLD_REPEAT_GAP_MS) of its previous press, is marked as a repeat (e.repeat), so every surface sees one long hold; after a longer silence it stays a new press (lost release); blur clears it. New setting reverseScan (default false) with isReverseScan(), setReverseScan(), tapDirection(), synced like the other scan settings; global narbeTapDir().
+- bennyshub/shared/scan-manager.js — the cooldown after a release blocks only new presses, never the repeats of a press already let through. Before, on a slow Input sensitivity, tapping Enter while Space was held could block Space's next repeat and then swallow its release, leaving Space held with the backward scan running (existing bug, found while checking this change).
+- bennyshub/index.html — Hub Settings card "Scan direction" (Forward / Backward) after Scan speed; tap and held-Space steps use tapStep()/holdStep(); the hold announcement names the actual direction.
+- bennyshub/apps/tools/phraseboard/index.html — boardStep()/modalStep() follow the setting; hold Enter with words in the sentence bar says the sentence (otherwise the existing hold-Enter Back/row behaviour).
+- bennyshub/apps/tools/keyboard/app.js, index.html (scan-manager version) — keyboardStep() follows the setting (keyboard and its settings).
+- bennyshub/apps/tools/youtube/script.js, apps/games/BENNYSMATCHYMATCH/script.js, BENNYSTICTACTOE/script.js, BENNYSAYS/index.html, BENNYSBASKETBALLSHOOTER/index.html (menus only, aiming unchanged), NARBEANIMALFRIENDS/js/input.js, NARBEFEELINGS/js/game.js, NARBEPUZZLE/js/game.js — tap steps use narbeTapDir(), held-Space steps its opposite.
+- bennyshub/ACCESSIBILITY.md — Scan direction and held-switch rule.
+- SCAN-UPGRADE-CHANGES.md — this record.
+
+Auto Scan direction unchanged. Electron flag: not ported. Validation: syntax check of every changed script and inline page script in both repos; Node test of the guard (Trinkey-style unmarked repeats become repeats, release and lost-release cases stay new presses, Unidentified release recognised) and of the setting. Node replay of the real guard and the Hub's real Space/Enter handlers, 16 cases (taps, fast taps, Trinkey-style and keyboard holds, Unidentified/keyCode-only releases, lost releases, Space held with Enter, slow sensitivity, Backward direction): 16/16 in both Hubs. Not run in a browser or with the Trinkey.

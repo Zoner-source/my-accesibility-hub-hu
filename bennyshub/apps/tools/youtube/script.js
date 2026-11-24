@@ -666,8 +666,9 @@ function resetAutoScan() {
 //  Input
 // ---------------------------------------------------------------------
 function startBackwardsScan() {
-    scan(-1);
-    state.timers.spaceRepeat = setInterval(() => scan(-1), config.repeatInterval);
+    // Scan direction (Hub Settings): held Space steps opposite to a tap.
+    scan(-(window.narbeTapDir ? narbeTapDir() : 1));
+    state.timers.spaceRepeat = setInterval(() => scan(-(window.narbeTapDir ? narbeTapDir() : 1)), config.repeatInterval);
 }
 
 function performBackwardsToggle() {
@@ -726,7 +727,7 @@ function setupInput() {
             clearInterval(state.timers.spaceRepeat);
             const duration = Date.now() - state.input.spaceTime;
             state.input.spaceHeld = false;
-            if (duration < config.longPress) scan(1);
+            if (duration < config.longPress) scan((window.narbeTapDir ? narbeTapDir() : 1));
             resetAutoScan();
         } else if (isEnterKey(e)) {
             if (!state.input.enterHeld) return;

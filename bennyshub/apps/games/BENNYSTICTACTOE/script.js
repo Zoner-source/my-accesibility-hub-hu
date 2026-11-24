@@ -928,7 +928,8 @@ function setupInput() {
                 state.input.spaceHeld = false;
                 
                 if (duration < config.longPress) {
-                    scanForward();
+                    // Scan direction (Hub Settings): Backward makes a tap step back.
+                    if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) scanForward(); else scanBackward();
                 }
                 // Restart auto scan after interaction gap
                 resetAutoScan();
@@ -1008,8 +1009,10 @@ function scanBackward() {
 }
 
 function startBackwardsScan() {
-    scanBackward();
-    state.timers.spaceRepeat = setInterval(scanBackward, config.repeatInterval);
+    // Held Space steps opposite to a tap (Scan direction, Hub Settings).
+    const holdStep = () => { if ((window.narbeTapDir ? narbeTapDir() : 1) > 0) scanBackward(); else scanForward(); };
+    holdStep();
+    state.timers.spaceRepeat = setInterval(holdStep, config.repeatInterval);
 }
 
 function selectItem() {
